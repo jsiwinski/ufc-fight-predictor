@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Upcoming UFC Fights - UFC Fight Predictor{% endblock %}
+
+{% block content %}
+<div class="predictions-container">
+    <h2>Upcoming UFC Fight Predictions</h2>
+
+    <!-- TODO Phase 4: Implement predictions display -->
+    <!--
+    Example structure:
+    - Event cards grouped by date
+    - Each fight showing:
+      * Fighter names
+      * Win probabilities (visual bars)
+      * Confidence level
+      * Event details
+    -->
+
+    <div class="event-card">
+        <h3>Event Name - Date</h3>
+        <div class="fight-prediction">
+            <div class="fighter fighter-1">
+                <span class="fighter-name">Fighter 1</span>
+                <span class="win-prob">XX%</span>
+            </div>
+            <div class="vs">VS</div>
+            <div class="fighter fighter-2">
+                <span class="fighter-name">Fighter 2</span>
+                <span class="win-prob">XX%</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

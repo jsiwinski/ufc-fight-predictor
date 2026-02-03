@@ -1,0 +1,60 @@
+# UFC Fight Predictor Configuration
+
+# Data Sources
+data:
+  raw_path: "data/raw"
+  processed_path: "data/processed"
+  predictions_path: "data/predictions"
+
+  # TODO: Add specific data source URLs in Phase 1
+  sources:
+    historical_fights: ""
+    upcoming_events: ""
+    fighter_stats: ""
+
+# Model Parameters
+model:
+  save_path: "data/models"
+
+  # TODO: Tune these parameters during Phase 2
+  parameters:
+    test_size: 0.2
+    random_state: 42
+    n_estimators: 100
+    max_depth: 10
+    learning_rate: 0.1
+
+  # Feature selection
+  feature_groups:
+    - fighter_stats
+    - fight_history
+    - matchup_features
+
+# Storage Settings
+storage:
+  use_database: false
+  # TODO: Configure if using database
+  database:
+    host: "localhost"
+    port: 5432
+    name: "ufc_predictions"
+
+# Web Server Settings
+web:
+  host: "127.0.0.1"
+  port: 5000
+  debug: true
+
+  # Update frequency for predictions
+  update_interval_hours: 24
+
+# API Keys (use environment variables)
+api:
+  # TODO: Add any required API keys
+  ufc_stats_key: "${UFC_STATS_API_KEY}"
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "ufc_predictor.log"
