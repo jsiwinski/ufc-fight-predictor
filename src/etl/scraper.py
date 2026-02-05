@@ -412,17 +412,31 @@ class UFCDataScraper:
                 fighter1_name = fighters[0].text.strip()
                 fighter2_name = fighters[1].text.strip()
 
-                # Get fight result
-                result_icons = cells[0].find_all('i')
-                if len(result_icons) >= 2:
-                    if 'b-flag__text_style_green' in result_icons[0].get('class', []):
-                        winner = fighter1_name
-                    elif 'b-flag__text_style_green' in result_icons[1].get('class', []):
-                        winner = fighter2_name
-                    else:
-                        winner = 'Draw'
+                # Get fight result - check for green flag indicating winner
+                fighter1_result = cells[0].find('a', class_='b-flag')
+                fighter2_result = cells[2].find('a', class_='b-flag')
+
+                # Check if fighter 1 has green flag (winner indicator)
+                if fighter1_result and 'b-flag_style_green' in fighter1_result.get('class', []):
+                    winner = fighter1_name
+                # Check if fighter 2 has green flag (winner indicator)
+                elif fighter2_result and 'b-flag_style_green' in fighter2_result.get('class', []):
+                    winner = fighter2_name
+                # No green flag found - could be draw or no contest
                 else:
-                    winner = 'Unknown'
+                    # Check the text in result links to determine
+                    result_text = ''
+                    if fighter1_result:
+                        result_text = fighter1_result.text.strip().lower()
+                    elif fighter2_result:
+                        result_text = fighter2_result.text.strip().lower()
+
+                    if 'draw' in result_text:
+                        winner = 'Draw'
+                    elif 'nc' in result_text or 'no contest' in result_text:
+                        winner = 'No Contest'
+                    else:
+                        winner = 'Unknown'
 
                 # Weight class
                 weight_class = cells[6].text.strip()
