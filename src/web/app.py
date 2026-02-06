@@ -21,37 +21,39 @@ from typing import Dict, List, Optional, Tuple
 
 from flask import Flask, jsonify, render_template, redirect, url_for
 
-# Human-readable feature name mapping
+# Human-readable feature name mapping (shortened for bar chart display)
 FEATURE_LABELS = {
-    'diff_career_win_rate': 'Win Rate (Career)',
-    'diff_career_ko_rate': 'KO Rate',
-    'diff_career_sub_rate': 'Submission Rate',
-    'diff_career_dec_rate': 'Decision Rate',
-    'diff_career_finish_rate': 'Finish Rate',
-    'diff_days_since_last_fight': 'Days Since Last Fight',
-    'diff_win_rate_last_3': 'Win Rate (Last 3)',
-    'diff_win_rate_last_5': 'Win Rate (Last 5)',
-    'diff_win_rate_last_10': 'Win Rate (Last 10)',
-    'diff_career_fights': 'Experience',
-    'diff_weight_class_fights': 'Weight Class Experience',
-    'diff_win_streak': 'Win Streak',
-    'diff_loss_streak': 'Loss Streak',
-    'diff_fights_per_year': 'Fight Frequency',
+    'diff_career_win_rate': 'Win %',
+    'diff_career_ko_rate': 'KO %',
+    'diff_career_sub_rate': 'Sub %',
+    'diff_career_dec_rate': 'Dec %',
+    'diff_career_finish_rate': 'Finish %',
+    'diff_days_since_last_fight': 'Activity',
+    'diff_win_rate_last_3': 'Recent Form',
+    'diff_win_rate_last_5': 'Form (5)',
+    'diff_win_rate_last_10': 'Form (10)',
+    'diff_career_fights': 'Fights',
+    'diff_weight_class_fights': 'Div Exp',
+    'diff_win_streak': 'Streak',
+    'diff_loss_streak': 'L Streak',
+    'diff_fights_per_year': 'Frequency',
     'diff_momentum': 'Momentum',
-    'diff_striking_volume': 'Striking Volume',
-    'diff_grappling_tendency': 'Grappling Tendency',
-    'diff_avg_sig_strikes_landed_last_3': 'Sig. Strikes (Last 3)',
-    'diff_avg_sig_strikes_landed_last_5': 'Sig. Strikes (Last 5)',
-    'diff_avg_sig_strikes_absorbed_last_3': 'Strikes Absorbed (Last 3)',
-    'diff_avg_sig_strikes_absorbed_last_5': 'Strikes Absorbed (Last 5)',
-    'diff_avg_takedowns_last_3': 'Takedowns (Last 3)',
-    'diff_avg_takedowns_last_5': 'Takedowns (Last 5)',
-    'diff_finish_rate_last_3': 'Finish Rate (Last 3)',
-    'diff_finish_rate_last_5': 'Finish Rate (Last 5)',
-    'diff_avg_fight_time_last_3': 'Avg Fight Time (Last 3)',
-    'diff_avg_fight_time_last_5': 'Avg Fight Time (Last 5)',
-    'diff_experience_ratio': 'Experience Ratio',
-    'diff_data_completeness_score': 'Data Completeness',
+    'diff_striking_volume': 'Volume',
+    'diff_grappling_tendency': 'Grappling',
+    'diff_avg_sig_strikes_landed_last_3': 'Strikes',
+    'diff_avg_sig_strikes_landed_last_5': 'Strikes (5)',
+    'diff_avg_sig_strikes_absorbed_last_3': 'Absorbed',
+    'diff_avg_sig_strikes_absorbed_last_5': 'Absorbed (5)',
+    'diff_avg_takedowns_last_3': 'Takedowns',
+    'diff_avg_takedowns_last_5': 'TD (5)',
+    'diff_finish_rate_last_3': 'Finish (3)',
+    'diff_finish_rate_last_5': 'Finish (5)',
+    'diff_avg_fight_time_last_3': 'Duration',
+    'diff_avg_fight_time_last_5': 'Duration (5)',
+    'diff_experience_ratio': 'Exp Ratio',
+    'diff_data_completeness_score': 'Data',
+    'diff_career_wins': 'Wins',
+    'diff_career_losses': 'Losses',
 }
 
 # Add project root to path for imports
@@ -283,8 +285,9 @@ def format_stat_bars(factors: List, top_n: int = 5) -> List[Dict]:
         return []
 
     # Rank-based normalization: sort by absolute value descending
-    # Widths: rank 1 = 45%, rank 2 = 36%, rank 3 = 27%, rank 4 = 18%, rank 5 = 10%
-    width_steps = [45, 36, 27, 18, 10]
+    # Widths are % of half-container (bars grow from center outward)
+    # Rank 1 = 50%, rank 2 = 40%, rank 3 = 30%, rank 4 = 20%, rank 5 = 12%
+    width_steps = [50, 40, 30, 20, 12]
     sorted_by_abs = sorted(parsed, key=lambda f: abs(f['value']), reverse=True)
 
     # Assign widths based on rank

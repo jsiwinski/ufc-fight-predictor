@@ -425,43 +425,48 @@ main {
     color: var(--text);
 }
 
-/* Diverging Stat Bars */
+/* Diverging Stat Bars - Bars are the hero, labels are secondary */
 .stat-bars {
-    padding: 16px 0;
-    max-width: 480px;
+    padding: 20px 0 12px;
+    max-width: 360px;
     margin: 0 auto;
     position: relative;
 }
 
-/* Center line is now on individual .stat-bar-container::before elements */
+/* Continuous center line behind all bars */
+.stat-bars::before {
+    content: '';
+    position: absolute;
+    left: calc(80px + 8px + 50%);  /* label width + gap + half of bar container */
+    top: 16px;
+    bottom: 8px;
+    width: 1px;
+    background: #c0c0bb;
+    z-index: 0;
+}
 
+/* Header hidden - bars are self-explanatory */
 .stat-bars-header {
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    text-align: center;
+    display: none;
 }
 
 .stat-bar-row {
     display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 16px;
+    grid-template-columns: 80px 1fr;
+    gap: 8px;
     align-items: center;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     opacity: 0;
     animation: fadeInBar 0.3s ease forwards;
     position: relative;
     z-index: 1;
 }
 
-.stat-bar-row:nth-child(2) { animation-delay: 0ms; }
-.stat-bar-row:nth-child(3) { animation-delay: 50ms; }
-.stat-bar-row:nth-child(4) { animation-delay: 100ms; }
-.stat-bar-row:nth-child(5) { animation-delay: 150ms; }
-.stat-bar-row:nth-child(6) { animation-delay: 200ms; }
+.stat-bar-row:nth-child(1) { animation-delay: 0ms; }
+.stat-bar-row:nth-child(2) { animation-delay: 50ms; }
+.stat-bar-row:nth-child(3) { animation-delay: 100ms; }
+.stat-bar-row:nth-child(4) { animation-delay: 150ms; }
+.stat-bar-row:nth-child(5) { animation-delay: 200ms; }
 
 @keyframes fadeInBar {
     from {
@@ -474,36 +479,30 @@ main {
     }
 }
 
+/* Labels: small, monospace, uppercase - axis labels not content */
 .stat-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.78rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
     color: var(--text-muted);
     text-align: right;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
     white-space: nowrap;
 }
 
 .stat-bar-container {
     position: relative;
-    height: 8px;
+    height: 10px;
     background: transparent;
 }
 
-.stat-bar-container::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: -6px;
-    bottom: -6px;
-    width: 1px;
-    background: #c0c0bb;
-    z-index: 1;
-}
+/* No per-row center line - using parent's continuous line */
 
 .stat-bar-fill {
     position: absolute;
     top: 0;
     height: 100%;
-    min-width: 12px;
+    min-width: 8px;
     border-radius: 1px;
     transition: width 0.4s ease-out;
 }
@@ -866,19 +865,23 @@ footer p {
         text-align: center;
     }
 
-    /* Stat bars on mobile */
+    /* Stat bars on mobile - even tighter labels */
     .stat-bars {
         max-width: 100%;
     }
 
+    .stat-bars::before {
+        left: calc(60px + 6px + 50%);  /* narrower label + gap + half */
+    }
+
     .stat-bar-row {
-        grid-template-columns: 120px 1fr;
-        gap: 10px;
-        margin-bottom: 12px;
+        grid-template-columns: 60px 1fr;
+        gap: 6px;
+        margin-bottom: 10px;
     }
 
     .stat-label {
-        font-size: 0.72rem;
+        font-size: 0.6rem;
     }
 
     /* Card section divider on mobile */
