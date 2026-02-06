@@ -248,19 +248,21 @@ def get_feature_label(feature_name: str) -> str:
     return label.title()
 
 
-def format_stat_bars(factors: List, top_n: int = 5) -> List[Dict]:
+def compute_tornado_bars(factors: List, top_n: int = 5) -> List[Dict]:
     """
-    Format differential factors for diverging stat bars using rank-based normalization.
+    Format differential factors for tornado chart display.
 
-    Rank-based approach ensures all bars are visible regardless of outliers.
-    The largest absolute differential gets the widest bar, next gets second widest, etc.
+    Tornado chart: labels in center, bars extend outward toward the fighter
+    with the advantage. Red bars go LEFT (Fighter 1), blue bars go RIGHT (Fighter 2).
 
     Args:
         factors: List of (feature_name, value) tuples or dicts
+                 Positive value = Fighter 1 advantage (red, left bar)
+                 Negative value = Fighter 2 advantage (blue, right bar)
         top_n: Number of top factors to include
 
     Returns:
-        List of stat bar dicts with rank-based widths
+        List of tornado bar dicts with left_width and right_width percentages
     """
     parsed = []
 
@@ -285,25 +287,23 @@ def format_stat_bars(factors: List, top_n: int = 5) -> List[Dict]:
         return []
 
     # Rank-based normalization: sort by absolute value descending
-    # Widths are % of half-container (bars grow from center outward)
-    # Rank 1 = 50%, rank 2 = 40%, rank 3 = 30%, rank 4 = 20%, rank 5 = 12%
-    width_steps = [50, 40, 30, 20, 12]
+    # Width percentages for ranks 1-5 (bars grow from center outward)
+    width_steps = [85, 68, 52, 36, 22]
     sorted_by_abs = sorted(parsed, key=lambda f: abs(f['value']), reverse=True)
 
     # Assign widths based on rank
     for i, stat in enumerate(sorted_by_abs):
-        stat['bar_width'] = width_steps[min(i, len(width_steps) - 1)]
-
-    # Set direction and display value for all stats
-    for stat in parsed:
+        pct = width_steps[min(i, len(width_steps) - 1)]
         val = stat['value']
-        stat['direction'] = 'left' if val > 0 else 'right'  # left = Fighter 1 advantage
-        # Format value display
-        if abs(val) >= 10:
-            # Integer-like values (days, fights)
-            stat['display_value'] = f"+{int(val)}" if val > 0 else f"{int(val)}"
+
+        if val > 0:
+            # Fighter 1 advantage: red bar extends LEFT
+            stat['left_width'] = pct
+            stat['right_width'] = 0
         else:
-            stat['display_value'] = f"+{val:.2f}" if val > 0 else f"{val:.2f}"
+            # Fighter 2 advantage: blue bar extends RIGHT
+            stat['left_width'] = 0
+            stat['right_width'] = pct
 
     return parsed
 
@@ -319,9 +319,9 @@ def format_prediction(pred: Dict, position: int = 0, total_fights: int = 13) -> 
     else:
         favorite = 2
 
-    # Get all factors for stat bars
+    # Get all factors for tornado chart
     raw_factors = pred.get('top_factors', [])
-    stat_bars = format_stat_bars(raw_factors, top_n=5)
+    tornado_factors = compute_tornado_bars(raw_factors, top_n=5)
 
     # Legacy factors (kept for backwards compatibility)
     factors = []
@@ -370,7 +370,7 @@ def format_prediction(pred: Dict, position: int = 0, total_fights: int = 13) -> 
         'confidence': pred.get('confidence', 'LOW'),
         'weight_class': pred.get('weight_class', ''),
         'factors': factors,
-        'stat_bars': stat_bars,
+        'tornado_factors': tornado_factors,
         'position_label': position_label,
         'card_section': card_section,
         'f1_exact_match': pred.get('f1_exact_match', True),

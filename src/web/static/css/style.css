@@ -425,113 +425,64 @@ main {
     color: var(--text);
 }
 
-/* Diverging Stat Bars - Bars are the hero, labels are secondary */
-.stat-bars {
-    padding: 20px 0 12px;
-    max-width: 360px;
+/* Tornado Chart - Labels in center, bars extend outward toward advantaged fighter */
+.tornado-section {
+    padding: 16px 0;
+    width: 100%;
+    max-width: 340px;
     margin: 0 auto;
-    position: relative;
 }
 
-/* Continuous center line behind all bars */
-.stat-bars::before {
-    content: '';
-    position: absolute;
-    left: calc(80px + 8px + 50%);  /* label width + gap + half of bar container */
-    top: 16px;
-    bottom: 8px;
-    width: 1px;
-    background: #c0c0bb;
-    z-index: 0;
-}
-
-/* Header hidden - bars are self-explanatory */
-.stat-bars-header {
-    display: none;
-}
-
-.stat-bar-row {
+.tornado-row {
     display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 8px;
+    grid-template-columns: 1fr 72px 1fr;
     align-items: center;
-    margin-bottom: 12px;
-    opacity: 0;
-    animation: fadeInBar 0.3s ease forwards;
-    position: relative;
-    z-index: 1;
+    margin-bottom: 10px;
+    height: 14px;
 }
 
-.stat-bar-row:nth-child(1) { animation-delay: 0ms; }
-.stat-bar-row:nth-child(2) { animation-delay: 50ms; }
-.stat-bar-row:nth-child(3) { animation-delay: 100ms; }
-.stat-bar-row:nth-child(4) { animation-delay: 150ms; }
-.stat-bar-row:nth-child(5) { animation-delay: 200ms; }
+/* Staggered animation for tornado bars */
+.tornado-row:nth-child(1) .tornado-fill { transition-delay: 0ms; }
+.tornado-row:nth-child(2) .tornado-fill { transition-delay: 60ms; }
+.tornado-row:nth-child(3) .tornado-fill { transition-delay: 60ms; }
+.tornado-row:nth-child(4) .tornado-fill { transition-delay: 120ms; }
+.tornado-row:nth-child(5) .tornado-fill { transition-delay: 180ms; }
 
-@keyframes fadeInBar {
-    from {
-        opacity: 0;
-        transform: translateY(4px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Labels: small, monospace, uppercase - axis labels not content */
-.stat-label {
+.tornado-label {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    text-align: right;
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+    text-align: center;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     white-space: nowrap;
+    padding: 0 4px;
 }
 
-.stat-bar-container {
-    position: relative;
+.tornado-bar-left {
+    display: flex;
+    justify-content: flex-end;  /* bars grow from right edge (center) toward left */
     height: 10px;
-    background: transparent;
 }
 
-/* No per-row center line - using parent's continuous line */
+.tornado-bar-right {
+    display: flex;
+    justify-content: flex-start;  /* bars grow from left edge (center) toward right */
+    height: 10px;
+}
 
-.stat-bar-fill {
-    position: absolute;
-    top: 0;
+.tornado-fill {
     height: 100%;
-    min-width: 8px;
     border-radius: 1px;
     transition: width 0.4s ease-out;
 }
 
-/* Fighter 1 advantage: bar grows LEFT from center */
-.stat-bar-fill.left {
-    right: 50%;
+.tornado-fill.red {
     background: var(--red);
 }
 
-/* Fighter 2 advantage: bar grows RIGHT from center */
-.stat-bar-fill.right {
-    left: 50%;
+.tornado-fill.blue {
     background: var(--blue);
-}
-
-.stat-value {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    text-align: right;
-}
-
-.stat-value.positive {
-    color: var(--red);
-}
-
-.stat-value.negative {
-    color: var(--blue);
 }
 
 /* Fighter Body Photos - Expanded State */
@@ -591,10 +542,10 @@ main {
     filter: grayscale(15%);
 }
 
-/* Ensure stat bars center column has minimum height to match photos */
-.fight-details-content.has-both-photos .stat-bars,
-.fight-details-content.has-left-photo .stat-bars,
-.fight-details-content.has-right-photo .stat-bars {
+/* Ensure tornado chart center column has minimum height to match photos */
+.fight-details-content.has-both-photos .tornado-section,
+.fight-details-content.has-left-photo .tornado-section,
+.fight-details-content.has-right-photo .tornado-section {
     min-height: 240px;
 }
 
@@ -865,23 +816,18 @@ footer p {
         text-align: center;
     }
 
-    /* Stat bars on mobile - even tighter labels */
-    .stat-bars {
+    /* Tornado chart on mobile - narrower center label column */
+    .tornado-section {
         max-width: 100%;
     }
 
-    .stat-bars::before {
-        left: calc(60px + 6px + 50%);  /* narrower label + gap + half */
+    .tornado-row {
+        grid-template-columns: 1fr 60px 1fr;
+        margin-bottom: 8px;
     }
 
-    .stat-bar-row {
-        grid-template-columns: 60px 1fr;
-        gap: 6px;
-        margin-bottom: 10px;
-    }
-
-    .stat-label {
-        font-size: 0.6rem;
+    .tornado-label {
+        font-size: 0.55rem;
     }
 
     /* Card section divider on mobile */
