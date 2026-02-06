@@ -248,6 +248,15 @@ main {
     filter: grayscale(0%);
 }
 
+/* Hide headshots when expanded to avoid redundancy with body photos */
+.fight-card:hover .fighter-headshot,
+.fight-card:hover .fighter-headshot-fallback,
+.fight-card.expanded .fighter-headshot,
+.fight-card.expanded .fighter-headshot-fallback {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
 .fighter-headshot-fallback {
     width: 48px;
     height: 48px;
@@ -536,21 +545,21 @@ main {
 /* Grid layouts based on photo availability */
 .fight-details-content.has-both-photos {
     display: grid;
-    grid-template-columns: 140px 1fr 140px;
+    grid-template-columns: 180px 1fr 180px;
     gap: 24px;
     align-items: start;
 }
 
 .fight-details-content.has-left-photo {
     display: grid;
-    grid-template-columns: 140px 1fr;
+    grid-template-columns: 180px 1fr;
     gap: 24px;
     align-items: start;
 }
 
 .fight-details-content.has-right-photo {
     display: grid;
-    grid-template-columns: 1fr 140px;
+    grid-template-columns: 1fr 180px;
     gap: 24px;
     align-items: start;
 }
@@ -560,14 +569,19 @@ main {
 }
 
 .fighter-body-photo {
-    width: 140px;
-    height: 180px;
+    width: 180px;
+    height: 240px;
     object-fit: cover;
     object-position: top center;
     filter: grayscale(40%);
     opacity: 0;
     transition: opacity 0.4s ease-out 0.1s, filter 0.3s ease;
     flex-shrink: 0;
+}
+
+/* Flip Fighter 2 so fighters face each other like a staredown */
+.fighter-body-photo.right {
+    transform: scaleX(-1);
 }
 
 /* Fade in body photos when fight card is hovered */
@@ -581,7 +595,7 @@ main {
 .fight-details-content.has-both-photos .stat-bars,
 .fight-details-content.has-left-photo .stat-bars,
 .fight-details-content.has-right-photo .stat-bars {
-    min-height: 160px;
+    min-height: 240px;
 }
 
 /* Card Section Separator */

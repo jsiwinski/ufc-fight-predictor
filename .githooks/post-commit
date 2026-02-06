@@ -1,0 +1,132 @@
+#!/bin/bash
+#
+# Auto-Changelog Git Hook for UFC Fight Predictor
+#
+# This hook automatically:
+# 1. Captures commit message and changed files
+# 2. Categorizes commit into [DATA]/[FEATURE]/[MODEL]/[FIX]/[INFRA]/[DOCS]
+# 3. Appends entry to CHANGELOG.md
+# 4. Flags if architecture-level files changed (prints reminder to review ARCHITECTURE.md)
+#
+# Setup:
+#   git config core.hooksPath .githooks
+#   chmod +x .githooks/post-commit
+#
+
+# Get commit info
+COMMIT_HASH=$(git rev-parse HEAD)
+COMMIT_SHORT=$(git rev-parse --short HEAD)
+COMMIT_DATE=$(git log -1 --format=%cd --date=short)
+COMMIT_MSG=$(git log -1 --pretty=%B)
+CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD)
+
+# Extract first line of commit message (subject)
+SUBJECT=$(echo "$COMMIT_MSG" | head -n 1)
+
+# Categorize commit based on changed files and commit message
+CATEGORY="[INFRA]"  # Default category
+
+# Check for category in commit message first (explicit categorization)
+if echo "$SUBJECT" | grep -qE '^\[(DATA|FEATURE|MODEL|FIX|INFRA|DOCS)\]'; then
+    CATEGORY=$(echo "$SUBJECT" | grep -oE '^\[(DATA|FEATURE|MODEL|FIX|INFRA|DOCS)\]')
+else
+    # Auto-categorize based on changed files
+    if echo "$CHANGED_FILES" | grep -qE '^(src/etl/scraper\.py|scrape_|data/)'; then
+        CATEGORY="[DATA]"
+    elif echo "$CHANGED_FILES" | grep -qE '^(src/features/|run_feature_engineering\.py)'; then
+        CATEGORY="[FEATURE]"
+    elif echo "$CHANGED_FILES" | grep -qE '^(src/models/train\.py|src/models/predict\.py)'; then
+        CATEGORY="[MODEL]"
+    elif echo "$COMMIT_MSG" | grep -qiE '\b(fix|bug|error|issue|broken)\b'; then
+        CATEGORY="[FIX]"
+    elif echo "$CHANGED_FILES" | grep -qE '\.(md|txt|html)$'; then
+        CATEGORY="[DOCS]"
+    elif echo "$CHANGED_FILES" | grep -qE '^(config\.|requirements\.|run\.py|\.git)'; then
+        CATEGORY="[INFRA]"
+    fi
+fi
+
+# Remove category from subject if it's already there (avoid duplication)
+SUBJECT_CLEAN=$(echo "$SUBJECT" | sed -E 's/^\[(DATA|FEATURE|MODEL|FIX|INFRA|DOCS)\] ?//')
+
+# Check if CHANGELOG.md exists
+if [ ! -f "CHANGELOG.md" ]; then
+    echo "⚠️  CHANGELOG.md not found. Skipping auto-changelog."
+    exit 0
+fi
+
+# Check if today's date section already exists in CHANGELOG
+if grep -q "^## \[$COMMIT_DATE\]" CHANGELOG.md; then
+    # Date section exists, append to it
+    # Find the line number of today's date section
+    LINE_NUM=$(grep -n "^## \[$COMMIT_DATE\]" CHANGELOG.md | head -n 1 | cut -d: -f1)
+
+    # Insert after the date header (LINE_NUM + 2 to skip date line and blank line)
+    INSERT_LINE=$((LINE_NUM + 2))
+
+    # Create temporary file with new entry
+    {
+        head -n $((INSERT_LINE - 1)) CHANGELOG.md
+        echo "### $CATEGORY $SUBJECT_CLEAN"
+        echo "**Commit:** \`$COMMIT_SHORT\` ($COMMIT_DATE)"
+        echo "$COMMIT_MSG" | tail -n +2 | sed 's/^/- /'  # Add commit body as bullet points
+        echo ""
+        tail -n +$INSERT_LINE CHANGELOG.md
+    } > CHANGELOG.md.tmp
+
+    mv CHANGELOG.md.tmp CHANGELOG.md
+else
+    # Date section doesn't exist, create new section
+    # Find where to insert (after "# UFC Fight Predictor — Changelog" header and metadata)
+    # Insert after the "---" separator line
+    LINE_NUM=$(grep -n "^---$" CHANGELOG.md | head -n 1 | cut -d: -f1)
+    INSERT_LINE=$((LINE_NUM + 1))
+
+    # Create temporary file with new date section
+    {
+        head -n $LINE_NUM CHANGELOG.md
+        echo ""
+        echo "## [$COMMIT_DATE]"
+        echo ""
+        echo "### $CATEGORY $SUBJECT_CLEAN"
+        echo "**Commit:** \`$COMMIT_SHORT\` ($COMMIT_DATE)"
+        echo "$COMMIT_MSG" | tail -n +2 | sed 's/^/- /'
+        echo ""
+        tail -n +$((INSERT_LINE + 1)) CHANGELOG.md
+    } > CHANGELOG.md.tmp
+
+    mv CHANGELOG.md.tmp CHANGELOG.md
+fi
+
+echo "✅ Auto-changelog: Added entry to CHANGELOG.md"
+echo "   Category: $CATEGORY"
+echo "   Commit: $COMMIT_SHORT"
+
+# Check for architecture-level file changes (flag for manual review)
+ARCH_FILES="src/etl/scraper.py|src/features/engineer.py|src/models/train.py|config.yaml|requirements.txt|run.py"
+
+if echo "$CHANGED_FILES" | grep -qE "($ARCH_FILES)"; then
+    echo ""
+    echo "⚠️  ARCHITECTURE-LEVEL CHANGE DETECTED!"
+    echo "   The following critical files were modified:"
+    echo "$CHANGED_FILES" | grep -E "($ARCH_FILES)" | sed 's/^/     - /'
+    echo ""
+    echo "   📋 ACTION REQUIRED: Review and update ARCHITECTURE.md if needed"
+    echo "      - Data flow changes?"
+    echo "      - New dependencies?"
+    echo "      - Module responsibilities changed?"
+    echo ""
+fi
+
+# Check for feature engineering changes (flag for model re-training)
+if echo "$CHANGED_FILES" | grep -qE "^(src/features/|DATA_DICTIONARY\.md)"; then
+    echo ""
+    echo "⚠️  FEATURE ENGINEERING CHANGE DETECTED!"
+    echo "   📋 ACTION REQUIRED:"
+    echo "      1. Re-run feature engineering: python run_feature_engineering.py"
+    echo "      2. Re-train model (when Phase 3 implemented)"
+    echo "      3. Update DATA_DICTIONARY.md if features added/removed"
+    echo ""
+fi
+
+exit 0
