@@ -433,18 +433,7 @@ main {
     position: relative;
 }
 
-/* Continuous center line through all stat bars */
-.stat-bars::before {
-    content: '';
-    position: absolute;
-    /* Position at center of the bar column: 130px label + 12px gap + half of remaining */
-    left: calc(50% + 71px);
-    top: 40px; /* below header */
-    bottom: 16px;
-    width: 1px;
-    background: #d0d0cb;
-    z-index: 0;
-}
+/* Center line is now on individual .stat-bar-container::before elements */
 
 .stat-bars-header {
     font-size: 0.7rem;
@@ -458,10 +447,10 @@ main {
 
 .stat-bar-row {
     display: grid;
-    grid-template-columns: 130px 1fr;
-    gap: 12px;
+    grid-template-columns: 160px 1fr;
+    gap: 16px;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 14px;
     opacity: 0;
     animation: fadeInBar 0.3s ease forwards;
     position: relative;
@@ -486,24 +475,36 @@ main {
 }
 
 .stat-label {
-    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
     color: var(--text-muted);
     text-align: right;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .stat-bar-container {
     position: relative;
-    height: 6px;
+    height: 8px;
     background: transparent;
+}
+
+.stat-bar-container::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -6px;
+    bottom: -6px;
+    width: 1px;
+    background: #c0c0bb;
+    z-index: 1;
 }
 
 .stat-bar-fill {
     position: absolute;
     top: 0;
     height: 100%;
+    min-width: 12px;
+    border-radius: 1px;
     transition: width 0.4s ease-out;
 }
 
@@ -579,8 +580,8 @@ main {
     flex-shrink: 0;
 }
 
-/* Flip Fighter 2 so fighters face each other like a staredown */
-.fighter-body-photo.right {
+/* Flip fighter photos based on face direction detection */
+.fighter-body-photo.flipped {
     transform: scaleX(-1);
 }
 
@@ -870,18 +871,14 @@ footer p {
         max-width: 100%;
     }
 
-    .stat-bars::before {
-        /* Adjust center line for mobile grid (100px label + 8px gap) */
-        left: calc(50% + 54px);
-    }
-
     .stat-bar-row {
-        grid-template-columns: 100px 1fr;
-        gap: 8px;
+        grid-template-columns: 120px 1fr;
+        gap: 10px;
+        margin-bottom: 12px;
     }
 
     .stat-label {
-        font-size: 0.7rem;
+        font-size: 0.72rem;
     }
 
     /* Card section divider on mobile */

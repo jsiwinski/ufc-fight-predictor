@@ -39,6 +39,8 @@ from pathlib import Path
 from typing import Dict, List, Optional
 from urllib.parse import quote
 
+import cv2
+import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
@@ -64,6 +66,129 @@ DEFAULT_BODY_OUTPUT_DIR = PROJECT_ROOT / "src" / "web" / "static" / "fighters" /
 UFC_ATHLETE_URL = "https://www.ufc.com/athlete/{slug}"
 UFC_ESPANOL_ATHLETE_URL = "https://www.ufcespanol.com/athlete/{slug}"
 RATE_LIMIT = 1.5  # seconds between requests
+FACE_DIRECTIONS_FILE = DEFAULT_BODY_OUTPUT_DIR / "face_directions.json"
+
+
+def detect_face_direction(image_path: str) -> str:
+    """
+    Detect which direction a fighter is facing in their photo.
+
+    Uses OpenCV's Haar cascade face detector to find the face, then compares
+    edge density on left vs right halves to determine facing direction.
+    When a face turns right, the left half shows more features (eye, cheekbone).
+
+    Args:
+        image_path: Path to the body photo image
+
+    Returns:
+        'left', 'right', or 'center' indicating which direction fighter faces
+    """
+    try:
+        img = cv2.imread(image_path)
+        if img is None:
+            logger.warning(f"Could not read image: {image_path}")
+            return 'center'
+
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+        # Detect face using Haar cascade
+        face_cascade = cv2.CascadeClassifier(
+            cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+        )
+        faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+
+        if len(faces) == 0:
+            logger.debug(f"No face detected in {image_path}")
+            return 'center'  # Can't detect, assume center/neutral
+
+        # Get the largest face (most likely the main subject)
+        x, y, w, h = max(faces, key=lambda f: f[2] * f[3])
+        face_roi = gray[y:y+h, x:x+w]
+
+        # Split face into left and right halves
+        mid = w // 2
+        left_half = face_roi[:, :mid]
+        right_half = face_roi[:, mid:]
+
+        # Compare edge density on each half
+        # The side with MORE visible features (edges) is the side facing the camera
+        left_edges = cv2.Canny(left_half, 50, 150)
+        right_edges = cv2.Canny(right_half, 50, 150)
+
+        left_score = np.sum(left_edges > 0)
+        right_score = np.sum(right_edges > 0)
+
+        # If roughly equal, they're facing center
+        ratio = left_score / max(right_score, 1)
+        if 0.85 < ratio < 1.15:
+            return 'center'
+        elif left_score > right_score:
+            # More detail on left half = facing right (camera sees their left side)
+            return 'right'
+        else:
+            # More detail on right half = facing left
+            return 'left'
+
+    except Exception as e:
+        logger.error(f"Face detection failed for {image_path}: {e}")
+        return 'center'
+
+
+def load_face_directions() -> Dict[str, str]:
+    """Load face directions from JSON file."""
+    if FACE_DIRECTIONS_FILE.exists():
+        try:
+            with open(FACE_DIRECTIONS_FILE, 'r') as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError) as e:
+            logger.warning(f"Failed to load face directions: {e}")
+    return {}
+
+
+def save_face_directions(directions: Dict[str, str]):
+    """Save face directions to JSON file."""
+    FACE_DIRECTIONS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with open(FACE_DIRECTIONS_FILE, 'w') as f:
+            json.dump(directions, f, indent=2)
+        logger.info(f"Saved face directions to {FACE_DIRECTIONS_FILE}")
+    except IOError as e:
+        logger.error(f"Failed to save face directions: {e}")
+
+
+def analyze_all_body_photos() -> Dict[str, str]:
+    """
+    Run face direction detection on all body photos and save results.
+
+    Returns:
+        Dict mapping fighter slugs to their facing direction
+    """
+    directions = load_face_directions()
+    body_dir = DEFAULT_BODY_OUTPUT_DIR
+
+    if not body_dir.exists():
+        logger.warning(f"Body photo directory not found: {body_dir}")
+        return directions
+
+    # Find all body photos
+    photo_files = list(body_dir.glob("*_body.png"))
+    logger.info(f"Analyzing {len(photo_files)} body photos for face direction")
+
+    for photo_path in photo_files:
+        # Extract slug from filename (e.g., "mario-bautista_body.png" -> "mario-bautista")
+        slug = photo_path.stem.replace('_body', '')
+
+        # Skip if already analyzed
+        if slug in directions:
+            logger.debug(f"Skipping {slug} (already analyzed)")
+            continue
+
+        direction = detect_face_direction(str(photo_path))
+        directions[slug] = direction
+        logger.info(f"{slug}: facing {direction}")
+
+    save_face_directions(directions)
+    return directions
 
 
 def slugify(name: str) -> str:
@@ -581,12 +706,20 @@ class BodyPhotoScraper:
 
         # Download the image
         if self._download_image(photo_url, filepath):
+            # Detect face direction and save it
+            direction = detect_face_direction(str(filepath))
+            directions = load_face_directions()
+            directions[slug] = direction
+            save_face_directions(directions)
+            logger.info(f"  Face direction: {direction}")
+
             return {
                 'name': name,
                 'slug': slug,
                 'status': 'downloaded',
                 'path': str(filepath),
                 'source_url': photo_url,
+                'face_direction': direction,
             }
         else:
             return {
@@ -784,12 +917,23 @@ def main():
     parser.add_argument('--output', type=str, help='Output directory for images')
     parser.add_argument('--body', action='store_true', help='Scrape body photos from UFC.com instead of headshots')
     parser.add_argument('--all', action='store_true', help='Scrape both headshots and body photos')
+    parser.add_argument('--detect-faces', action='store_true', help='Run face direction detection on all existing body photos')
     parser.add_argument('--verbose', '-v', action='store_true', help='Verbose output')
 
     args = parser.parse_args()
 
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
+
+    # Run face detection only mode
+    if args.detect_faces:
+        print("\n--- Running Face Direction Detection ---")
+        directions = analyze_all_body_photos()
+        print(f"\nDetected face directions for {len(directions)} fighters:")
+        for slug, direction in sorted(directions.items()):
+            print(f"  {slug}: {direction}")
+        print("=" * 60 + "\n")
+        return
 
     # Determine fighter list
     if args.fighters:

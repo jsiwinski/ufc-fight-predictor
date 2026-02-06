@@ -112,7 +112,7 @@
             <div class="fight-details-content {% if fight.f1_body_photo and fight.f2_body_photo %}has-both-photos{% elif fight.f1_body_photo %}has-left-photo{% elif fight.f2_body_photo %}has-right-photo{% else %}no-photos{% endif %}">
                 {# Fighter 1 Body Photo #}
                 {% if fight.f1_body_photo %}
-                <img src="{{ fight.f1_body_photo }}" alt="{{ fight.fighter1 }}" class="fighter-body-photo left" loading="lazy">
+                <img src="{{ fight.f1_body_photo }}" alt="{{ fight.fighter1 }}" class="fighter-body-photo left {% if fight.f1_flip %}flipped{% endif %}" loading="lazy">
                 {% endif %}
 
                 <div class="stat-bars">
@@ -129,7 +129,7 @@
 
                 {# Fighter 2 Body Photo #}
                 {% if fight.f2_body_photo %}
-                <img src="{{ fight.f2_body_photo }}" alt="{{ fight.fighter2 }}" class="fighter-body-photo right" loading="lazy">
+                <img src="{{ fight.f2_body_photo }}" alt="{{ fight.fighter2 }}" class="fighter-body-photo right {% if fight.f2_flip %}flipped{% endif %}" loading="lazy">
                 {% endif %}
             </div>
         </div>

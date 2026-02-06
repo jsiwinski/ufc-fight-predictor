@@ -149,6 +149,58 @@ def get_body_photo_url(fighter_name: str) -> Optional[str]:
     return None
 
 
+# Face directions cache (loaded once)
+_face_directions: Optional[Dict[str, str]] = None
+FACE_DIRECTIONS_FILE = Path(__file__).parent / 'static' / 'fighters' / 'body' / 'face_directions.json'
+
+
+def get_face_directions() -> Dict[str, str]:
+    """Load face directions from JSON file (cached)."""
+    global _face_directions
+    if _face_directions is None:
+        if FACE_DIRECTIONS_FILE.exists():
+            try:
+                with open(FACE_DIRECTIONS_FILE, 'r') as f:
+                    _face_directions = json.load(f)
+            except (json.JSONDecodeError, IOError) as e:
+                logger.warning(f"Failed to load face directions: {e}")
+                _face_directions = {}
+        else:
+            _face_directions = {}
+    return _face_directions
+
+
+def should_flip(fighter_name: str, position: str) -> bool:
+    """
+    Determine if a fighter's body photo should be horizontally flipped.
+
+    Goal: Both fighters should face toward the center (like a staredown).
+    - Left fighter (Fighter 1) should face RIGHT
+    - Right fighter (Fighter 2) should face LEFT
+
+    Args:
+        fighter_name: Fighter's full name
+        position: 'left' (Fighter 1) or 'right' (Fighter 2)
+
+    Returns:
+        True if the image should be flipped with scaleX(-1)
+    """
+    slug = slugify_fighter(fighter_name)
+    directions = get_face_directions()
+    direction = directions.get(slug, 'center')
+
+    if position == 'left':
+        # Left fighter should face RIGHT (toward center)
+        # Flip if they're facing left (away from center)
+        return direction == 'left'
+    else:
+        # Right fighter should face LEFT (toward center)
+        # Flip if they're facing right (away from center)
+        return direction == 'right'
+
+    # If 'center', don't flip — straight-on works for both positions
+
+
 def get_cached_predictions(event_slug: str) -> Optional[Dict]:
     """Load cached predictions if they exist and are fresh."""
     cache_file = PREDICTIONS_DIR / f'{event_slug}.json'
@@ -196,14 +248,17 @@ def get_feature_label(feature_name: str) -> str:
 
 def format_stat_bars(factors: List, top_n: int = 5) -> List[Dict]:
     """
-    Format differential factors for diverging stat bars.
+    Format differential factors for diverging stat bars using rank-based normalization.
+
+    Rank-based approach ensures all bars are visible regardless of outliers.
+    The largest absolute differential gets the widest bar, next gets second widest, etc.
 
     Args:
         factors: List of (feature_name, value) tuples or dicts
         top_n: Number of top factors to include
 
     Returns:
-        List of stat bar dicts with normalized widths
+        List of stat bar dicts with rank-based widths
     """
     parsed = []
 
@@ -227,14 +282,18 @@ def format_stat_bars(factors: List, top_n: int = 5) -> List[Dict]:
     if not parsed:
         return []
 
-    # Find max absolute value for normalization
-    max_abs = max(abs(f['value']) for f in parsed)
+    # Rank-based normalization: sort by absolute value descending
+    # Widths: rank 1 = 45%, rank 2 = 36%, rank 3 = 27%, rank 4 = 18%, rank 5 = 10%
+    width_steps = [45, 36, 27, 18, 10]
+    sorted_by_abs = sorted(parsed, key=lambda f: abs(f['value']), reverse=True)
 
-    # Calculate normalized widths (0-100%)
+    # Assign widths based on rank
+    for i, stat in enumerate(sorted_by_abs):
+        stat['bar_width'] = width_steps[min(i, len(width_steps) - 1)]
+
+    # Set direction and display value for all stats
     for stat in parsed:
         val = stat['value']
-        # Normalize to 0-50% (half the container width)
-        stat['bar_width'] = int((abs(val) / max_abs) * 50) if max_abs > 0 else 0
         stat['direction'] = 'left' if val > 0 else 'right'  # left = Fighter 1 advantage
         # Format value display
         if abs(val) >= 10:
@@ -323,6 +382,9 @@ def format_prediction(pred: Dict, position: int = 0, total_fights: int = 13) -> 
         # Body photo fields
         'f1_body_photo': get_body_photo_url(f1_name),
         'f2_body_photo': get_body_photo_url(f2_name),
+        # Body photo flip (smart face direction)
+        'f1_flip': should_flip(f1_name, 'left'),
+        'f2_flip': should_flip(f2_name, 'right'),
         # Backtest fields
         'actual_winner': pred.get('actual_winner'),
         'correct': pred.get('correct'),
