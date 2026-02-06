@@ -9,7 +9,5 @@ This module handles:
 """
 
 from .scraper import UFCDataScraper
-from .processor import DataProcessor
-from .updater import DataUpdater
 
-__all__ = ['UFCDataScraper', 'DataProcessor', 'DataUpdater']
+__all__ = ['UFCDataScraper']
