@@ -43,18 +43,25 @@
         <div class="fight-row">
             {# Fighter 1 (Left Side) #}
             <div class="fighter-side left">
-                <div class="prob-display">
-                    <span class="probability red">{{ fight.f1_pct }}%</span>
-                    <div class="prob-bar-container">
-                        <div class="prob-bar" style="width: {{ (fight.f1_prob * 100)|int }}%;"></div>
-                    </div>
-                </div>
+                {# Headshot #}
+                {% if fight.f1_headshot %}
+                <img src="{{ fight.f1_headshot }}" alt="{{ fight.fighter1 }}" class="fighter-headshot" loading="lazy">
+                {% else %}
+                <div class="fighter-headshot-fallback">{{ fight.f1_initials }}</div>
+                {% endif %}
+
                 <div class="fighter-info">
                     <div class="fighter-name">{{ fight.fighter1 }}</div>
                     <div class="fighter-meta">{{ fight.weight_class }}</div>
                     {% if not fight.f1_exact_match %}
                     <div class="match-warning">Matched to: {{ fight.fighter1_matched }}</div>
                     {% endif %}
+                </div>
+                <div class="prob-display">
+                    <span class="probability red">{{ fight.f1_pct }}%</span>
+                    <div class="prob-bar-container">
+                        <div class="prob-bar" style="width: {{ (fight.f1_prob * 100)|int }}%;"></div>
+                    </div>
                 </div>
             </div>
 
@@ -63,6 +70,12 @@
 
             {# Fighter 2 (Right Side) #}
             <div class="fighter-side right">
+                <div class="prob-display">
+                    <div class="prob-bar-container">
+                        <div class="prob-bar" style="width: {{ (fight.f2_prob * 100)|int }}%;"></div>
+                    </div>
+                    <span class="probability blue">{{ fight.f2_pct }}%</span>
+                </div>
                 <div class="fighter-info">
                     <div class="fighter-name">{{ fight.fighter2 }}</div>
                     <div class="fighter-meta">{{ fight.weight_class }}</div>
@@ -70,12 +83,13 @@
                     <div class="match-warning">Matched to: {{ fight.fighter2_matched }}</div>
                     {% endif %}
                 </div>
-                <div class="prob-display">
-                    <div class="prob-bar-container">
-                        <div class="prob-bar" style="width: {{ (fight.f2_prob * 100)|int }}%;"></div>
-                    </div>
-                    <span class="probability blue">{{ fight.f2_pct }}%</span>
-                </div>
+
+                {# Headshot #}
+                {% if fight.f2_headshot %}
+                <img src="{{ fight.f2_headshot }}" alt="{{ fight.fighter2 }}" class="fighter-headshot" loading="lazy">
+                {% else %}
+                <div class="fighter-headshot-fallback">{{ fight.f2_initials }}</div>
+                {% endif %}
             </div>
         </div>
 

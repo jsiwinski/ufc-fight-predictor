@@ -223,6 +223,44 @@ main {
     flex-shrink: 0;
 }
 
+/* Fighter Headshots */
+.fighter-headshot {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    filter: grayscale(30%);
+    transition: filter 0.3s ease;
+    flex-shrink: 0;
+}
+
+.fight-card:hover .fighter-headshot {
+    filter: grayscale(0%);
+}
+
+.fighter-headshot-fallback {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--code-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+/* Main event gets larger headshots */
+.fight-card.main-event .fighter-headshot,
+.fight-card.main-event .fighter-headshot-fallback {
+    width: 56px;
+    height: 56px;
+}
+
 .fighter-name {
     font-family: 'Fraunces', serif;
     font-size: 1rem;
@@ -503,6 +541,17 @@ footer p {
         justify-content: center !important;
         flex-direction: column;
         text-align: center !important;
+    }
+
+    /* Headshots stay same size on mobile, reorder for vertical layout */
+    .fighter-side.left .fighter-headshot,
+    .fighter-side.left .fighter-headshot-fallback {
+        order: -1;
+    }
+
+    .fighter-side.right .fighter-headshot,
+    .fighter-side.right .fighter-headshot-fallback {
+        order: -1;
     }
 
     .fighter-side.left .prob-display,

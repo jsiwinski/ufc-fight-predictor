@@ -12,12 +12,14 @@ Routes:
 
 import json
 import logging
+import os
+import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from flask import Flask, jsonify, render_template, redirect
+from flask import Flask, jsonify, render_template, redirect, url_for
 
 # Add project root to path for imports
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -58,6 +60,42 @@ def get_pipeline() -> PredictionPipeline:
 def slugify(text: str) -> str:
     """Convert event name to URL-safe slug."""
     return text.lower().replace(' ', '-').replace(':', '').replace('.', '')
+
+
+def slugify_fighter(name: str) -> str:
+    """Convert fighter name to URL-safe slug for headshot filenames."""
+    slug = name.lower().strip()
+    slug = re.sub(r'[^\w\s-]', '', slug)
+    slug = re.sub(r'[-\s]+', '-', slug)
+    return slug.strip('-')
+
+
+def get_initials(name: str) -> str:
+    """Get fighter initials for fallback display."""
+    parts = name.strip().split()
+    if len(parts) >= 2:
+        return (parts[0][0] + parts[-1][0]).upper()
+    elif len(parts) == 1 and len(parts[0]) >= 2:
+        return parts[0][:2].upper()
+    return "??"
+
+
+def get_headshot_url(fighter_name: str) -> Optional[str]:
+    """
+    Get headshot URL for a fighter if image exists.
+
+    Args:
+        fighter_name: Fighter's full name
+
+    Returns:
+        URL for the headshot image or None if not found
+    """
+    slug = slugify_fighter(fighter_name)
+    filepath = Path(__file__).parent / 'static' / 'fighters' / f'{slug}.png'
+
+    if filepath.exists():
+        return f'/static/fighters/{slug}.png'
+    return None
 
 
 def get_cached_predictions(event_slug: str) -> Optional[Dict]:
@@ -131,9 +169,13 @@ def format_prediction(pred: Dict, position: int = 0) -> Dict:
     else:
         position_label = None
 
+    # Get headshot info for both fighters
+    f1_name = pred['fighter1']
+    f2_name = pred['fighter2']
+
     return {
-        'fighter1': pred['fighter1'],
-        'fighter2': pred['fighter2'],
+        'fighter1': f1_name,
+        'fighter2': f2_name,
         'f1_prob': f1_prob,
         'f2_prob': f2_prob,
         'f1_pct': f"{f1_prob * 100:.1f}",
@@ -145,8 +187,13 @@ def format_prediction(pred: Dict, position: int = 0) -> Dict:
         'position_label': position_label,
         'f1_exact_match': pred.get('f1_exact_match', True),
         'f2_exact_match': pred.get('f2_exact_match', True),
-        'fighter1_matched': pred.get('fighter1_matched', pred['fighter1']),
-        'fighter2_matched': pred.get('fighter2_matched', pred['fighter2']),
+        'fighter1_matched': pred.get('fighter1_matched', f1_name),
+        'fighter2_matched': pred.get('fighter2_matched', f2_name),
+        # Headshot fields
+        'f1_headshot': get_headshot_url(f1_name),
+        'f2_headshot': get_headshot_url(f2_name),
+        'f1_initials': get_initials(f1_name),
+        'f2_initials': get_initials(f2_name),
         # Backtest fields
         'actual_winner': pred.get('actual_winner'),
         'correct': pred.get('correct'),
