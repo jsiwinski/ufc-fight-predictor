@@ -131,6 +131,24 @@ def get_headshot_url(fighter_name: str) -> Optional[str]:
     return None
 
 
+def get_body_photo_url(fighter_name: str) -> Optional[str]:
+    """
+    Get body photo URL for a fighter if image exists.
+
+    Args:
+        fighter_name: Fighter's full name
+
+    Returns:
+        URL for the body photo image or None if not found
+    """
+    slug = slugify_fighter(fighter_name)
+    filepath = Path(__file__).parent / 'static' / 'fighters' / 'body' / f'{slug}_body.png'
+
+    if filepath.exists():
+        return f'/static/fighters/body/{slug}_body.png'
+    return None
+
+
 def get_cached_predictions(event_slug: str) -> Optional[Dict]:
     """Load cached predictions if they exist and are fresh."""
     cache_file = PREDICTIONS_DIR / f'{event_slug}.json'
@@ -302,6 +320,9 @@ def format_prediction(pred: Dict, position: int = 0, total_fights: int = 13) -> 
         'f2_headshot': get_headshot_url(f2_name),
         'f1_initials': get_initials(f1_name),
         'f2_initials': get_initials(f2_name),
+        # Body photo fields
+        'f1_body_photo': get_body_photo_url(f1_name),
+        'f2_body_photo': get_body_photo_url(f2_name),
         # Backtest fields
         'actual_winner': pred.get('actual_winner'),
         'correct': pred.get('correct'),

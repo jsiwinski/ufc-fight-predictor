@@ -105,19 +105,31 @@
             <span class="confidence-badge {% if fight.confidence == 'HIGH' %}high{% elif fight.confidence == 'MEDIUM' %}medium{% endif %}">{{ fight.confidence }}</span>
         </div>
 
-        {# Stat Bars (visible on hover) #}
+        {# Stat Bars (visible on hover) with Body Photos #}
         {% if fight.stat_bars %}
         <div class="fight-details">
-            <div class="stat-bars">
-                <div class="stat-bars-header">Key Matchup Factors</div>
-                {% for stat in fight.stat_bars %}
-                <div class="stat-bar-row">
-                    <div class="stat-label">{{ stat.label }}</div>
-                    <div class="stat-bar-container">
-                        <div class="stat-bar-fill {{ stat.direction }}" style="width: {{ stat.bar_width }}%;"></div>
+            <div class="fight-details-content {% if fight.f1_body_photo and fight.f2_body_photo %}has-both-photos{% elif fight.f1_body_photo %}has-left-photo{% elif fight.f2_body_photo %}has-right-photo{% else %}no-photos{% endif %}">
+                {# Fighter 1 Body Photo #}
+                {% if fight.f1_body_photo %}
+                <img src="{{ fight.f1_body_photo }}" alt="{{ fight.fighter1 }}" class="fighter-body-photo left" loading="lazy">
+                {% endif %}
+
+                <div class="stat-bars">
+                    <div class="stat-bars-header">Key Matchup Factors</div>
+                    {% for stat in fight.stat_bars %}
+                    <div class="stat-bar-row">
+                        <div class="stat-label">{{ stat.label }}</div>
+                        <div class="stat-bar-container">
+                            <div class="stat-bar-fill {{ stat.direction }}" style="width: {{ stat.bar_width }}%;"></div>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+
+                {# Fighter 2 Body Photo #}
+                {% if fight.f2_body_photo %}
+                <img src="{{ fight.f2_body_photo }}" alt="{{ fight.fighter2 }}" class="fighter-body-photo right" loading="lazy">
+                {% endif %}
             </div>
         </div>
         {% endif %}

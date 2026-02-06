@@ -525,6 +525,65 @@ main {
     color: var(--blue);
 }
 
+/* Fighter Body Photos - Expanded State */
+.fight-details-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+/* Grid layouts based on photo availability */
+.fight-details-content.has-both-photos {
+    display: grid;
+    grid-template-columns: 140px 1fr 140px;
+    gap: 24px;
+    align-items: start;
+}
+
+.fight-details-content.has-left-photo {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.fight-details-content.has-right-photo {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 24px;
+    align-items: start;
+}
+
+.fight-details-content.no-photos {
+    display: block;
+}
+
+.fighter-body-photo {
+    width: 140px;
+    height: 180px;
+    object-fit: cover;
+    object-position: top center;
+    filter: grayscale(40%);
+    opacity: 0;
+    transition: opacity 0.4s ease-out 0.1s, filter 0.3s ease;
+    flex-shrink: 0;
+}
+
+/* Fade in body photos when fight card is hovered */
+.fight-card:hover .fighter-body-photo,
+.fight-card.expanded .fighter-body-photo {
+    opacity: 1;
+    filter: grayscale(15%);
+}
+
+/* Ensure stat bars center column has minimum height to match photos */
+.fight-details-content.has-both-photos .stat-bars,
+.fight-details-content.has-left-photo .stat-bars,
+.fight-details-content.has-right-photo .stat-bars {
+    min-height: 160px;
+}
+
 /* Card Section Separator */
 .card-section-divider {
     margin: 48px 0 32px;
@@ -819,5 +878,20 @@ footer p {
     .card-section-divider::before,
     .card-section-divider::after {
         width: calc(50% - 60px);
+    }
+
+    /* Hide body photos on mobile - they crowd the layout */
+    .fighter-body-photo {
+        display: none;
+    }
+
+    /* Reset grid to single column when body photos are hidden */
+    .fight-details-content,
+    .fight-details-content.has-both-photos,
+    .fight-details-content.has-left-photo,
+    .fight-details-content.has-right-photo,
+    .fight-details-content.no-photos {
+        display: block;
+        grid-template-columns: 1fr;
     }
 }

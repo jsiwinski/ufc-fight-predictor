@@ -1,13 +1,25 @@
 #!/usr/bin/env python3
 """
-ESPN Fighter Headshot Scraper.
+Fighter Photo Scraper.
 
-Scrapes fighter headshots from ESPN for use in the UFC predictions web app.
-Uses ESPN's search API to find fighter IDs, then downloads headshots from ESPN CDN.
+Scrapes fighter headshots from ESPN and upper-body photos from UFC.com
+for use in the UFC predictions web app.
+
+ESPN Headshots:
+    Uses ESPN's search API to find fighter IDs, then downloads headshots from ESPN CDN.
+
+UFC Body Photos:
+    Scrapes the full-body athlete photos from ufc.com/athlete pages.
 
 Usage:
     # Scrape headshots for next upcoming event
     python src/scraper/headshots.py
+
+    # Scrape body photos for next upcoming event
+    python src/scraper/headshots.py --body
+
+    # Scrape both headshots and body photos
+    python src/scraper/headshots.py --all
 
     # Scrape for specific fighters
     python src/scraper/headshots.py --fighters "Vinicius Oliveira" "Mario Bautista"
@@ -29,6 +41,7 @@ from urllib.parse import quote
 
 import pandas as pd
 import requests
+from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
@@ -47,6 +60,9 @@ logger = logging.getLogger(__name__)
 ESPN_SEARCH_API = "https://site.web.api.espn.com/apis/common/v3/search"
 ESPN_HEADSHOT_URL = "https://a.espncdn.com/i/headshots/mma/players/full/{espn_id}.png"
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "src" / "web" / "static" / "fighters"
+DEFAULT_BODY_OUTPUT_DIR = PROJECT_ROOT / "src" / "web" / "static" / "fighters" / "body"
+UFC_ATHLETE_URL = "https://www.ufc.com/athlete/{slug}"
+UFC_ESPANOL_ATHLETE_URL = "https://www.ufcespanol.com/athlete/{slug}"
 RATE_LIMIT = 1.5  # seconds between requests
 
 
@@ -351,6 +367,284 @@ class HeadshotScraper:
         self.close()
 
 
+class BodyPhotoScraper:
+    """
+    UFC.com upper-body photo scraper with caching.
+
+    Scrapes the full-body athlete photos from ufc.com/athlete pages.
+    Falls back to ufcespanol.com if the main site returns 404.
+    """
+
+    def __init__(self, output_dir: str = None, rate_limit: float = 2.0):
+        """
+        Initialize the body photo scraper.
+
+        Args:
+            output_dir: Directory to save body photo images
+            rate_limit: Seconds to wait between requests (default 2s)
+        """
+        self.output_dir = Path(output_dir) if output_dir else DEFAULT_BODY_OUTPUT_DIR
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.rate_limit = rate_limit
+        self.session = self._create_session()
+
+        logger.info(f"BodyPhotoScraper initialized, output: {self.output_dir}")
+
+    def _create_session(self) -> requests.Session:
+        """Create requests session with retry logic."""
+        session = requests.Session()
+
+        retry_strategy = Retry(
+            total=3,
+            backoff_factor=1,
+            status_forcelist=[429, 500, 502, 503, 504],
+            allowed_methods=["HEAD", "GET"]
+        )
+
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        session.mount("http://", adapter)
+        session.mount("https://", adapter)
+
+        session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+        })
+
+        return session
+
+    def _fetch_athlete_page(self, slug: str) -> Optional[str]:
+        """
+        Fetch athlete page HTML, trying main UFC site first, then Spanish site.
+
+        Args:
+            slug: Fighter name slug (e.g., "vinicius-oliveira")
+
+        Returns:
+            HTML content or None if not found
+        """
+        urls = [
+            UFC_ATHLETE_URL.format(slug=slug),
+            UFC_ESPANOL_ATHLETE_URL.format(slug=slug),
+        ]
+
+        for url in urls:
+            try:
+                time.sleep(self.rate_limit)
+                response = self.session.get(url, timeout=15, allow_redirects=True)
+
+                if response.status_code == 200:
+                    logger.debug(f"Found athlete page: {url}")
+                    return response.text
+                elif response.status_code == 404:
+                    logger.debug(f"Not found: {url}")
+                    continue
+                else:
+                    logger.warning(f"Unexpected status {response.status_code} for {url}")
+                    continue
+
+            except requests.RequestException as e:
+                logger.warning(f"Request failed for {url}: {e}")
+                continue
+
+        return None
+
+    def _extract_body_photo_url(self, html: str) -> Optional[str]:
+        """
+        Extract the full-body photo URL from athlete page HTML.
+
+        Looks for images with 'athlete_bio_full_body' in the URL, which is
+        the UFC CDN style for upper-body fighter photos.
+
+        Args:
+            html: Raw HTML content of athlete page
+
+        Returns:
+            Image URL or None if not found
+        """
+        soup = BeautifulSoup(html, 'html.parser')
+
+        # Strategy 1: Look for img with athlete_bio_full_body in src
+        for img in soup.find_all('img'):
+            src = img.get('src', '')
+            if 'athlete_bio_full_body' in src:
+                # Skip shadow/placeholder images
+                if 'SHADOW' in src.upper():
+                    logger.debug(f"Skipping placeholder image: {src}")
+                    continue
+                logger.debug(f"Found full body image: {src}")
+                return src
+
+        # Strategy 2: Look in og:image meta tag
+        og_image = soup.find('meta', property='og:image')
+        if og_image:
+            content = og_image.get('content', '')
+            if content and 'ufc' in content.lower():
+                logger.debug(f"Found og:image: {content}")
+                return content
+
+        # Strategy 3: Look for any large fighter image
+        for img in soup.find_all('img'):
+            src = img.get('src', '')
+            alt = img.get('alt', '').lower()
+            # Look for images that seem to be fighter photos
+            if src and ('fighter' in src.lower() or 'athlete' in src.lower()):
+                logger.debug(f"Found alternative image: {src}")
+                return src
+
+        return None
+
+    def _download_image(self, image_url: str, filepath: Path) -> bool:
+        """
+        Download image from URL to filepath.
+
+        Args:
+            image_url: URL of the image
+            filepath: Local path to save the image
+
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            time.sleep(self.rate_limit)
+            response = self.session.get(image_url, timeout=20)
+
+            if response.status_code != 200:
+                logger.warning(f"Failed to download image: HTTP {response.status_code}")
+                return False
+
+            # Verify we got an actual image
+            content_type = response.headers.get('Content-Type', '')
+            if 'image' not in content_type.lower():
+                logger.warning(f"Non-image response: {content_type}")
+                return False
+
+            # Check minimum file size
+            if len(response.content) < 5000:
+                logger.warning(f"Image too small ({len(response.content)} bytes), likely placeholder")
+                return False
+
+            # Save the image
+            with open(filepath, 'wb') as f:
+                f.write(response.content)
+
+            logger.info(f"Downloaded body photo: {filepath.name}")
+            return True
+
+        except requests.RequestException as e:
+            logger.error(f"Failed to download {image_url}: {e}")
+            return False
+
+    def scrape_fighter(self, name: str) -> Dict:
+        """
+        Scrape body photo for a single fighter.
+
+        Args:
+            name: Fighter's full name
+
+        Returns:
+            Dict with status, path, and metadata
+        """
+        slug = slugify(name)
+        filepath = self.output_dir / f"{slug}_body.png"
+
+        # Check cache first
+        if filepath.exists():
+            return {
+                'name': name,
+                'slug': slug,
+                'status': 'cached',
+                'path': str(filepath),
+            }
+
+        # Fetch athlete page
+        html = self._fetch_athlete_page(slug)
+
+        if not html:
+            return {
+                'name': name,
+                'slug': slug,
+                'status': 'not_found',
+                'path': None,
+            }
+
+        # Extract photo URL
+        photo_url = self._extract_body_photo_url(html)
+
+        if not photo_url:
+            return {
+                'name': name,
+                'slug': slug,
+                'status': 'no_photo',
+                'path': None,
+            }
+
+        # Download the image
+        if self._download_image(photo_url, filepath):
+            return {
+                'name': name,
+                'slug': slug,
+                'status': 'downloaded',
+                'path': str(filepath),
+                'source_url': photo_url,
+            }
+        else:
+            return {
+                'name': name,
+                'slug': slug,
+                'status': 'download_failed',
+                'path': None,
+                'source_url': photo_url,
+            }
+
+    def scrape_fighters(self, names: List[str]) -> Dict[str, Dict]:
+        """
+        Scrape body photos for multiple fighters.
+
+        Args:
+            names: List of fighter names
+
+        Returns:
+            Dict mapping fighter names to their status/path info
+        """
+        results = {}
+
+        for i, name in enumerate(names, 1):
+            logger.info(f"[{i}/{len(names)}] Processing body photo: {name}")
+            results[name] = self.scrape_fighter(name)
+
+        return results
+
+    def close(self):
+        """Close the requests session."""
+        if self.session:
+            self.session.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+
+def scrape_event_body_photos(
+    fighter_names: List[str],
+    output_dir: str = None
+) -> Dict[str, Dict]:
+    """
+    Download body photos for all fighters on a card.
+
+    Args:
+        fighter_names: List of fighter names
+        output_dir: Directory to save images (default: src/web/static/fighters/body/)
+
+    Returns:
+        Dict mapping fighter names to status/path info
+    """
+    with BodyPhotoScraper(output_dir=output_dir) as scraper:
+        return scraper.scrape_fighters(fighter_names)
+
+
 def scrape_event_headshots(
     fighter_names: List[str],
     output_dir: str = None
@@ -444,15 +738,15 @@ def get_upcoming_event_fighters() -> List[str]:
         return []
 
 
-def print_results(results: Dict[str, Dict]):
+def print_results(results: Dict[str, Dict], photo_type: str = "headshot"):
     """Print formatted results summary."""
     print("\n" + "=" * 60)
-    print("HEADSHOT SCRAPING RESULTS")
+    print(f"{photo_type.upper()} SCRAPING RESULTS")
     print("=" * 60)
 
     cached = [r for r in results.values() if r['status'] == 'cached']
     downloaded = [r for r in results.values() if r['status'] == 'downloaded']
-    not_found = [r for r in results.values() if r['status'] == 'not_found']
+    not_found = [r for r in results.values() if r['status'] in ('not_found', 'no_photo')]
     failed = [r for r in results.values() if r['status'] == 'download_failed']
 
     print(f"\nTotal fighters: {len(results)}")
@@ -467,9 +761,13 @@ def print_results(results: Dict[str, Dict]):
             print(f"  + {r['name']}")
 
     if not_found:
-        print("\nNot found on ESPN:")
+        source = "ESPN" if photo_type == "headshot" else "UFC"
+        print(f"\nNot found on {source}:")
         for r in not_found:
-            print(f"  - {r['name']} (will show: {r['initials']})")
+            if 'initials' in r:
+                print(f"  - {r['name']} (will show: {r['initials']})")
+            else:
+                print(f"  - {r['name']}")
 
     if failed:
         print("\nDownload failed:")
@@ -480,10 +778,12 @@ def print_results(results: Dict[str, Dict]):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Scrape UFC fighter headshots from ESPN')
+    parser = argparse.ArgumentParser(description='Scrape UFC fighter photos from ESPN and UFC.com')
     parser.add_argument('--fighters', nargs='+', help='Fighter names to scrape')
     parser.add_argument('--from-predictions', type=str, help='Path to predictions JSON file')
     parser.add_argument('--output', type=str, help='Output directory for images')
+    parser.add_argument('--body', action='store_true', help='Scrape body photos from UFC.com instead of headshots')
+    parser.add_argument('--all', action='store_true', help='Scrape both headshots and body photos')
     parser.add_argument('--verbose', '-v', action='store_true', help='Verbose output')
 
     args = parser.parse_args()
@@ -507,9 +807,21 @@ def main():
         print("No fighters to scrape")
         return
 
-    # Run scraper
-    results = scrape_event_headshots(fighters, output_dir=args.output)
-    print_results(results)
+    # Determine what to scrape
+    scrape_headshots = not args.body or args.all
+    scrape_body = args.body or args.all
+
+    # Run headshot scraper
+    if scrape_headshots:
+        print("\n--- Scraping ESPN Headshots ---")
+        headshot_results = scrape_event_headshots(fighters, output_dir=args.output)
+        print_results(headshot_results, photo_type="headshot")
+
+    # Run body photo scraper
+    if scrape_body:
+        print("\n--- Scraping UFC Body Photos ---")
+        body_results = scrape_event_body_photos(fighters, output_dir=args.output)
+        print_results(body_results, photo_type="body photo")
 
 
 if __name__ == '__main__':
