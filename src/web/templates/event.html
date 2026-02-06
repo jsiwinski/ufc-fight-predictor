@@ -117,7 +117,6 @@
                     <div class="stat-bar-container">
                         <div class="stat-bar-fill {{ stat.direction }}" style="width: {{ stat.bar_width }}%;"></div>
                     </div>
-                    <div class="stat-value {% if stat.direction == 'left' %}positive{% else %}negative{% endif %}">{{ stat.display_value }}</div>
                 </div>
                 {% endfor %}
             </div>

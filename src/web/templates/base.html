@@ -30,6 +30,33 @@
         <p>Model v1.1 &middot; 58.9% accuracy</p>
     </footer>
 
+    <script>
+    // Scroll-based fade-in for fight rows
+    document.addEventListener('DOMContentLoaded', function() {
+        const rows = document.querySelectorAll('.fight-row');
+        if (!rows.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Stagger initial visible rows, observe the rest
+        rows.forEach((row, i) => {
+            const rect = row.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+                // Already in viewport on load - stagger animation
+                setTimeout(() => row.classList.add('visible'), i * 50);
+            } else {
+                observer.observe(row);
+            }
+        });
+    });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
