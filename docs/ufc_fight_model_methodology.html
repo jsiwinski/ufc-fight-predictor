@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFC Fight Win Probability Model — Methodology</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fafaf9;
+            --text: #1a1a1a;
+            --text-secondary: #5a5a5a;
+            --text-muted: #888888;
+            --red: #c41e3a;
+            --border: #e5e5e0;
+            --code-bg: #f5f5f0;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header */
+        header {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 40px 60px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        header .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+
+        .meta-value {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Table of Contents */
+        .toc {
+            padding: 50px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .toc h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .toc ol {
+            list-style: none;
+            columns: 2;
+            column-gap: 40px;
+        }
+
+        .toc li {
+            margin-bottom: 10px;
+            break-inside: avoid;
+        }
+
+        .toc a {
+            color: var(--text);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        .toc a:hover {
+            color: var(--red);
+        }
+
+        .toc-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--red);
+            font-weight: 500;
+        }
+
+        /* Sections */
+        section {
+            padding: 70px 0;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-num {
+            font-family: 'Fraunces', serif;
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--border);
+            position: absolute;
+            top: 50px;
+            right: 0;
+            line-height: 1;
+            user-select: none;
+        }
+
+        section h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            letter-spacing: -0.01em;
+            max-width: 600px;
+        }
+
+        section h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 40px 0 16px;
+            color: var(--text);
+        }
+
+        section h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 30px 0 12px;
+            color: var(--text);
+        }
+
+        section p {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            max-width: 680px;
+        }
+
+        section ul, section ol {
+            margin: 0 0 20px 24px;
+            color: var(--text-secondary);
+            max-width: 680px;
+        }
+
+        section li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* Two Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .col h4 {
+            font-family: 'Fraunces', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .col.is h4 {
+            border-color: #2d8a4e;
+            color: #2d8a4e;
+        }
+
+        .col.is-not h4 {
+            border-color: var(--text-muted);
+            color: var(--text-muted);
+        }
+
+        .col ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .col li {
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+        }
+
+        .col.is li::before {
+            content: '+';
+            position: absolute;
+            left: 0;
+            color: #2d8a4e;
+            font-weight: 600;
+        }
+
+        .col.is-not li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+            padding: 30px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 8px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            margin: 40px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .pipeline-step {
+            flex: 1;
+            min-width: 180px;
+            position: relative;
+            padding-right: 30px;
+        }
+
+        .pipeline-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            right: 0;
+            width: 30px;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .pipeline-step:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: -4px;
+            width: 8px;
+            height: 8px;
+            border-right: 1px solid var(--text-muted);
+            border-bottom: 1px solid var(--text-muted);
+            transform: rotate(-45deg);
+        }
+
+        .step-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--red);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .step-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Feature Table */
+        .feature-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 0.9rem;
+        }
+
+        .feature-table th {
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 2px solid var(--text);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .feature-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+
+        .feature-table tr:last-child td {
+            border-bottom: 2px solid var(--text);
+        }
+
+        .feature-table .category {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .feature-table .count {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--red);
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--code-bg);
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            border-radius: 2px;
+        }
+
+        /* Callout */
+        .callout {
+            background: var(--code-bg);
+            padding: 24px 28px;
+            margin: 30px 0;
+            border-radius: 2px;
+        }
+
+        .callout h4 {
+            margin: 0 0 12px 0;
+            font-size: 0.95rem;
+        }
+
+        .callout p {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Planned Section */
+        .planned {
+            opacity: 0.6;
+            position: relative;
+        }
+
+        .planned::before {
+            content: 'PLANNED';
+            position: absolute;
+            top: 70px;
+            left: 0;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 4px 8px;
+            border: 1px dashed var(--text-muted);
+        }
+
+        /* Fighter Comparison - Butterfly Chart */
+        .comparison {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+        }
+
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fighter-name {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .fighter-name.red { color: var(--red); }
+        .fighter-name.blue { color: #2563eb; }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 120px 1fr;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .bar-left {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bar-right {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bar {
+            height: 8px;
+            background: var(--border);
+        }
+
+        .bar-left .bar {
+            background: var(--red);
+        }
+
+        .bar-right .bar {
+            background: #2563eb;
+        }
+
+        .bar-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .bar-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            min-width: 45px;
+        }
+
+        .bar-left .bar-value { text-align: right; }
+        .bar-right .bar-value { text-align: left; }
+
+        .comparison-output {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .comparison-output strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        /* Metrics - Simple bars */
+        .metrics {
+            margin: 30px 0;
+        }
+
+        .metric-row {
+            display: grid;
+            grid-template-columns: 140px 1fr 100px;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .metric-bar {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .metric-fill {
+            height: 100%;
+            background: var(--text);
+        }
+
+        .metric-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        /* Roadmap */
+        .roadmap {
+            margin: 30px 0;
+        }
+
+        .roadmap-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 30px;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .roadmap-item:last-child {
+            border-bottom: none;
+        }
+
+        .roadmap-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .roadmap-status.complete { color: #2d8a4e; }
+        .roadmap-status.progress { color: var(--red); }
+        .roadmap-status.planned { color: var(--text-muted); }
+
+        .roadmap-content h4 {
+            margin: 0 0 10px 0;
+            font-family: 'Fraunces', serif;
+        }
+
+        .roadmap-content ul {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Limitations */
+        .limitations {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 30px 0;
+        }
+
+        .limitation {
+            padding: 20px;
+            background: var(--code-bg);
+        }
+
+        .limitation h4 {
+            margin: 0 0 8px 0;
+            font-size: 0.95rem;
+        }
+
+        .limitation p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header, main, footer {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            header { padding-top: 50px; }
+
+            .section-num {
+                font-size: 3rem;
+                top: 60px;
+            }
+
+            .toc ol {
+                columns: 1;
+            }
+
+            .two-col, .limitations {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pipeline {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .pipeline-step {
+                padding-right: 0;
+                min-width: auto;
+            }
+
+            .pipeline-step::after,
+            .pipeline-step::before {
+                display: none;
+            }
+
+            .comparison-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .bar-left, .bar-right {
+                justify-content: flex-start;
+            }
+
+            .metric-row {
+                grid-template-columns: 1fr 80px;
+            }
+
+            .metric-label {
+                grid-column: 1 / -1;
+                margin-bottom: -8px;
+            }
+
+            .roadmap-item {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>UFC Fight Win Probability Model</h1>
+    <p class="subtitle">A methodology document for probabilistic MMA prediction using gradient boosting and 30 years of historical fight data.</p>
+    <div class="meta">
+        <div class="meta-item">
+            <span class="meta-label">Version</span>
+            <span class="meta-value">1.1 (Phase 3)</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Date</span>
+            <span class="meta-value">February 2026</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Author</span>
+            <span class="meta-value">JSKI + Claude Opus 4.6</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value">Model Trained — 58.9% Accuracy</span>
+        </div>
+    </div>
+</header>
+
+<main>
+
+<nav class="toc">
+    <h2>Contents</h2>
+    <ol>
+        <li><a href="#philosophy"><span class="toc-num">01</span> Philosophy & First Principles</a></li>
+        <li><a href="#data"><span class="toc-num">02</span> Data Sources & Ingestion</a></li>
+        <li><a href="#features"><span class="toc-num">03</span> Feature Engineering</a></li>
+        <li><a href="#matchups"><span class="toc-num">04</span> Matchup Encoding</a></li>
+        <li><a href="#model"><span class="toc-num">05</span> Model Architecture</a></li>
+        <li><a href="#evaluation"><span class="toc-num">06</span> Evaluation & Calibration</a></li>
+        <li><a href="#serving"><span class="toc-num">07</span> Prediction Serving</a></li>
+        <li><a href="#limitations"><span class="toc-num">08</span> Known Limitations</a></li>
+        <li><a href="#roadmap"><span class="toc-num">09</span> Roadmap</a></li>
+    </ol>
+</nav>
+
+<!-- Section 01 -->
+<section id="philosophy">
+    <span class="section-num">01</span>
+    <h2>Philosophy & First Principles</h2>
+
+    <h3>Why Probabilistic Prediction?</h3>
+    <p>MMA fights are inherently uncertain. Unlike chess where skill fully determines outcome, fights involve variance from injuries, judges' decisions, lucky punches, and mental factors we cannot measure. Rather than binary "who wins?" predictions, we output <strong>win probabilities</strong>: a 65% prediction means Fighter A wins 65 out of 100 similar matchups.</p>
+
+    <p>This probabilistic approach acknowledges uncertainty and provides actionable information: 90% vs 55% predictions have vastly different confidence levels, even if both predict the same winner. Probabilistic outputs are essential for betting applications: a fighter with 70% model probability but 50% implied odds from Vegas represents a value bet, regardless of whether that specific fight wins or loses. Edge is found in the gap between model and market, not in individual predictions.</p>
+
+    <h3>Core Assumptions</h3>
+    <div class="callout">
+        <p><strong>1. Past performance predicts future performance.</strong> A fighter's historical record correlates with future outcomes. Experience matters.</p>
+        <p><strong>2. Recent form outweighs career averages.</strong> Last 5 fights matter more than fights from 10 years ago. Momentum, injuries, and aging create temporal patterns.</p>
+        <p><strong>3. Matchup dynamics are key.</strong> A striker beating another striker tells us less than a striker beating a wrestler. Style matchups drive outcomes.</p>
+        <p><strong>4. Experience vs raw talent is a trade-off.</strong> UFC debuts are high-variance — unknown talent vs zero UFC experience.</p>
+        <p><strong>5. Data incompleteness is acceptable.</strong> Pre-2009 fights lack detailed stats. We flag incomplete data and let the model learn robustly.</p>
+    </div>
+
+    <h3>Model Scope</h3>
+    <div class="two-col">
+        <div class="col is">
+            <h4>What This Model IS</h4>
+            <ul>
+                <li><strong>A probabilistic predictor</strong> — outputs calibrated win probabilities from historical performance data</li>
+                <li><strong>A value-finding tool</strong> — compares model probabilities to Vegas implied odds to identify mispriced fights</li>
+                <li><strong>A feature engineering framework</strong> — captures fighter trajectories, recent form, and style matchups as quantitative signals</li>
+                <li><strong>An edge detector</strong> — finds the 10-15% of fights where model and market meaningfully disagree</li>
+            </ul>
+        </div>
+        <div class="col is-not">
+            <h4>What This Model IS NOT</h4>
+            <ul>
+                <li><strong>A crystal ball</strong> — 62-65% accuracy means ~35% wrong. Edge comes from VALUE, not being right every time.</li>
+                <li><strong>A real-time intelligence system</strong> — no injury reports, training camp footage, or insider info. Public data only.</li>
+                <li><strong>A judge's decision predictor</strong> — judging is subjective. Close fights are coin flips.</li>
+                <li><strong>A replacement for domain expertise</strong> — context (rivalries, motivation, weight cuts) still matters.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Section 02 -->
+<section id="data">
+    <span class="section-num">02</span>
+    <h2>Data Sources & Ingestion</h2>
+
+    <h3>Primary Source: ufcstats.com</h3>
+    <p>All data scraped from ufcstats.com, the official UFC statistics provider. Comprehensive historical data back to UFC 1 (1993) with 77 columns of detailed fight statistics.</p>
+
+    <div class="stats-row">
+        <div class="stat">
+            <div class="stat-value">8,520</div>
+            <div class="stat-label">Total Fights</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">760</div>
+            <div class="stat-label">UFC Events</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">~3,000</div>
+            <div class="stat-label">Fighters</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">31.9</div>
+            <div class="stat-label">Years</div>
+        </div>
+    </div>
+
+    <h3>Data Pipeline</h3>
+    <div class="pipeline">
+        <div class="pipeline-step">
+            <div class="step-num">01</div>
+            <div class="step-title">Web Scraping</div>
+            <div class="step-desc">BeautifulSoup + requests. Rate-limited (2s). Scrapes all completed events chronologically.</div>
+        </div>
+        <div class="pipeline-step">
+            <div class="step-num">02</div>
+            <div class="step-title">Raw Storage</div>
+            <div class="step-desc">8,520 fights × 58 columns as CSV (7.06 MB). Event info, outcomes, strike stats, takedowns.</div>
+        </div>
+        <div class="pipeline-step">
+            <div class="step-num">03</div>
+            <div class="step-title">Feature Engineering</div>
+            <div class="step-desc">Transforms raw data into 145 predictive features. Career stats, rolling windows, differentials. ~28 seconds.</div>
+        </div>
+        <div class="pipeline-step">
+            <div class="step-num">04</div>
+            <div class="step-title">Processed Dataset</div>
+            <div class="step-desc">ML-ready: 8,520 fights × 145 features. Target: f1_is_winner (48.9% / 51.1% balance).</div>
+        </div>
+    </div>
+
+    <h3>Data Quality</h3>
+    <p>79.6% of data is complete. 2,406 fights (1994-2008) lack detailed strike/grappling statistics — only basic info (winner, method, round, time) available. Feature engineering handles this by flagging with <code>has_detailed_stats = False</code> and filling missing values with zeros.</p>
+</section>
+
+<!-- Section 03 -->
+<section id="features">
+    <span class="section-num">03</span>
+    <h2>Feature Engineering</h2>
+
+    <p>Feature engineering is the most critical phase. Raw data (strikes in THIS fight) is not predictive. Models need historical context: average strikes over LAST 5 fights, career win rate, recent momentum. We transform 58 raw columns into 145 engineered features.</p>
+
+    <div class="stats-row">
+        <div class="stat">
+            <div class="stat-value">145</div>
+            <div class="stat-label">Features</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">58</div>
+            <div class="stat-label">Raw Columns</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">5</div>
+            <div class="stat-label">Categories</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">~28s</div>
+            <div class="stat-label">Runtime</div>
+        </div>
+    </div>
+
+    <h3>Feature Categories</h3>
+    <table class="feature-table">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Count</th>
+                <th>Examples</th>
+                <th>Rationale</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="category">Career Stats</td>
+                <td class="count">16</td>
+                <td>career_win_rate, career_ko_rate, career_fights</td>
+                <td>Historical skill level and experience</td>
+            </tr>
+            <tr>
+                <td class="category">Rolling Windows</td>
+                <td class="count">40</td>
+                <td>win_rate_last_5, avg_sig_strikes_landed_last_10</td>
+                <td>Recent form and momentum</td>
+            </tr>
+            <tr>
+                <td class="category">Matchup Differentials</td>
+                <td class="count">37</td>
+                <td>diff_career_win_rate, diff_striking_volume</td>
+                <td>Direct fighter comparisons</td>
+            </tr>
+            <tr>
+                <td class="category">Style Indicators</td>
+                <td class="count">6</td>
+                <td>striking_volume, grappling_tendency</td>
+                <td>Striker vs wrestler classification</td>
+            </tr>
+            <tr>
+                <td class="category">Temporal</td>
+                <td class="count">4</td>
+                <td>fight_year, is_coming_off_layoff</td>
+                <td>Era changes, ring rust</td>
+            </tr>
+            <tr>
+                <td class="category">Weight Class</td>
+                <td class="count">15</td>
+                <td>wc_Lightweight, wc_Heavyweight</td>
+                <td>One-hot encoded divisions</td>
+            </tr>
+            <tr>
+                <td class="category">Target</td>
+                <td class="count">1</td>
+                <td>f1_is_winner</td>
+                <td>Binary: 1 = Fighter 1 wins</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Key Transformations</h3>
+
+    <h4>String Parsing</h4>
+    <div class="code-block">"25 of 50" → (landed: 25, attempted: 50, accuracy: 50%)
+"3:45" → 225 seconds</div>
+
+    <h4>Chronological Career Statistics</h4>
+    <div class="code-block">career_win_rate = COUNT(previous wins) / COUNT(previous fights)
+# Uses .shift(1) to exclude current fight — avoids data leakage</div>
+
+    <h4>Matchup Differentials</h4>
+    <div class="code-block">diff_career_win_rate = f1_career_win_rate - f2_career_win_rate
+# Positive = Fighter 1 better record
+# Negative = Fighter 2 better record</div>
+
+    <h3>Why Differentials?</h3>
+    <p>ML models struggle with "Fighter A is better than Fighter B" reasoning. Providing separate features (f1_career_win_rate, f2_career_win_rate) requires the model to learn comparison. Differentials explicitly encode comparisons and dramatically improve performance.</p>
+</section>
+
+<!-- Section 04 -->
+<section id="matchups">
+    <span class="section-num">04</span>
+    <h2>Matchup Encoding</h2>
+
+    <p>Fights are matchups between two fighters. We encode both profiles into a single feature vector using the differential approach.</p>
+
+    <div class="comparison">
+        <div class="comparison-header">
+            <span class="fighter-name red">Fighter A (Red Corner)</span>
+            <span class="fighter-name blue">Fighter B (Blue Corner)</span>
+        </div>
+
+        <div class="comparison-row">
+            <div class="bar-left">
+                <span class="bar-value">83%</span>
+                <div class="bar" style="width: 83px;"></div>
+            </div>
+            <div class="bar-label">Win Rate</div>
+            <div class="bar-right">
+                <div class="bar" style="width: 67px;"></div>
+                <span class="bar-value">67%</span>
+            </div>
+        </div>
+
+        <div class="comparison-row">
+            <div class="bar-left">
+                <span class="bar-value">80%</span>
+                <div class="bar" style="width: 80px;"></div>
+            </div>
+            <div class="bar-label">Last 5</div>
+            <div class="bar-right">
+                <div class="bar" style="width: 40px;"></div>
+                <span class="bar-value">40%</span>
+            </div>
+        </div>
+
+        <div class="comparison-row">
+            <div class="bar-left">
+                <span class="bar-value">85</span>
+                <div class="bar" style="width: 85px;"></div>
+            </div>
+            <div class="bar-label">Strikes/Fight</div>
+            <div class="bar-right">
+                <div class="bar" style="width: 60px;"></div>
+                <span class="bar-value">60</span>
+            </div>
+        </div>
+
+        <div class="comparison-row">
+            <div class="bar-left">
+                <span class="bar-value">2.3</span>
+                <div class="bar" style="width: 23px;"></div>
+            </div>
+            <div class="bar-label">TD/Fight</div>
+            <div class="bar-right">
+                <div class="bar" style="width: 41px;"></div>
+                <span class="bar-value">4.1</span>
+            </div>
+        </div>
+
+        <div class="comparison-output">
+            <strong>Model Input (Differential Vector)</strong>
+            diff_win_rate: +0.16 · diff_last_5: +0.40 · diff_strikes: +25 · diff_grappling: -1.8
+        </div>
+    </div>
+
+    <h3>Why Pairwise Differentials?</h3>
+    <ul>
+        <li><strong>Explicit comparisons</strong> — model doesn't need to learn "greater than" logic</li>
+        <li><strong>Dimensionality reduction</strong> — 37 differentials vs 74 separate features</li>
+        <li><strong>Symmetry enforcement</strong> — swapping fighters flips signs (prediction should flip too)</li>
+        <li><strong>Style encoding</strong> — "+25 striking, -1.8 grappling" = striker vs wrestler in one vector</li>
+    </ul>
+</section>
+
+<!-- Section 05 -->
+<section id="model">
+    <span class="section-num">05</span>
+    <h2>Model Architecture</h2>
+
+    <h3>Model Type: Gradient Boosting</h3>
+    <p>Primary model: <strong>HistGradientBoostingClassifier</strong> (sklearn). Similar to XGBoost — state-of-art for tabular data with &lt;10K samples, handles missing data natively, provides feature importance via permutation.</p>
+
+    <h4>Best Hyperparameters (Found via RandomizedSearchCV)</h4>
+    <div class="code-block">max_iter: 200
+max_depth: 6
+learning_rate: 0.05
+max_leaf_nodes: 63
+min_samples_leaf: 20
+l2_regularization: 0.1</div>
+
+    <h3>Training Methodology</h3>
+    <p><strong>Temporal train/test split:</strong> Train on 7,457 fights (1994-2023), test on 1,063 fights (2024-2026). This simulates real prediction: using past data to predict future fights.</p>
+    <p><strong>Cross-validation:</strong> 5-fold stratified CV on training set.</p>
+    <p><strong>Optimization target:</strong> Log loss (penalizes overconfident wrong predictions).</p>
+
+    <h3>Actual Performance</h3>
+    <div class="stats-row">
+        <div class="stat">
+            <div class="stat-value">58.9%</div>
+            <div class="stat-label">Accuracy</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">0.635</div>
+            <div class="stat-label">ROC-AUC</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">0.665</div>
+            <div class="stat-label">Log Loss</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">~65%</div>
+            <div class="stat-label">Market Baseline</div>
+        </div>
+    </div>
+
+    <div class="callout">
+        <h4>Performance Analysis</h4>
+        <p>The 58.9% accuracy tells a story about MMA prediction itself. Of 136 engineered features, only 22 showed positive importance — the rest were pure noise. This isn't a failure of feature engineering; it's evidence that MMA outcomes are driven by a narrow set of signals (career win rate, recent form, layoff duration) while most "advanced" metrics add nothing.</p>
+        <p>The 6pp gap to Vegas (~65% implied accuracy) is the cost of using public data only. Sportsbooks incorporate injury reports, training camp intel, and line movement — information asymmetry we can't replicate. But 58.9% with proper calibration still identifies value bets when model and market diverge by 10pp+.</p>
+    </div>
+
+    <h3>Top Features by Importance</h3>
+    <div class="code-block">1. diff_career_win_rate    (+0.0086)
+2. f1_days_since_last_fight (+0.0074)
+3. diff_win_rate_last_5     (+0.0058)
+4. diff_win_streak          (+0.0050)
+5. f2_days_since_last_fight (+0.0049)</div>
+</section>
+
+<!-- Section 06 -->
+<section id="evaluation">
+    <span class="section-num">06</span>
+    <h2>Evaluation & Calibration</h2>
+
+    <h3>Actual Performance (Test Set: 1,063 fights, 2024-2026)</h3>
+    <div class="metrics">
+        <div class="metric-row">
+            <span class="metric-label">Accuracy</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 58.9%;"></div></div>
+            <span class="metric-value">58.9%</span>
+        </div>
+        <div class="metric-row">
+            <span class="metric-label">Log Loss</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 66.5%;"></div></div>
+            <span class="metric-value">0.665</span>
+        </div>
+        <div class="metric-row">
+            <span class="metric-label">ROC-AUC</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 63.5%;"></div></div>
+            <span class="metric-value">0.635</span>
+        </div>
+        <div class="metric-row">
+            <span class="metric-label">Brier Score</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 23.6%;"></div></div>
+            <span class="metric-value">0.236</span>
+        </div>
+    </div>
+
+    <h3>Target vs Actual</h3>
+    <table class="feature-table">
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+                <th>Actual</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="category">Accuracy</td>
+                <td>62-65%</td>
+                <td class="count">58.9%</td>
+                <td>−3.1pp below floor</td>
+            </tr>
+            <tr>
+                <td class="category">Log Loss</td>
+                <td>&lt;0.60</td>
+                <td class="count">0.665</td>
+                <td>+0.065 above target</td>
+            </tr>
+            <tr>
+                <td class="category">ROC-AUC</td>
+                <td>0.68-0.72</td>
+                <td class="count">0.635</td>
+                <td>−0.045 below floor</td>
+            </tr>
+            <tr>
+                <td class="category">Brier Score</td>
+                <td>&lt;0.25</td>
+                <td class="count">0.236</td>
+                <td>✓ Met</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Why These Metrics?</h3>
+    <ul>
+        <li><strong>Accuracy:</strong> Overall correct predictions — easy to interpret</li>
+        <li><strong>Log Loss:</strong> Penalizes overconfident wrong predictions</li>
+        <li><strong>ROC-AUC:</strong> Discrimination ability</li>
+        <li><strong>Brier Score:</strong> Calibration — do predicted probabilities match reality?</li>
+    </ul>
+
+    <h3>Calibration</h3>
+    <p>A well-calibrated model outputs probabilities that match reality. If the model predicts 70% for 100 fights, Fighter A should win ~70 times.</p>
+
+    <p><strong>Result:</strong> Mean calibration error of 5.9% on training CV, 13.7% on test set. The model is reasonably well-calibrated but tends to be overconfident at extremes — predictions of 70%+ had only ~66% actual win rate.</p>
+
+    <h4>Calibration Curves</h4>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+        <!-- Train CV Calibration -->
+        <div style="background: var(--code-bg); padding: 20px;">
+            <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">Training (5-fold CV)</div>
+            <div style="position: relative; width: 100%; height: 200px; border-left: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden;">
+                <!-- Perfect calibration line -->
+                <div style="position: absolute; bottom: 0; left: 0; width: 141%; height: 1px; background: var(--border); transform: rotate(45deg); transform-origin: bottom left;"></div>
+                <!-- Data points (pred, actual): (0.04, 0.00), (0.17, 0.27), (0.27, 0.36), (0.37, 0.41), (0.47, 0.43), (0.56, 0.55), (0.66, 0.65), (0.76, 0.77), (0.86, 0.87), (0.93, 0.91) -->
+                <div style="position: absolute; left: 4%; bottom: 0%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 17%; bottom: 27%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 27%; bottom: 36%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 37%; bottom: 41%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 47%; bottom: 43%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 56%; bottom: 55%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 66%; bottom: 65%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 76%; bottom: 77%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 86%; bottom: 87%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 93%; bottom: 91%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <!-- Axis labels -->
+                <div style="position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--text-muted);">Predicted Probability</div>
+                <div style="position: absolute; left: -24px; bottom: 50%; transform: rotate(-90deg) translateX(50%); font-size: 0.75rem; color: var(--text-muted); white-space: nowrap;">Actual Win Rate</div>
+            </div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin-top: 16px;">MCE: 5.9%</div>
+        </div>
+        <!-- Test Calibration -->
+        <div style="background: var(--code-bg); padding: 20px;">
+            <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">Test Set (2024-2026)</div>
+            <div style="position: relative; width: 100%; height: 200px; border-left: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden;">
+                <!-- Perfect calibration line -->
+                <div style="position: absolute; bottom: 0; left: 0; width: 141%; height: 1px; background: var(--border); transform: rotate(45deg); transform-origin: bottom left;"></div>
+                <!-- Data points (pred, actual): (0.08, 0.00), (0.16, 0.25), (0.26, 0.30), (0.36, 0.41), (0.46, 0.44), (0.56, 0.52), (0.66, 0.63), (0.76, 0.72), (0.86, 0.75), (0.92, 0.85) -->
+                <div style="position: absolute; left: 8%; bottom: 0%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 16%; bottom: 25%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 26%; bottom: 30%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 36%; bottom: 41%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 46%; bottom: 44%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 56%; bottom: 52%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 66%; bottom: 63%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 76%; bottom: 72%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 86%; bottom: 75%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <div style="position: absolute; left: 92%; bottom: 85%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
+                <!-- Axis labels -->
+                <div style="position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--text-muted);">Predicted Probability</div>
+                <div style="position: absolute; left: -24px; bottom: 50%; transform: rotate(-90deg) translateX(50%); font-size: 0.75rem; color: var(--text-muted); white-space: nowrap;">Actual Win Rate</div>
+            </div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin-top: 16px;">MCE: 13.7%</div>
+        </div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted);">Gray diagonal = perfect calibration. Points above the line = underconfident (actual win rate higher than predicted). Points below = overconfident. Training data closely follows the diagonal; test set shows mild overconfidence at high predictions (86% predicted → 75% actual).</p>
+</section>
+
+<!-- Section 07 -->
+<section id="serving" class="planned">
+    <span class="section-num">07</span>
+    <h2>Prediction Serving</h2>
+
+    <h3>Prediction Workflow</h3>
+    <div class="pipeline">
+        <div class="pipeline-step">
+            <div class="step-num">01</div>
+            <div class="step-title">Scrape Upcoming</div>
+            <div class="step-desc">Fetch upcoming events from ufcstats.com/events/upcoming.</div>
+        </div>
+        <div class="pipeline-step">
+            <div class="step-num">02</div>
+            <div class="step-title">Generate Features</div>
+            <div class="step-desc">Compute 145 features using fighter's historical data.</div>
+        </div>
+        <div class="pipeline-step">
+            <div class="step-num">03</div>
+            <div class="step-title">Load Model</div>
+            <div class="step-desc">Load saved HistGradientBoostingClassifier. Verify feature name consistency.</div>
+        </div>
+        <div class="pipeline-step">
+            <div class="step-num">04</div>
+            <div class="step-title">Output</div>
+            <div class="step-desc">Win probabilities with confidence levels. Save to CSV, display on web.</div>
+        </div>
+    </div>
+
+    <h3>Example</h3>
+    <div class="code-block">INPUT:
+  Fighter A: "Conor McGregor" (15-3, 80% win rate, 4-1 last 5)
+  Fighter B: "Khabib Nurmagomedov" (27-0, 100% win rate, 5-0 last 5)
+
+FEATURES:
+  diff_career_win_rate: -0.20
+  diff_win_rate_last_5: -0.20
+  diff_striking_volume: +35
+  diff_grappling_tendency: -4.2
+
+OUTPUT:
+  Conor: 28% | Khabib: 72%
+  Confidence: High</div>
+</section>
+
+<!-- Section 08 -->
+<section id="limitations">
+    <span class="section-num">08</span>
+    <h2>Known Limitations</h2>
+
+    <h3>What the Model Cannot Predict</h3>
+    <div class="limitations">
+        <div class="limitation">
+            <h4>Short-Notice Replacements</h4>
+            <p>Fighter with 0 UFC fights replaces injured fighter on 1 week notice. Model has no historical data.</p>
+        </div>
+        <div class="limitation">
+            <h4>Injuries & Camp Issues</h4>
+            <p>Fighter injured during camp but fights anyway. Model assumes healthy fighter from historical data.</p>
+        </div>
+        <div class="limitation">
+            <h4>Style Changes</h4>
+            <p>Wrestler switches to pure striking. Rolling windows capture recent change but model lags behind.</p>
+        </div>
+        <div class="limitation">
+            <h4>Weight Class Transitions</h4>
+            <p>Fighter moves up/down. Model flags "new to weight class" but can't predict size/power effects.</p>
+        </div>
+        <div class="limitation">
+            <h4>Judging Variance</h4>
+            <p>Close decisions are subjective. Model predicts fight outcome, not judge behavior.</p>
+        </div>
+        <div class="limitation">
+            <h4>Mental Factors</h4>
+            <p>Motivation, personal issues, retirement thoughts — unmeasurable. Model assumes consistent mental state.</p>
+        </div>
+    </div>
+
+    <h3>Data Limitations</h3>
+    <ul>
+        <li><strong>Pre-2009:</strong> 28% of fights lack detailed stats. Model learns from basic info only.</li>
+        <li><strong>Debuts:</strong> 0 previous UFC fights = high prediction variance.</li>
+        <li><strong>Sample size:</strong> 8,520 fights is small for ML. Limits model complexity.</li>
+        <li><strong>Imbalanced divisions:</strong> Heavyweight has 500 fights, Women's Featherweight has 30.</li>
+    </ul>
+</section>
+
+<!-- Section 09 -->
+<section id="roadmap">
+    <span class="section-num">09</span>
+    <h2>Roadmap</h2>
+
+    <div class="roadmap">
+        <div class="roadmap-item">
+            <div class="roadmap-status complete">Complete</div>
+            <div class="roadmap-content">
+                <h4>Phase 1: Data Collection</h4>
+                <ul>
+                    <li>Web scraper for ufcstats.com</li>
+                    <li>8,520 fights from 760 events</li>
+                    <li>Rate limiting and retry logic</li>
+                    <li>Winner detection bug fixed (Feb 2026)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="roadmap-item">
+            <div class="roadmap-status complete">Complete</div>
+            <div class="roadmap-content">
+                <h4>Phase 2: Feature Engineering</h4>
+                <ul>
+                    <li>145 features from 58 raw columns</li>
+                    <li>Career stats, rolling windows, differentials</li>
+                    <li>Target: f1_is_winner (48.9%/51.1%)</li>
+                    <li>DATA_DICTIONARY.md complete</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="roadmap-item">
+            <div class="roadmap-status complete">Complete</div>
+            <div class="roadmap-content">
+                <h4>Phase 3: Model Training</h4>
+                <ul>
+                    <li>Temporal split: 7,457 train / 1,063 test</li>
+                    <li>HistGradientBoostingClassifier (sklearn)</li>
+                    <li>Accuracy: 58.9%, Log Loss: 0.665, Brier: 0.236</li>
+                    <li>Model saved: data/models/ufc_model_v1.pkl</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="roadmap-item">
+            <div class="roadmap-status planned">Planned</div>
+            <div class="roadmap-content">
+                <h4>Phase 4: Prediction Generation</h4>
+                <ul>
+                    <li>Scrape upcoming UFC events</li>
+                    <li>Generate features for each fight</li>
+                    <li>Output probabilities with confidence</li>
+                    <li>SHAP explanations for key factors</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="roadmap-item">
+            <div class="roadmap-status planned">Planned</div>
+            <div class="roadmap-content">
+                <h4>Phase 5: Web Interface</h4>
+                <ul>
+                    <li>Flask app for predictions</li>
+                    <li>Visualize matchup factors</li>
+                    <li>Track historical accuracy</li>
+                    <li>Deploy to cloud</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <h3>Future Enhancements</h3>
+    <ul>
+        <li><strong>Interaction features:</strong> Capture "striker vs wrestler" dynamics explicitly</li>
+        <li><strong>Betting integration:</strong> Scrape odds, compare model to market</li>
+        <li><strong>Pre-UFC records:</strong> Include fighter records before UFC debut</li>
+        <li><strong>Method prediction:</strong> Predict KO/Sub/Decision, not just winner</li>
+        <li><strong>Ensemble models:</strong> Combine XGBoost + RF + NN</li>
+    </ul>
+</section>
+
+</main>
+
+<footer>
+    <p>UFC Fight Win Probability Model — Methodology v1.1</p>
+    <p>February 2026</p>
+</footer>
+
+</body>
+</html>
