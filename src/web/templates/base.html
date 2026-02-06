@@ -3,33 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}UFC Fight Predictor{% endblock %}</title>
+    <title>{% block title %}UFC Predictions{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     <header>
         <nav>
-            <div class="container">
-                <h1>UFC Fight Predictor</h1>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/history">History</a></li>
-                </ul>
-            </div>
+            <a href="/" class="site-title">UFC Predictions</a>
+            <ul>
+                <li><a href="/archive">Archive</a></li>
+                <li><a href="/about">Methodology</a></li>
+            </ul>
         </nav>
     </header>
 
     <main class="container">
-        {% block content %}
-        <!-- TODO Phase 4: Implement page content -->
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2024 UFC Fight Predictor | ML-Powered Predictions</p>
-        </div>
+        <p>Forecast by Joe Siwinski</p>
+        <p>Model v1.1 &middot; 58.9% accuracy</p>
     </footer>
 
     {% block extra_js %}{% endblock %}

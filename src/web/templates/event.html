@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}{{ event.event_name if event else 'UFC Predictions' }}{% endblock %}
+{% block title %}{{ event.event_name if event else 'Event Not Found' }}{% endblock %}
 
 {% block content %}
 {% if error %}
 <div class="error-message">
-    <h2>No Upcoming Events</h2>
+    <h2>Event Not Found</h2>
     <p>{{ error }}</p>
+    <p style="margin-top: 20px;"><a href="/">Back to Home</a></p>
 </div>
 {% elif event %}
 <div class="event-header">

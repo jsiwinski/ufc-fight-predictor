@@ -8,6 +8,5 @@ This module handles:
 - Prediction history tracking
 """
 
-from .app import create_app
-
-__all__ = ['create_app']
+# Avoid circular import - import app only when needed
+__all__ = ['app']

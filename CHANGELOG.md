@@ -14,6 +14,23 @@
 
 ## [2026-02-05]
 
+### [FEATURE] Phase 5: Web interface (localhost v1)
+- **New Flask app:** [src/web/app.py](src/web/app.py) — Complete web interface for predictions
+- **Fight card display** with center-out probability bars (red/blue)
+- **Design system** inherits methodology doc's Fraunces/Inter/IBM Plex Mono fonts
+- **Routes implemented:**
+  - `/` — Homepage with next upcoming event predictions
+  - `/event/<slug>` — Specific event predictions
+  - `/archive` — List of past predicted events
+  - `/backtest/<date>` — Run backtest for historical event
+  - `/api/predict/next` — JSON API for next event
+  - `/api/predict/<slug>` — JSON API for specific event
+- **Prediction caching:** JSON files in [data/predictions/](data/predictions/) with 24-hour expiry
+- **Templates:** base.html, index.html, event.html, archive.html
+- **CSS:** Single stylesheet with methodology doc's color palette
+- **Run with:** `python src/web/app.py` → http://localhost:5000
+- **Updated:** [docs/ufc_fight_model_methodology.html](docs/ufc_fight_model_methodology.html) — Phase 5 marked as "In Progress"
+
 ### [FEATURE] Phase 4: Prediction serving pipeline
 - **New module:** [src/predict/serve.py](src/predict/serve.py) — End-to-end prediction for upcoming events
 - **Scrapes upcoming events** from ufcstats.com using existing scraper

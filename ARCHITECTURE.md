@@ -1,7 +1,7 @@
 # UFC Fight Predictor — Architecture
 
 **Last Updated:** 2026-02-05
-**Project Status:** Phase 4 Complete (Prediction Pipeline) | Phase 5 In Progress (Web Interface)
+**Project Status:** Phase 5 Complete (Web Interface) | Phase 5b Pending (Cloud Deployment)
 
 ---
 
@@ -9,7 +9,7 @@
 
 The UFC Fight Predictor is a machine learning system that generates win probability predictions for UFC fights. The system scrapes comprehensive historical fight data from ufcstats.com (8,520 fights spanning 1994-2026), engineers 145 predictive features capturing fighter performance, momentum, and matchup dynamics, and trains gradient boosting models to output calibrated win probabilities. The end goal is a web interface displaying predictions for upcoming UFC events with explanations and confidence intervals.
 
-**Current State:** Data collection, feature engineering, model training, and prediction generation are production-ready. Achieves 58.9% accuracy on held-out 2024-2026 fights. Backtest on UFC 325 showed 69.2% accuracy (9/13 correct). Web interface is scaffolded but not yet implemented.
+**Current State:** Full pipeline is production-ready including web interface. Achieves 58.9% accuracy on held-out 2024-2026 fights. Backtest on UFC 325 showed 69.2% accuracy (9/13 correct). Web app runs at localhost:5000 with fight card UI and JSON API.
 
 ---
 
@@ -34,14 +34,14 @@ graph TD
     E -->|Feature Generation| I
     I -->|Win Probabilities| J[data/predictions/<br/>✅ CSV with probabilities]
 
-    J -->|Display| K[Flask Web App<br/>⚠️ NOT IMPLEMENTED]
+    J -->|Display| K[Flask Web App<br/>✅ src/web/app.py]
     H -->|Feature Importance| K
 
     style G fill:#ccffcc
     style H fill:#ccffcc
     style I fill:#ccffcc
     style J fill:#ccffcc
-    style K fill:#ffcccc
+    style K fill:#ccffcc
 ```
 
 **Legend:**
@@ -107,9 +107,20 @@ graph TD
 ### [src/web/](src/web/)
 **Purpose:** Web interface for displaying predictions
 
-- **[app.py](src/web/app.py)** ⚠️ **NOT REVIEWED** — Flask application (likely stub)
-- **[templates/](src/web/templates/)** — HTML templates (base.html, index.html exist)
-- **[static/css/](src/web/static/css/)** — CSS stylesheets (style.css exists)
+- **[app.py](src/web/app.py)** ✅ **IMPLEMENTED** — Flask application (~300 lines)
+  - Routes: `/` (home), `/event/<slug>`, `/archive`, `/backtest/<date>`
+  - JSON API: `/api/predict/next`, `/api/predict/<slug>`, `/api/backtest/<date>`
+  - Prediction caching in `data/predictions/` with 24-hour expiry
+  - CLI: `python src/web/app.py` → http://localhost:5000
+- **[templates/](src/web/templates/)** — HTML templates
+  - `base.html` — Layout shell with nav, footer, Google Fonts
+  - `index.html` — Homepage with fight card grid
+  - `event.html` — Single event predictions
+  - `archive.html` — Past events with backtest results
+- **[static/css/style.css](src/web/static/css/style.css)** — Stylesheet inheriting methodology doc design system
+  - Fraunces/Inter/IBM Plex Mono fonts
+  - Center-out probability bars (red/blue)
+  - Mobile responsive
 
 ### [data/](data/)
 **Data storage hierarchy (all .csv files excluded from git via .gitignore)**

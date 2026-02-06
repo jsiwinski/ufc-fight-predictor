@@ -37,14 +37,20 @@
 - Backtest: UFC 325 — 9/13 correct (69.2%)
 - Predictions saved to: [data/predictions/](data/predictions/)
 
+**Web Interface** ([src/web/app.py](src/web/app.py)) ✅ **IMPLEMENTED**
+- Flask app serving predictions at localhost:5000
+- Fight card UI with center-out probability bars
+- Routes: `/` (home), `/event/<slug>`, `/archive`, `/backtest/<date>`
+- JSON API at `/api/predict/next` and `/api/predict/<slug>`
+- Run with: `python src/web/app.py`
+
 ### ⚠️ What's Broken / Stubbed
 
-**Web Interface** ([src/web/app.py](src/web/app.py)) — Likely stubbed (not reviewed)
 **Old predict.py** ([src/models/predict.py](src/models/predict.py)) — Legacy stubs, use src/predict/serve.py instead
 
 ### 🚧 In Progress
 
-**Phase 5:** Web interface (Flask app displaying predictions)
+**Phase 5b:** Deploy to cloud (currently localhost only)
 
 ---
 
@@ -176,7 +182,7 @@
 
 ```
 [Scraper] → [Raw Data] → [Feature Engineer] → [Processed Data] → [Model Training] → [Saved Model] → [Prediction] → [Web App]
-    ✅           ✅              ✅                  ✅                ✅               ✅             ✅          ⚠️
+    ✅           ✅              ✅                  ✅                ✅               ✅             ✅            ✅
 ```
 
 **Dependency Chain:**
@@ -244,6 +250,14 @@ python src/predict/serve.py                    # Predict next upcoming event
 python src/predict/serve.py --backtest 2026-01-31  # Backtest against historical event
 python src/predict/serve.py --format json      # Output JSON instead of CSV
 # Output: data/predictions/predictions_[event]_[date].csv
+```
+
+### Run Web App
+```bash
+python src/web/app.py
+# → http://127.0.0.1:5000
+# Routes: / (home), /event/<slug>, /archive, /backtest/<date>
+# API: /api/predict/next, /api/predict/<slug>
 ```
 
 ### Test Scraper (Small Sample)

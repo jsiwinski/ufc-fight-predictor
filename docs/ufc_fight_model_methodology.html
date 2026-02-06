@@ -536,6 +536,111 @@
             color: var(--text-muted);
         }
 
+        /* Fight Card - Prediction Example */
+        .fight-card {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+        }
+
+        .fight-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fight-card-event {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .fight-card-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .fight-card-fighters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 24px;
+        }
+
+        .fight-card-fighter {
+            text-align: center;
+        }
+
+        .fight-card-fighter .fighter-name {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
+        .fight-card-stats {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .fight-card-differentials {
+            padding: 16px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .fight-card-prediction {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 24px;
+            align-items: center;
+            padding: 24px 0 16px;
+        }
+
+        .fight-card-prob {
+            text-align: center;
+        }
+
+        .fight-card-prob-value {
+            font-family: 'Fraunces', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .fight-card-prob-value.red { color: var(--red); }
+        .fight-card-prob-value.blue { color: #2563eb; }
+
+        .fight-card-prob-name {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .fight-card-confidence {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border: 1px dashed var(--text-muted);
+        }
+
+        .fight-card-result {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+            text-align: center;
+        }
+
         /* Metrics - Simple bars */
         .metrics {
             margin: 30px 0;
@@ -725,7 +830,7 @@
     <div class="meta">
         <div class="meta-item">
             <span class="meta-label">Version</span>
-            <span class="meta-value">1.2 (Phase 4)</span>
+            <span class="meta-value">1.3 (Phase 5 WIP)</span>
         </div>
         <div class="meta-item">
             <span class="meta-label">Date</span>
@@ -733,11 +838,11 @@
         </div>
         <div class="meta-item">
             <span class="meta-label">Author</span>
-            <span class="meta-value">JSKI + Claude Opus 4.5</span>
+            <span class="meta-value">JSKI + Claude Opus 4.6</span>
         </div>
         <div class="meta-item">
             <span class="meta-label">Status</span>
-            <span class="meta-value">Prediction Pipeline Live</span>
+            <span class="meta-value">Web Interface In Development</span>
         </div>
     </div>
 </header>
@@ -1174,8 +1279,8 @@ l2_regularization: 0.1</div>
         <div style="background: var(--code-bg); padding: 20px;">
             <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">Training (5-fold CV)</div>
             <div style="position: relative; width: 100%; height: 200px; border-left: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden;">
-                <!-- Perfect calibration line -->
-                <div style="position: absolute; bottom: 0; left: 0; width: 141%; height: 1px; background: var(--border); transform: rotate(45deg); transform-origin: bottom left;"></div>
+                <!-- Perfect calibration line (dashed) -->
+                <div style="position: absolute; bottom: 0; left: 0; width: 141%; height: 2px; background: repeating-linear-gradient(90deg, #a0a09a 0, #a0a09a 6px, transparent 6px, transparent 10px); transform: rotate(45deg); transform-origin: bottom left;"></div>
                 <!-- Data points (pred, actual): (0.04, 0.00), (0.17, 0.27), (0.27, 0.36), (0.37, 0.41), (0.47, 0.43), (0.56, 0.55), (0.66, 0.65), (0.76, 0.77), (0.86, 0.87), (0.93, 0.91) -->
                 <div style="position: absolute; left: 4%; bottom: 0%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
                 <div style="position: absolute; left: 17%; bottom: 27%; width: 8px; height: 8px; background: var(--red); border-radius: 50%; transform: translate(-50%, 50%);"></div>
@@ -1197,8 +1302,8 @@ l2_regularization: 0.1</div>
         <div style="background: var(--code-bg); padding: 20px;">
             <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">Test Set (2024-2026)</div>
             <div style="position: relative; width: 100%; height: 200px; border-left: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden;">
-                <!-- Perfect calibration line -->
-                <div style="position: absolute; bottom: 0; left: 0; width: 141%; height: 1px; background: var(--border); transform: rotate(45deg); transform-origin: bottom left;"></div>
+                <!-- Perfect calibration line (dashed) -->
+                <div style="position: absolute; bottom: 0; left: 0; width: 141%; height: 2px; background: repeating-linear-gradient(90deg, #a0a09a 0, #a0a09a 6px, transparent 6px, transparent 10px); transform: rotate(45deg); transform-origin: bottom left;"></div>
                 <!-- Data points (pred, actual): (0.08, 0.00), (0.16, 0.25), (0.26, 0.30), (0.36, 0.41), (0.46, 0.44), (0.56, 0.52), (0.66, 0.63), (0.76, 0.72), (0.86, 0.75), (0.92, 0.85) -->
                 <div style="position: absolute; left: 8%; bottom: 0%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
                 <div style="position: absolute; left: 16%; bottom: 25%; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; transform: translate(-50%, 50%);"></div>
@@ -1217,7 +1322,7 @@ l2_regularization: 0.1</div>
             <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin-top: 16px;">MCE: 13.7%</div>
         </div>
     </div>
-    <p style="font-size: 0.85rem; color: var(--text-muted);">Gray diagonal = perfect calibration. Points above the line = underconfident (actual win rate higher than predicted). Points below = overconfident. Training data closely follows the diagonal; test set shows mild overconfidence at high predictions (86% predicted → 75% actual).</p>
+    <p style="font-size: 0.85rem; color: var(--text-muted);">Dashed diagonal = perfect calibration. Points above the line = underconfident (actual win rate higher than predicted). Points below = overconfident. Training data closely follows the diagonal; test set shows mild overconfidence at high predictions (86% predicted → 75% actual).</p>
 </section>
 
 <!-- Section 07 -->
@@ -1250,22 +1355,51 @@ l2_regularization: 0.1</div>
     </div>
 
     <h3>Real Prediction Example</h3>
-    <p>Backtest from UFC 325: Volkanovski vs. Lopes 2 (January 31, 2026)</p>
-    <div class="code-block">INPUT:
-  Fighter 1: "Alexander Volkanovski" (17 UFC fights, 82.4% win rate, 2-3 last 5)
-  Fighter 2: "Diego Lopes" (8 UFC fights, 75.0% win rate, 4-1 last 5)
-  Weight Class: Featherweight
 
-TOP FEATURES:
-  diff_days_since_last_fight: +154 (Volkanovski had longer layoff)
-  diff_career_fights: +9 (Volkanovski more experienced)
-  diff_win_rate_last_5: -0.40 (Lopes better recent form)
+    <div class="fight-card">
+        <div class="fight-card-header">
+            <div>
+                <div class="fight-card-event">UFC 325: Volkanovski vs. Lopes 2</div>
+                <div class="fight-card-meta">January 31, 2026</div>
+            </div>
+            <div class="fight-card-meta">Featherweight</div>
+        </div>
 
-PREDICTION:
-  Volkanovski: 48.5% | Lopes: 51.5%
-  Confidence: LOW (near coin-flip)
+        <div class="fight-card-fighters">
+            <div class="fight-card-fighter">
+                <div class="fighter-name red">Alexander Volkanovski</div>
+                <div class="fight-card-stats">
+                    17 UFC fights · 82.4% win rate<br>
+                    Last 5: 2-3 · 154 days since last fight
+                </div>
+            </div>
+            <div class="fight-card-fighter">
+                <div class="fighter-name blue">Diego Lopes</div>
+                <div class="fight-card-stats">
+                    8 UFC fights · 75.0% win rate<br>
+                    Last 5: 4-1 · 0 days since last fight
+                </div>
+            </div>
+        </div>
 
-ACTUAL RESULT: Volkanovski won via unanimous decision</div>
+        <div class="fight-card-differentials">
+            diff_days_since_last_fight: +154 · diff_career_fights: +9 · diff_win_rate_last_5: −0.40
+        </div>
+
+        <div class="fight-card-prediction">
+            <div class="fight-card-prob">
+                <div class="fight-card-prob-value red">48.5%</div>
+                <div class="fight-card-prob-name">Volkanovski</div>
+            </div>
+            <div class="fight-card-confidence">Low</div>
+            <div class="fight-card-prob">
+                <div class="fight-card-prob-value blue">51.5%</div>
+                <div class="fight-card-prob-name">Lopes</div>
+            </div>
+        </div>
+
+        <div class="fight-card-result">Actual: Volkanovski won via unanimous decision</div>
+    </div>
 
     <h3>Backtest Results</h3>
     <div class="stats-row">
@@ -1282,12 +1416,12 @@ ACTUAL RESULT: Volkanovski won via unanimous decision</div>
             <div class="stat-label">Overall Test Set</div>
         </div>
         <div class="stat">
-            <div class="stat-value">~65%</div>
-            <div class="stat-label">Vegas Baseline</div>
+            <div class="stat-value">5</div>
+            <div class="stat-label">High Confidence</div>
         </div>
     </div>
 
-    <h3>Why the Model Picks Sides</h3>
+    <h3>What Drives Predictions</h3>
     <p>Predictions are driven by differential features — the gap between fighters on key metrics. The top 5 most predictive differentials:</p>
     <div class="code-block">1. diff_career_win_rate    — Long-term success matters most
 2. diff_days_since_last_fight — Ring rust is real
@@ -1297,6 +1431,7 @@ ACTUAL RESULT: Volkanovski won via unanimous decision</div>
     <p style="font-size: 0.85rem; color: var(--text-muted);">These 5 features account for ~60% of model's predictive power. The remaining 131 features add marginal signal or noise.</p>
 
     <h3>CLI Usage</h3>
+    <p>The pipeline runs from command line against live or historical events.</p>
     <div class="code-block"># Predict next upcoming event
 python src/predict/serve.py
 
@@ -1408,14 +1543,15 @@ python src/predict/serve.py --format json</div>
         </div>
 
         <div class="roadmap-item">
-            <div class="roadmap-status planned">Planned</div>
+            <div class="roadmap-status progress">In Progress</div>
             <div class="roadmap-content">
                 <h4>Phase 5: Web Interface</h4>
                 <ul>
-                    <li>Flask app for predictions</li>
-                    <li>Visualize matchup factors</li>
-                    <li>Track historical accuracy</li>
-                    <li>Deploy to cloud</li>
+                    <li>Flask app: src/web/app.py</li>
+                    <li>Fight card UI with center-out probability bars</li>
+                    <li>Archive page with backtest results</li>
+                    <li>JSON API endpoint for programmatic access</li>
+                    <li>Running on localhost:5000</li>
                 </ul>
             </div>
         </div>
@@ -1434,7 +1570,7 @@ python src/predict/serve.py --format json</div>
 </main>
 
 <footer>
-    <p>UFC Fight Win Probability Model — Methodology v1.2</p>
+    <p>UFC Fight Win Probability Model — Methodology v1.3</p>
     <p>February 2026</p>
 </footer>
 

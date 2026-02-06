@@ -1,6 +1,6 @@
-/* UFC Fight Predictor - Base Styles */
-
-/* TODO Phase 4: Implement complete styling */
+/* UFC Fight Predictor - Design System
+ * Inherits visual language from docs/ufc_fight_model_methodology.html
+ */
 
 * {
     margin: 0;
@@ -8,112 +8,525 @@
     box-sizing: border-box;
 }
 
+:root {
+    --bg: #fafaf9;
+    --text: #1a1a1a;
+    --text-secondary: #5a5a5a;
+    --text-muted: #888888;
+    --red: #c41e3a;
+    --blue: #2563eb;
+    --green: #2d8a4e;
+    --border: #e5e5e0;
+    --code-bg: #f5f5f0;
+    --card-bg: #ffffff;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f4;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
 }
 
+/* Layout */
 .container {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 40px;
 }
 
-/* Header & Navigation */
+/* Header / Nav */
 header {
-    background-color: #d20a0a;
-    color: white;
-    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
 }
 
-header h1 {
-    display: inline;
-    margin-right: 2rem;
+nav {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .site-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+}
+
+nav .site-title:hover {
+    color: var(--red);
 }
 
 nav ul {
-    display: inline;
     list-style: none;
-}
-
-nav ul li {
-    display: inline;
-    margin-left: 1rem;
+    display: flex;
+    gap: 24px;
 }
 
 nav ul li a {
-    color: white;
+    color: var(--text-secondary);
     text-decoration: none;
+    font-size: 0.9rem;
+}
+
+nav ul li a:hover {
+    color: var(--red);
 }
 
 /* Main Content */
 main {
-    padding: 2rem 0;
-    min-height: calc(100vh - 200px);
+    padding: 60px 0;
+    min-height: calc(100vh - 160px);
 }
 
-/* Fight Predictions */
-.predictions-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* Event Header */
+.event-header {
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border);
 }
 
-.event-card {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.event-name {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
 }
 
-.fight-prediction {
+.event-meta {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.event-summary {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Backtest Results Banner */
+.backtest-banner {
+    background: var(--code-bg);
+    padding: 20px 24px;
+    margin-bottom: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    margin: 1rem 0;
-    background: #f9f9f9;
-    border-radius: 4px;
 }
 
-.fighter {
-    flex: 1;
-    text-align: center;
+.backtest-banner .label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.backtest-banner .result {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.backtest-banner .accuracy {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Fight Card - The Core Component */
+.fight-card {
+    border-bottom: 1px solid var(--border);
+    padding: 24px 0;
+    transition: background-color 0.15s ease;
+}
+
+.fight-card:first-child {
+    padding-top: 0;
+}
+
+.fight-card:last-child {
+    border-bottom: none;
+}
+
+.fight-card:hover {
+    background-color: var(--code-bg);
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Main Event gets more space */
+.fight-card.main-event {
+    padding: 32px 0 40px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+}
+
+.fight-card.main-event .fight-row {
+    padding: 12px 0;
+}
+
+.fight-card.main-event .fighter-name {
+    font-size: 1.15rem;
+}
+
+.fight-card.main-event .probability {
+    font-size: 1.5rem;
+}
+
+/* Position Label */
+.fight-position {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+/* Fight Row - Horizontal Layout */
+.fight-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+}
+
+/* Fighter Sides */
+.fighter-side {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.fighter-side.left {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.fighter-side.right {
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.fighter-info {
+    flex-shrink: 0;
 }
 
 .fighter-name {
-    font-weight: bold;
-    font-size: 1.2rem;
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
 }
 
-.win-prob {
+.fighter-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* Probability Display */
+.prob-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.fighter-side.left .prob-display {
+    flex-direction: row-reverse;
+}
+
+.probability {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    min-width: 60px;
+}
+
+.fighter-side.left .probability {
+    text-align: right;
+}
+
+.fighter-side.right .probability {
+    text-align: left;
+}
+
+.probability.red { color: var(--red); }
+.probability.blue { color: var(--blue); }
+
+/* Probability Bars - Center-Out Design */
+.prob-bar-container {
+    width: 80px;
+    height: 6px;
+    background: var(--border);
+    position: relative;
+}
+
+.prob-bar {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* Left bar grows from right edge towards left */
+.fighter-side.left .prob-bar-container {
+    overflow: hidden;
+}
+
+.fighter-side.left .prob-bar {
+    right: 0;
+    background: var(--red);
+}
+
+/* Right bar grows from left edge towards right */
+.fighter-side.right .prob-bar-container {
+    overflow: hidden;
+}
+
+.fighter-side.right .prob-bar {
+    left: 0;
+    background: var(--blue);
+}
+
+/* Center VS Divider */
+.vs-divider {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: lowercase;
+    letter-spacing: 0.05em;
+    padding: 0 8px;
+}
+
+/* Confidence Badge */
+.confidence-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    padding: 4px 8px;
+    border: 1px dashed var(--border);
+    margin-top: 8px;
+    display: inline-block;
+}
+
+.confidence-badge.high {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+/* Fight Details (expanded on hover/click) */
+.fight-details {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
+    display: none;
+}
+
+.fight-card:hover .fight-details,
+.fight-card.expanded .fight-details {
     display: block;
-    font-size: 1.5rem;
-    color: #d20a0a;
-    margin-top: 0.5rem;
 }
 
-.vs {
-    font-weight: bold;
-    padding: 0 1rem;
+.fight-factors {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+}
+
+.fight-factors .factor {
+    display: flex;
+    gap: 6px;
+}
+
+.fight-factors .factor-name {
+    color: var(--text-muted);
+}
+
+.fight-factors .factor-value {
+    color: var(--text);
+}
+
+/* Backtest Result Indicator */
+.result-indicator {
+    font-size: 0.8rem;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.result-indicator.correct {
+    color: var(--green);
+}
+
+.result-indicator.wrong {
+    color: var(--text-muted);
+}
+
+/* Title Fight Badge */
+.title-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--red);
+    padding: 3px 6px;
+    border: 1px solid var(--red);
+    margin-left: 8px;
+}
+
+/* Match Warning */
+.match-warning {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 4px;
 }
 
 /* Footer */
 footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 40px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* TODO Phase 4:
- * - Add responsive design
- * - Style probability bars
- * - Add animations
- * - Style confidence indicators
- * - Add dark mode support
- */
+footer p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Error State */
+.error-message {
+    background: var(--code-bg);
+    padding: 40px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.error-message h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+}
+
+/* Archive Page */
+.archive-list {
+    list-style: none;
+}
+
+.archive-item {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 24px;
+    align-items: center;
+}
+
+.archive-item:last-child {
+    border-bottom: none;
+}
+
+.archive-event {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.archive-event:hover {
+    color: var(--red);
+}
+
+.archive-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.archive-accuracy {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+}
+
+.archive-accuracy.has-result {
+    color: var(--green);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 80px 40px;
+    color: var(--text-muted);
+}
+
+.empty-state h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    nav, .container, footer {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .fight-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        text-align: center;
+    }
+
+    .fighter-side {
+        justify-content: center !important;
+        flex-direction: column;
+        text-align: center !important;
+    }
+
+    .fighter-side.left .prob-display,
+    .fighter-side.right .prob-display {
+        flex-direction: column;
+    }
+
+    .prob-bar-container {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .vs-divider {
+        display: none;
+    }
+
+    .archive-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}
