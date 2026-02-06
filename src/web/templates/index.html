@@ -11,10 +11,10 @@
 {% elif event %}
 <div class="event-header">
     <h1 class="event-name">{{ event.event_name }}</h1>
-    <p class="event-meta">{{ event.event_date }}</p>
+    <p class="event-meta">{{ event.event_date|format_date_long }}</p>
     <p class="event-summary">
         {{ event.fight_count }} fights &middot;
-        Model confidence: {{ event.confidence_counts.HIGH }} High, {{ event.confidence_counts.MEDIUM }} Medium, {{ event.confidence_counts.LOW }} Low
+        Model confidence: <span class="confidence-high">{{ event.confidence_counts.HIGH }} High</span>, <span class="confidence-medium">{{ event.confidence_counts.MEDIUM }} Medium</span>, <span class="confidence-low">{{ event.confidence_counts.LOW }} Low</span>
     </p>
 </div>
 
@@ -33,8 +33,16 @@
 {% endif %}
 
 <div class="fight-list">
+    {% set prelim_started = namespace(value=false) %}
     {% for fight in event.predictions %}
-    <div class="fight-card {% if fight.position_label == 'Main Event' %}main-event{% endif %}">
+    {# Insert prelim divider before first prelim fight #}
+    {% if fight.card_section == 'prelim' and not prelim_started.value %}
+    {% set prelim_started.value = true %}
+    <div class="card-section-divider">
+        <span class="card-section-label">Preliminary Card</span>
+    </div>
+    {% endif %}
+    <div class="fight-card {% if fight.position_label == 'Main Event' %}main-event{% endif %} {% if fight.card_section == 'prelim' %}prelim{% endif %} favorite-{{ fight.favorite }}">
         {% if fight.position_label %}
         <div class="fight-position">{{ fight.position_label }}</div>
         {% endif %}
@@ -94,17 +102,21 @@
 
         {# Confidence Badge #}
         <div style="text-align: center;">
-            <span class="confidence-badge {% if fight.confidence == 'HIGH' %}high{% endif %}">{{ fight.confidence }}</span>
+            <span class="confidence-badge {% if fight.confidence == 'HIGH' %}high{% elif fight.confidence == 'MEDIUM' %}medium{% endif %}">{{ fight.confidence }}</span>
         </div>
 
-        {# Fight Details (visible on hover) #}
-        {% if fight.factors %}
+        {# Stat Bars (visible on hover) #}
+        {% if fight.stat_bars %}
         <div class="fight-details">
-            <div class="fight-factors">
-                {% for factor in fight.factors %}
-                <div class="factor">
-                    <span class="factor-name">{{ factor.name }}:</span>
-                    <span class="factor-value">{{ factor.value }}</span>
+            <div class="stat-bars">
+                <div class="stat-bars-header">Key Matchup Factors</div>
+                {% for stat in fight.stat_bars %}
+                <div class="stat-bar-row">
+                    <div class="stat-label">{{ stat.label }}</div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar-fill {{ stat.direction }}" style="width: {{ stat.bar_width }}%;"></div>
+                    </div>
+                    <div class="stat-value {% if stat.direction == 'left' %}positive{% else %}negative{% endif %}">{{ stat.display_value }}</div>
                 </div>
                 {% endfor %}
             </div>

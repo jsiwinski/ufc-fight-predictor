@@ -350,12 +350,13 @@ main {
 
 /* Confidence Badge */
 .confidence-badge {
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     color: var(--text-muted);
-    padding: 4px 8px;
+    padding: 2px 8px;
     border: 1px dashed var(--border);
     margin-top: 8px;
     display: inline-block;
@@ -363,7 +364,12 @@ main {
 
 .confidence-badge.high {
     color: var(--green);
-    border-color: var(--green);
+    border: 1px solid var(--green);
+}
+
+.confidence-badge.medium {
+    color: var(--text-muted);
+    border: 1px solid var(--border);
 }
 
 /* Fight Details (expanded on hover/click) */
@@ -399,6 +405,189 @@ main {
 
 .fight-factors .factor-value {
     color: var(--text);
+}
+
+/* Diverging Stat Bars */
+.stat-bars {
+    padding: 16px 0;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.stat-bars-header {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.stat-bar-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 50px;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeInBar 0.3s ease forwards;
+}
+
+.stat-bar-row:nth-child(2) { animation-delay: 0ms; }
+.stat-bar-row:nth-child(3) { animation-delay: 50ms; }
+.stat-bar-row:nth-child(4) { animation-delay: 100ms; }
+.stat-bar-row:nth-child(5) { animation-delay: 150ms; }
+.stat-bar-row:nth-child(6) { animation-delay: 200ms; }
+
+@keyframes fadeInBar {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stat-bar-container {
+    position: relative;
+    height: 6px;
+    background: transparent;
+}
+
+/* Center line */
+.stat-bar-container::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -4px;
+    bottom: -4px;
+    width: 1px;
+    background: var(--border);
+}
+
+.stat-bar-fill {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: width 0.4s ease-out;
+}
+
+/* Fighter 1 advantage: bar grows LEFT from center */
+.stat-bar-fill.left {
+    right: 50%;
+    background: var(--red);
+}
+
+/* Fighter 2 advantage: bar grows RIGHT from center */
+.stat-bar-fill.right {
+    left: 50%;
+    background: var(--blue);
+}
+
+.stat-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+.stat-value.positive {
+    color: var(--red);
+}
+
+.stat-value.negative {
+    color: var(--blue);
+}
+
+/* Card Section Separator */
+.card-section-divider {
+    margin: 60px 0;
+    text-align: center;
+    position: relative;
+}
+
+.card-section-divider::before,
+.card-section-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 80px);
+    height: 1px;
+    background: var(--border);
+}
+
+.card-section-divider::before {
+    left: 0;
+}
+
+.card-section-divider::after {
+    right: 0;
+}
+
+.card-section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    background: var(--bg);
+    padding: 0 16px;
+    display: inline-block;
+}
+
+/* Enhanced Hover States */
+.fight-card {
+    position: relative;
+    transition: background-color 0.2s ease, border-left-color 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.fight-card:hover {
+    background-color: var(--code-bg);
+    margin-left: -23px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.fight-card.favorite-1:hover {
+    border-left-color: var(--red);
+}
+
+.fight-card.favorite-2:hover {
+    border-left-color: var(--blue);
+}
+
+/* Prelim fights - more compact */
+.fight-card.prelim {
+    padding: 20px 0;
+}
+
+/* Confidence Summary Styling */
+.confidence-high {
+    color: var(--green);
+}
+
+.confidence-medium {
+    color: var(--text-secondary);
+}
+
+.confidence-low {
+    color: var(--text-muted);
+    font-weight: 400;
 }
 
 /* Backtest Result Indicator */
@@ -577,5 +766,29 @@ footer p {
         flex-direction: column;
         gap: 8px;
         text-align: center;
+    }
+
+    /* Stat bars on mobile */
+    .stat-bars {
+        max-width: 100%;
+    }
+
+    .stat-bar-row {
+        grid-template-columns: 100px 1fr 45px;
+        gap: 8px;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+    }
+
+    /* Card section divider on mobile */
+    .card-section-divider {
+        margin: 40px 0;
+    }
+
+    .card-section-divider::before,
+    .card-section-divider::after {
+        width: calc(50% - 60px);
     }
 }

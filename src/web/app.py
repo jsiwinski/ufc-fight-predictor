@@ -17,9 +17,42 @@ import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from flask import Flask, jsonify, render_template, redirect, url_for
+
+# Human-readable feature name mapping
+FEATURE_LABELS = {
+    'diff_career_win_rate': 'Win Rate (Career)',
+    'diff_career_ko_rate': 'KO Rate',
+    'diff_career_sub_rate': 'Submission Rate',
+    'diff_career_dec_rate': 'Decision Rate',
+    'diff_career_finish_rate': 'Finish Rate',
+    'diff_days_since_last_fight': 'Days Since Last Fight',
+    'diff_win_rate_last_3': 'Win Rate (Last 3)',
+    'diff_win_rate_last_5': 'Win Rate (Last 5)',
+    'diff_win_rate_last_10': 'Win Rate (Last 10)',
+    'diff_career_fights': 'Experience',
+    'diff_weight_class_fights': 'Weight Class Experience',
+    'diff_win_streak': 'Win Streak',
+    'diff_loss_streak': 'Loss Streak',
+    'diff_fights_per_year': 'Fight Frequency',
+    'diff_momentum': 'Momentum',
+    'diff_striking_volume': 'Striking Volume',
+    'diff_grappling_tendency': 'Grappling Tendency',
+    'diff_avg_sig_strikes_landed_last_3': 'Sig. Strikes (Last 3)',
+    'diff_avg_sig_strikes_landed_last_5': 'Sig. Strikes (Last 5)',
+    'diff_avg_sig_strikes_absorbed_last_3': 'Strikes Absorbed (Last 3)',
+    'diff_avg_sig_strikes_absorbed_last_5': 'Strikes Absorbed (Last 5)',
+    'diff_avg_takedowns_last_3': 'Takedowns (Last 3)',
+    'diff_avg_takedowns_last_5': 'Takedowns (Last 5)',
+    'diff_finish_rate_last_3': 'Finish Rate (Last 3)',
+    'diff_finish_rate_last_5': 'Finish Rate (Last 5)',
+    'diff_avg_fight_time_last_3': 'Avg Fight Time (Last 3)',
+    'diff_avg_fight_time_last_5': 'Avg Fight Time (Last 5)',
+    'diff_experience_ratio': 'Experience Ratio',
+    'diff_data_completeness_score': 'Data Completeness',
+}
 
 # Add project root to path for imports
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -134,7 +167,68 @@ def save_predictions_cache(event_slug: str, data: Dict):
         logger.error(f"Error saving cache: {e}")
 
 
-def format_prediction(pred: Dict, position: int = 0) -> Dict:
+def get_feature_label(feature_name: str) -> str:
+    """Get human-readable label for a feature name."""
+    if feature_name in FEATURE_LABELS:
+        return FEATURE_LABELS[feature_name]
+    # Fallback: clean up the name
+    label = feature_name.replace('diff_', '').replace('_', ' ')
+    return label.title()
+
+
+def format_stat_bars(factors: List, top_n: int = 5) -> List[Dict]:
+    """
+    Format differential factors for diverging stat bars.
+
+    Args:
+        factors: List of (feature_name, value) tuples or dicts
+        top_n: Number of top factors to include
+
+    Returns:
+        List of stat bar dicts with normalized widths
+    """
+    parsed = []
+
+    for factor in factors[:top_n]:
+        if isinstance(factor, (list, tuple)):
+            name, val = factor[0], factor[1]
+        elif isinstance(factor, dict):
+            name, val = factor.get('feature', ''), factor.get('value', 0)
+        else:
+            continue
+
+        if val == 0:
+            continue
+
+        parsed.append({
+            'feature': name,
+            'value': val,
+            'label': get_feature_label(name),
+        })
+
+    if not parsed:
+        return []
+
+    # Find max absolute value for normalization
+    max_abs = max(abs(f['value']) for f in parsed)
+
+    # Calculate normalized widths (0-100%)
+    for stat in parsed:
+        val = stat['value']
+        # Normalize to 0-50% (half the container width)
+        stat['bar_width'] = int((abs(val) / max_abs) * 50) if max_abs > 0 else 0
+        stat['direction'] = 'left' if val > 0 else 'right'  # left = Fighter 1 advantage
+        # Format value display
+        if abs(val) >= 10:
+            # Integer-like values (days, fights)
+            stat['display_value'] = f"+{int(val)}" if val > 0 else f"{int(val)}"
+        else:
+            stat['display_value'] = f"+{val:.2f}" if val > 0 else f"{val:.2f}"
+
+    return parsed
+
+
+def format_prediction(pred: Dict, position: int = 0, total_fights: int = 13) -> Dict:
     """Format a prediction dict for template rendering."""
     f1_prob = pred['f1_win_prob']
     f2_prob = pred['f2_win_prob']
@@ -145,29 +239,41 @@ def format_prediction(pred: Dict, position: int = 0) -> Dict:
     else:
         favorite = 2
 
-    # Format factors
+    # Get all factors for stat bars
+    raw_factors = pred.get('top_factors', [])
+    stat_bars = format_stat_bars(raw_factors, top_n=5)
+
+    # Legacy factors (kept for backwards compatibility)
     factors = []
-    for factor in pred.get('top_factors', [])[:3]:
+    for factor in raw_factors[:3]:
         if isinstance(factor, (list, tuple)):
             name, val = factor[0], factor[1]
         elif isinstance(factor, dict):
             name, val = factor.get('feature', ''), factor.get('value', 0)
         else:
             continue
-        # Clean up name
         name = name.replace('diff_', '').replace('_', ' ')
         factors.append({
             'name': name,
             'value': f"+{val:.2f}" if val > 0 else f"{val:.2f}"
         })
 
-    # Position labels
+    # Position labels and card section
+    # Assume first 5 fights are main card, rest are prelims
+    main_card_size = min(5, total_fights)
+
     if position == 0:
         position_label = "Main Event"
+        card_section = "main"
     elif position == 1:
         position_label = "Co-Main"
+        card_section = "main"
+    elif position < main_card_size:
+        position_label = None
+        card_section = "main"
     else:
         position_label = None
+        card_section = "prelim"
 
     # Get headshot info for both fighters
     f1_name = pred['fighter1']
@@ -184,7 +290,9 @@ def format_prediction(pred: Dict, position: int = 0) -> Dict:
         'confidence': pred.get('confidence', 'LOW'),
         'weight_class': pred.get('weight_class', ''),
         'factors': factors,
+        'stat_bars': stat_bars,
         'position_label': position_label,
+        'card_section': card_section,
         'f1_exact_match': pred.get('f1_exact_match', True),
         'f2_exact_match': pred.get('f2_exact_match', True),
         'fighter1_matched': pred.get('fighter1_matched', f1_name),
@@ -223,7 +331,8 @@ def get_upcoming_predictions() -> Optional[Dict]:
         event_slug = slugify(event_name)
 
         # Format predictions
-        formatted = [format_prediction(p, i) for i, p in enumerate(predictions)]
+        total = len(predictions)
+        formatted = [format_prediction(p, i, total) for i, p in enumerate(predictions)]
 
         # Count confidence levels
         confidence_counts = {'HIGH': 0, 'MEDIUM': 0, 'LOW': 0}
@@ -267,7 +376,8 @@ def get_backtest_predictions(date_str: str) -> Optional[Dict]:
         event_slug = slugify(event_name)
 
         # Format predictions
-        formatted = [format_prediction(p, i) for i, p in enumerate(predictions)]
+        total = len(predictions)
+        formatted = [format_prediction(p, i, total) for i, p in enumerate(predictions)]
 
         # Calculate accuracy
         correct = sum(1 for p in predictions if p.get('correct', False))
@@ -428,6 +538,30 @@ def format_date_filter(date_str):
         return dt.strftime('%B %d, %Y')
     except Exception:
         return date_str
+
+
+@app.template_filter('format_date_long')
+def format_date_long_filter(date_str):
+    """Template filter to format date strings with day of week."""
+    if not date_str:
+        return ''
+    try:
+        # Handle various date formats
+        if 'T' in str(date_str):
+            dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+        else:
+            dt = datetime.strptime(str(date_str), '%Y-%m-%d')
+        # Use %d and strip leading zero manually for cross-platform compatibility
+        day = dt.day
+        return f"{dt.strftime('%A, %B')} {day}, {dt.year}"
+    except Exception:
+        try:
+            # Try parsing as just date
+            dt = datetime.strptime(str(date_str), '%Y-%m-%d')
+            day = dt.day
+            return f"{dt.strftime('%A, %B')} {day}, {dt.year}"
+        except Exception:
+            return date_str
 
 
 if __name__ == '__main__':

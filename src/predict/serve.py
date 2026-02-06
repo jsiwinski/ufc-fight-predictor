@@ -464,7 +464,7 @@ def get_confidence_level(probability: float) -> str:
 def get_top_factors(
     feature_vector: pd.DataFrame,
     feature_names: List[str],
-    top_n: int = 3
+    top_n: int = 5
 ) -> List[Tuple[str, float]]:
     """
     Get top factors influencing the prediction.
