@@ -60,6 +60,7 @@
                 <div class="fighter-info">
                     <div class="fighter-name">{{ fight.fighter1 }}</div>
                     <div class="fighter-meta">{{ fight.weight_class }}</div>
+                    <div class="fighter-elo {% if fight.f1_elo > fight.f2_elo %}higher{% endif %}">Elo: {{ fight.f1_elo }}</div>
                     {% if not fight.f1_exact_match %}
                     <div class="match-warning">Matched to: {{ fight.fighter1_matched }}</div>
                     {% endif %}
@@ -86,6 +87,7 @@
                 <div class="fighter-info">
                     <div class="fighter-name">{{ fight.fighter2 }}</div>
                     <div class="fighter-meta">{{ fight.weight_class }}</div>
+                    <div class="fighter-elo {% if fight.f2_elo > fight.f1_elo %}higher{% endif %}">Elo: {{ fight.f2_elo }}</div>
                     {% if not fight.f2_exact_match %}
                     <div class="match-warning">Matched to: {{ fight.fighter2_matched }}</div>
                     {% endif %}
@@ -149,5 +151,25 @@
     </div>
     {% endfor %}
 </div>
+
+{# Upcoming Events Section #}
+{% if upcoming_events %}
+<div class="upcoming-events-section">
+    <h2 class="section-title">Upcoming Events</h2>
+    <div class="events-grid">
+        {% for evt in upcoming_events %}
+        <a href="/event/{{ evt.event_slug }}" class="event-card-link">
+            <div class="event-card-mini">
+                <div class="event-card-name">{{ evt.event_name }}</div>
+                <div class="event-card-date">{{ evt.event_date }}</div>
+                <div class="event-card-fights">{{ evt.fight_count }} fights</div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <p class="view-all-link"><a href="/archive">View all events</a></p>
+</div>
+{% endif %}
+
 {% endif %}
 {% endblock %}

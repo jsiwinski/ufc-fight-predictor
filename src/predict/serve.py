@@ -750,6 +750,10 @@ class PredictionPipeline:
         # Get top factors
         top_factors = get_top_factors(feature_vector, self.feature_names)
 
+        # Get Elo ratings for display (Phase 8)
+        f1_elo = f1_features.get('pre_fight_elo', 1500)
+        f2_elo = f2_features.get('pre_fight_elo', 1500)
+
         return {
             'fighter1': fighter1_name,
             'fighter2': fighter2_name,
@@ -764,6 +768,9 @@ class PredictionPipeline:
             'top_factors': top_factors,
             'f1_exact_match': f1_exact,
             'f2_exact_match': f2_exact,
+            # Elo ratings (Phase 8)
+            'f1_elo': int(round(f1_elo)),
+            'f2_elo': int(round(f2_elo)),
         }
 
     def predict_event(

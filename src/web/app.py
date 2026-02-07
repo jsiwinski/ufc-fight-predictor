@@ -54,6 +54,9 @@ FEATURE_LABELS = {
     'diff_data_completeness_score': 'Data',
     'diff_career_wins': 'Wins',
     'diff_career_losses': 'Losses',
+    # Phase 8 Elo features
+    'diff_elo': 'Elo Rating',
+    'diff_elo_momentum': 'Elo Trend',
 }
 
 # Add project root to path for imports
@@ -82,14 +85,17 @@ def get_pipeline() -> PredictionPipeline:
     global _pipeline
     if _pipeline is None:
         logger.info("Loading prediction pipeline...")
-        _pipeline = PredictionPipeline(
-            model_path=str(PROJECT_ROOT / 'data' / 'models' / 'ufc_model_v1.pkl'),
-            feature_names_path=str(PROJECT_ROOT / 'data' / 'models' / 'feature_names_v1.json'),
-            processed_data_path=str(PROJECT_ROOT / 'data' / 'processed' / 'ufc_fights_features_v1.csv'),
-            raw_data_path=str(PROJECT_ROOT / 'data' / 'raw' / 'ufc_fights_v1.csv')
-        )
-        logger.info("Pipeline loaded successfully")
+        # Use defaults from serve.py which auto-detects Phase 8 vs v1 model
+        _pipeline = PredictionPipeline()
+        from src.predict.serve import MODEL_VERSION
+        logger.info(f"Pipeline loaded successfully (model: {MODEL_VERSION})")
     return _pipeline
+
+
+def get_model_version() -> str:
+    """Get the current model version being used."""
+    from src.predict.serve import MODEL_VERSION
+    return MODEL_VERSION
 
 
 def slugify(text: str) -> str:
@@ -388,6 +394,9 @@ def format_prediction(pred: Dict, position: int = 0, total_fights: int = 13) -> 
         # Body photo flip (smart face direction)
         'f1_flip': should_flip(f1_name, 'left'),
         'f2_flip': should_flip(f2_name, 'right'),
+        # Elo ratings (Phase 8)
+        'f1_elo': pred.get('f1_elo', 1500),
+        'f2_elo': pred.get('f2_elo', 1500),
         # Backtest fields
         'actual_winner': pred.get('actual_winner'),
         'correct': pred.get('correct'),
@@ -498,14 +507,168 @@ def get_backtest_predictions(date_str: str) -> Optional[Dict]:
         return None
 
 
+def load_events_json() -> Optional[Dict]:
+    """Load the events.json file with all event data."""
+    events_file = PREDICTIONS_DIR / 'events.json'
+
+    if not events_file.exists():
+        return None
+
+    try:
+        with open(events_file, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        logger.warning(f"Error loading events.json: {e}")
+        return None
+
+
+def get_all_events() -> Tuple[List[Dict], List[Dict]]:
+    """
+    Get all events from events.json, split into upcoming and completed.
+
+    Returns:
+        Tuple of (upcoming_events, completed_events)
+    """
+    events_data = load_events_json()
+
+    if not events_data or 'events' not in events_data:
+        return [], []
+
+    upcoming = []
+    completed = []
+
+    for event in events_data['events']:
+        event_info = {
+            'event_name': event.get('name', ''),
+            'event_date': event.get('date', ''),
+            'event_slug': event.get('slug', ''),
+            'location': event.get('location', ''),
+            'fight_count': event.get('fight_count', 0),
+            'status': event.get('status', 'unknown'),
+        }
+
+        if event.get('status') == 'completed':
+            event_info['is_backtest'] = True
+            event_info['correct'] = event.get('correct', 0)
+            event_info['total'] = event.get('fight_count', 0)
+            event_info['accuracy'] = event.get('accuracy', 0)
+            event_info['accuracy_pct'] = event.get('accuracy_pct', '0')
+            completed.append(event_info)
+        else:
+            event_info['is_backtest'] = False
+            upcoming.append(event_info)
+
+    return upcoming, completed
+
+
+def get_event_from_json(slug: str) -> Optional[Dict]:
+    """Get a specific event from events.json by slug."""
+    events_data = load_events_json()
+
+    if not events_data or 'events' not in events_data:
+        return None
+
+    for event in events_data['events']:
+        if event.get('slug') == slug:
+            return event
+
+    return None
+
+
+def format_event_from_json(event_data: Dict) -> Optional[Dict]:
+    """
+    Format an event from events.json for template rendering.
+
+    Converts the events.json format to the format expected by event.html template.
+
+    Args:
+        event_data: Raw event dict from events.json
+
+    Returns:
+        Formatted event dict for template, or None if invalid
+    """
+    if not event_data:
+        return None
+
+    fights = event_data.get('fights', [])
+    if not fights:
+        return None
+
+    total_fights = len(fights)
+    formatted_predictions = []
+
+    for i, fight in enumerate(fights):
+        # Convert events.json fight format to the format expected by format_prediction
+        pred = {
+            'fighter1': fight.get('fighter_1', ''),
+            'fighter2': fight.get('fighter_2', ''),
+            'f1_win_prob': fight.get('f1_win_prob', 0.5),
+            'f2_win_prob': fight.get('f2_win_prob', 0.5),
+            'confidence': fight.get('confidence', 'LOW'),
+            'weight_class': fight.get('weight_class', ''),
+            'f1_elo': fight.get('f1_elo', 1500),
+            'f2_elo': fight.get('f2_elo', 1500),
+            'f1_exact_match': fight.get('f1_exact_match', True),
+            'f2_exact_match': fight.get('f2_exact_match', True),
+            'top_factors': [],  # events.json doesn't store factors
+            # Backtest fields
+            'actual_winner': fight.get('actual_winner'),
+            'correct': fight.get('correct'),
+            'method': fight.get('method'),
+        }
+        formatted_predictions.append(format_prediction(pred, i, total_fights))
+
+    # Count confidence levels
+    confidence_counts = {'HIGH': 0, 'MEDIUM': 0, 'LOW': 0}
+    for fight in fights:
+        conf = fight.get('confidence', 'LOW')
+        confidence_counts[conf] = confidence_counts.get(conf, 0) + 1
+
+    is_backtest = event_data.get('status') == 'completed'
+
+    result = {
+        'event_name': event_data.get('name', ''),
+        'event_date': event_data.get('date', ''),
+        'event_slug': event_data.get('slug', ''),
+        'predictions': formatted_predictions,
+        'fight_count': total_fights,
+        'confidence_counts': confidence_counts,
+        'is_backtest': is_backtest,
+    }
+
+    if is_backtest:
+        result['correct'] = event_data.get('correct', 0)
+        result['total'] = total_fights
+        result['accuracy'] = event_data.get('accuracy', 0)
+        result['accuracy_pct'] = event_data.get('accuracy_pct', '0')
+
+    return result
+
+
 def get_archived_events() -> List[Dict]:
     """Get list of archived events with cached predictions."""
+    # First try events.json
+    upcoming, completed = get_all_events()
+
+    if upcoming or completed:
+        # Return all events (upcoming first, then completed)
+        events = []
+        for event in upcoming:
+            events.append(event)
+        for event in completed:
+            events.append(event)
+        return events
+
+    # Fall back to individual cache files
     events = []
 
     if not PREDICTIONS_DIR.exists():
         return events
 
     for cache_file in sorted(PREDICTIONS_DIR.glob('*.json'), reverse=True):
+        if cache_file.name == 'events.json':
+            continue
+
         try:
             with open(cache_file, 'r') as f:
                 data = json.load(f)
@@ -532,20 +695,51 @@ app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 
+@app.context_processor
+def inject_model_info():
+    """Inject model version info into all templates."""
+    from src.predict.serve import MODEL_VERSION
+    model_version = 'Phase 8' if MODEL_VERSION == 'phase8' else 'v1'
+    model_accuracy = '60.5%' if MODEL_VERSION == 'phase8' else '58.9%'
+    return {
+        'model_version': model_version,
+        'model_accuracy': model_accuracy,
+    }
+
+
 @app.route('/')
 def index():
     """Homepage - next upcoming event predictions."""
     data = get_upcoming_predictions()
 
-    if data is None:
-        return render_template('index.html', error="No upcoming events found. Try checking back later.")
+    # Get other upcoming events for sidebar
+    upcoming_events, completed_events = get_all_events()
 
-    return render_template('index.html', event=data)
+    # Filter out the current event from upcoming list
+    if data and upcoming_events:
+        current_slug = data.get('event_slug', '')
+        upcoming_events = [e for e in upcoming_events if e.get('event_slug') != current_slug]
+
+    if data is None:
+        return render_template('index.html', error="No upcoming events found. Try checking back later.",
+                               upcoming_events=upcoming_events[:5])
+
+    return render_template('index.html', event=data, upcoming_events=upcoming_events[:5])
 
 
 @app.route('/event/<event_slug>')
 def event_detail(event_slug: str):
     """Display predictions for a specific event."""
+    # First try events.json
+    event_data = get_event_from_json(event_slug)
+
+    if event_data:
+        # Format for template
+        formatted = format_event_from_json(event_data)
+        if formatted:
+            return render_template('event.html', event=formatted)
+
+    # Fall back to cache file
     data = get_cached_predictions(event_slug)
 
     if data is None:

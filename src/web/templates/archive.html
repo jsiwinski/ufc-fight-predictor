@@ -4,34 +4,66 @@
 
 {% block content %}
 <div class="event-header">
-    <h1 class="event-name">Prediction Archive</h1>
-    <p class="event-meta">Past events with predictions and backtest results</p>
+    <h1 class="event-name">All Events</h1>
+    <p class="event-meta">Upcoming predictions and past backtest results</p>
 </div>
 
-{% if events %}
-<ul class="archive-list">
-    {% for event in events %}
-    <li class="archive-item">
-        <div>
-            <a href="/event/{{ event.event_slug }}" class="archive-event">{{ event.event_name }}</a>
-            <div class="archive-meta">{{ event.event_date }} &middot; {{ event.fight_count }} fights</div>
-        </div>
-        <div class="archive-accuracy {% if event.is_backtest %}has-result{% endif %}">
-            {% if event.is_backtest and event.accuracy_pct %}
-            {{ event.correct }}/{{ event.total }} ({{ event.accuracy_pct }}%)
-            {% else %}
-            Pending
-            {% endif %}
-        </div>
-        <div>
-            <a href="/event/{{ event.event_slug }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">View &rarr;</a>
-        </div>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
+{% set upcoming = events|selectattr('status', 'equalto', 'upcoming')|list %}
+{% set completed = events|rejectattr('status', 'equalto', 'upcoming')|list %}
+
+{# Upcoming Events Section #}
+{% if upcoming %}
+<div class="archive-section">
+    <h2 class="archive-section-title">Upcoming Events</h2>
+    <ul class="archive-list">
+        {% for event in upcoming %}
+        <li class="archive-item upcoming">
+            <div>
+                <a href="/event/{{ event.event_slug }}" class="archive-event">{{ event.event_name }}</a>
+                <div class="archive-meta">{{ event.event_date }} &middot; {{ event.fight_count }} fights</div>
+            </div>
+            <div class="archive-status upcoming">
+                <span class="status-badge">Upcoming</span>
+            </div>
+            <div>
+                <a href="/event/{{ event.event_slug }}" class="archive-link">View predictions &rarr;</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{# Completed Events Section #}
+{% if completed %}
+<div class="archive-section">
+    <h2 class="archive-section-title">Completed Events</h2>
+    <ul class="archive-list">
+        {% for event in completed %}
+        <li class="archive-item completed">
+            <div>
+                <a href="/event/{{ event.event_slug }}" class="archive-event">{{ event.event_name }}</a>
+                <div class="archive-meta">{{ event.event_date }} &middot; {{ event.fight_count }} fights</div>
+            </div>
+            <div class="archive-accuracy has-result">
+                {% if event.accuracy_pct %}
+                {{ event.correct }}/{{ event.total }} ({{ event.accuracy_pct }}%)
+                {% else %}
+                No data
+                {% endif %}
+            </div>
+            <div>
+                <a href="/event/{{ event.event_slug }}" class="archive-link">View results &rarr;</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if not events %}
 <div class="empty-state">
-    <h2>No archived events yet</h2>
+    <h2>No events yet</h2>
     <p>Predictions will appear here after they're generated.</p>
     <p style="margin-top: 20px;">
         <a href="/" style="color: var(--red);">Generate predictions for the next event</a>

@@ -292,6 +292,23 @@ main {
     margin-top: 2px;
 }
 
+/* Elo Rating Display */
+.fighter-elo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.fighter-elo.higher {
+    color: var(--green);
+    font-weight: 500;
+}
+
+.fighter-side.left .fighter-elo {
+    text-align: right;
+}
+
 /* Probability Display */
 .prob-display {
     display: flex;
@@ -747,6 +764,45 @@ footer p {
     color: var(--green);
 }
 
+.archive-section {
+    margin-bottom: 48px;
+}
+
+.archive-section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.archive-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.archive-link:hover {
+    color: var(--red);
+}
+
+.archive-status.upcoming {
+    font-size: 0.85rem;
+}
+
+.status-badge {
+    background: var(--blue);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 /* Empty State */
 .empty-state {
     text-align: center;
@@ -759,6 +815,80 @@ footer p {
     font-size: 1.5rem;
     margin-bottom: 12px;
     color: var(--text-secondary);
+}
+
+/* Upcoming Events Section */
+.upcoming-events-section {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+}
+
+.section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--text);
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.event-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.event-card-mini {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.2s ease;
+}
+
+.event-card-mini:hover {
+    border-color: var(--red);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.event-card-name {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+}
+
+.event-card-date {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.event-card-fights {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.view-all-link {
+    text-align: center;
+}
+
+.view-all-link a {
+    color: var(--red);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.view-all-link a:hover {
+    text-decoration: underline;
 }
 
 /* Responsive */
