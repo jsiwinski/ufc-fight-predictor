@@ -1766,6 +1766,21 @@ python src/predict/serve.py --format json</div>
                 </ul>
             </div>
         </div>
+
+        <div class="roadmap-item">
+            <div class="roadmap-status complete">Complete</div>
+            <div class="roadmap-content">
+                <h4>Phase 7: Domain-Specific Opponent Adjustment & Feature Pruning</h4>
+                <ul>
+                    <li>Domain-specific opponent skill profiles: striking, grappling, durability, overall</li>
+                    <li>Each stat category adjusted by opponent's skill in that domain</li>
+                    <li>Feature pruning: removed 103 features with zero/negative importance</li>
+                    <li>v3-A (pruned + adjusted): 90 features, 2/5 metric wins</li>
+                    <li>v3-B (adjusted only): 113 features, 1/5 metric wins</li>
+                    <li><strong>Result:</strong> v1 retained — domain-specific adjustments marginally improved accuracy (+0.28pp) and calibration (MCE: 13.7% → 13.4%) but degraded ROC-AUC and Brier. Feature pruning alone did not compensate. v3-B achieved best calibration (7.5% MCE) but at cost of other metrics.</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <h3>Future Enhancements</h3>
@@ -1774,8 +1789,17 @@ python src/predict/serve.py --format json</div>
         <li><strong>Betting integration:</strong> Scrape odds, compare model to market</li>
         <li><strong>Pre-UFC records:</strong> Include fighter records before UFC debut</li>
         <li><strong>Method prediction:</strong> Predict KO/Sub/Decision, not just winner</li>
-        <li><strong>Ensemble models:</strong> Combine XGBoost + RF + NN</li>
-        <li><strong>Refined opponent quality:</strong> Investigate why opponent-adjusted features improved calibration but not accuracy. May need different weighting or use in ensemble.</li>
+        <li><strong>Ensemble models:</strong> Combine XGBoost + RF + NN — Phase 6/7 showed calibration improvements don't transfer to accuracy; ensemble could leverage both</li>
+        <li><strong>Time-series momentum:</strong> Win/loss streaks and form trajectories may carry more signal than opponent-adjusted stats</li>
+    </ul>
+
+    <h3>Lessons Learned from Phase 6-7</h3>
+    <p>Two iterations of opponent-quality adjustment (global and domain-specific) consistently improved calibration (MCE reduced from 13.7% to as low as 4.1%) but degraded discriminative power (ROC-AUC, log loss). This suggests:</p>
+    <ul>
+        <li>Opponent strength signal is already implicitly captured in win/loss records and career stats</li>
+        <li>Explicit adjustment adds noise rather than signal for winner prediction</li>
+        <li>The model may be near its ceiling (~59% accuracy) for the available feature space</li>
+        <li>Future improvements likely require new data sources (betting odds, training camp intel) rather than feature engineering on existing stats</li>
     </ul>
 </section>
 

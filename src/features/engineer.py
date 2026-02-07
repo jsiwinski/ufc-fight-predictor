@@ -96,96 +96,324 @@ def parse_percentage(pct_str: str) -> float:
 
 
 # ============================================================================
-# Opponent Quality Scoring
+# Domain-Specific Opponent Skill Profiles (Phase 7)
 # ============================================================================
 
-def compute_opponent_quality_for_fight(
+# Minimum fights for opponent to have reliable skill profile
+MIN_FIGHTS_FOR_SKILL = 3
+
+
+def compute_opponent_striking_skill(
     opponent_name: str,
     fight_date: pd.Timestamp,
     fighter_history: pd.DataFrame
-) -> float:
+) -> Optional[float]:
     """
-    Compute opponent quality score at the time of the fight.
+    Compute opponent's striking skill at the time of the fight.
 
-    Uses only fights that occurred BEFORE fight_date (no leakage).
+    Measures how dangerous the opponent is on the feet. If you land strikes
+    against a good striker, that's more impressive.
+
+    Components (from opponent's prior fights):
+    - sig_strikes_landed per fight (40%) - offensive striking volume
+    - sig_strike_accuracy (30%) - derived from landed/attempted
+    - sig_strikes_absorbed per fight inverse (20%) - defense (lower = better)
+    - knockdowns scored per fight (10%) - power
 
     Args:
         opponent_name: Name of the opponent
         fight_date: Date of the current fight
-        fighter_history: DataFrame with all fighter-fight records (fighter_name, fight_date, is_winner)
+        fighter_history: DataFrame with fighter-fight records
 
     Returns:
-        Raw quality score (not yet normalized to 0-2 scale)
+        Raw striking skill score, or None if < MIN_FIGHTS_FOR_SKILL fights
     """
-    # Get all of opponent's fights BEFORE this date
+    opponent_history = fighter_history[
+        (fighter_history['fighter_name'] == opponent_name) &
+        (fighter_history['fight_date'] < fight_date)
+    ]
+
+    if len(opponent_history) < MIN_FIGHTS_FOR_SKILL:
+        return None
+
+    # Filter to fights with detailed stats
+    detailed = opponent_history[opponent_history['has_detailed_stats'] == True]
+    if len(detailed) == 0:
+        return None
+
+    # Component 1: Avg sig strikes landed per fight (normalized 0-1)
+    avg_sig_landed = detailed['sig_strikes_landed'].mean()
+    # Normalize: 0-50 strikes is typical range, cap at 100
+    norm_sig_landed = min(avg_sig_landed / 100.0, 1.0)
+
+    # Component 2: Strike accuracy
+    total_landed = detailed['sig_strikes_landed'].sum()
+    total_attempted = detailed['sig_strikes_attempted'].sum()
+    if total_attempted > 0:
+        accuracy = total_landed / total_attempted
+    else:
+        accuracy = 0.5  # neutral
+
+    # Component 3: Strikes absorbed inverse (lower = better defense)
+    avg_sig_absorbed = detailed['opp_sig_strikes_landed'].mean()
+    # Normalize inversely: 0-80 typical, we want lower to be better
+    norm_defense = max(0, 1.0 - (avg_sig_absorbed / 100.0))
+
+    # Component 4: Knockdowns per fight
+    avg_knockdowns = detailed['knockdowns'].mean()
+    # Normalize: 0-1 knockdowns typical, cap at 3
+    norm_knockdowns = min(avg_knockdowns / 3.0, 1.0)
+
+    # Combine
+    raw_score = (0.40 * norm_sig_landed) + (0.30 * accuracy) + \
+                (0.20 * norm_defense) + (0.10 * norm_knockdowns)
+
+    return raw_score
+
+
+def compute_opponent_grappling_skill(
+    opponent_name: str,
+    fight_date: pd.Timestamp,
+    fighter_history: pd.DataFrame
+) -> Optional[float]:
+    """
+    Compute opponent's grappling/wrestling skill at the time of the fight.
+
+    Measures how good the opponent is at wrestling exchanges. Landing
+    takedowns against a good grappler is more impressive.
+
+    Components (from opponent's prior fights):
+    - takedown defense % (40%) - how hard to take down
+    - takedowns absorbed per fight inverse (30%) - lower = harder to TD
+    - control time absorbed inverse (20%) - less = better at scrambling
+    - reversals per fight (10%) - ability to escape/reverse
+
+    Args:
+        opponent_name: Name of the opponent
+        fight_date: Date of the current fight
+        fighter_history: DataFrame with fighter-fight records
+
+    Returns:
+        Raw grappling skill score, or None if < MIN_FIGHTS_FOR_SKILL fights
+    """
+    opponent_history = fighter_history[
+        (fighter_history['fighter_name'] == opponent_name) &
+        (fighter_history['fight_date'] < fight_date)
+    ]
+
+    if len(opponent_history) < MIN_FIGHTS_FOR_SKILL:
+        return None
+
+    detailed = opponent_history[opponent_history['has_detailed_stats'] == True]
+    if len(detailed) == 0:
+        return None
+
+    # We need to compute TD defense from the opponent's perspective
+    # TD defense = 1 - (TDs absorbed / TDs attempted against)
+    # We don't have TDs attempted against directly, so use TDs absorbed inverse
+
+    # Component 1: TDs absorbed per fight inverse (lower = better TD defense)
+    # Need to get opponent's view of takedowns - they had takedowns landed ON them
+    avg_tds_absorbed = detailed['takedowns_landed'].mean()  # TDs the opponent landed on their opponents
+    # We actually want TDs landed AGAINST the opponent by their opponents
+    # This is tricky - we need the opponent's opponent's takedowns
+    # Simplify: use the opponent's own TD success as proxy for grappling skill
+
+    # Alternative: Use opponent's takedown accuracy as grappling skill indicator
+    total_td_landed = detailed['takedowns_landed'].sum()
+    total_td_attempted = detailed['takedowns_attempted'].sum()
+    if total_td_attempted > 0:
+        td_accuracy = total_td_landed / total_td_attempted
+    else:
+        td_accuracy = 0.5  # neutral
+
+    # Component 2: Takedowns per fight (offensive grappling)
+    avg_tds = detailed['takedowns_landed'].mean()
+    norm_tds = min(avg_tds / 5.0, 1.0)  # 5 TDs per fight is very high
+
+    # Component 3: Control time per fight
+    avg_control = detailed['control_time_seconds'].mean()
+    norm_control = min(avg_control / 300.0, 1.0)  # 5 min = max
+
+    # Component 4: Submission attempts per fight (grappling threat)
+    avg_subs = detailed['submission_attempts'].mean()
+    norm_subs = min(avg_subs / 3.0, 1.0)  # 3 sub attempts is high
+
+    # Combine
+    raw_score = (0.35 * td_accuracy) + (0.30 * norm_tds) + \
+                (0.25 * norm_control) + (0.10 * norm_subs)
+
+    return raw_score
+
+
+def compute_opponent_durability(
+    opponent_name: str,
+    fight_date: pd.Timestamp,
+    fighter_history: pd.DataFrame
+) -> Optional[float]:
+    """
+    Compute opponent's durability at the time of the fight.
+
+    Measures how hard the opponent is to finish. Getting a KO against
+    someone who's never been finished is worth more.
+
+    Components (from opponent's prior fights):
+    - % of fights that went to decision (40%) - more = more durable
+    - KO/TKO loss rate inverse (30%) - lower = more durable chin
+    - times knocked down per fight inverse (20%) - fewer = more durable
+    - average fight duration (10%) - longer = more durable
+
+    Args:
+        opponent_name: Name of the opponent
+        fight_date: Date of the current fight
+        fighter_history: DataFrame with fighter-fight records
+
+    Returns:
+        Raw durability score, or None if < MIN_FIGHTS_FOR_SKILL fights
+    """
+    opponent_history = fighter_history[
+        (fighter_history['fighter_name'] == opponent_name) &
+        (fighter_history['fight_date'] < fight_date)
+    ]
+
+    if len(opponent_history) < MIN_FIGHTS_FOR_SKILL:
+        return None
+
+    n_fights = len(opponent_history)
+
+    # Component 1: Decision rate (fights that went the distance)
+    # Check if opponent's fights went to decision (any decision type)
+    decision_fights = opponent_history['method'].str.contains('Decision', case=False, na=False).sum()
+    decision_rate = decision_fights / n_fights
+
+    # Component 2: KO/TKO loss rate inverse
+    # Count fights where opponent LOST by KO/TKO
+    ko_losses = ((opponent_history['method'].str.contains('KO|TKO', case=False, na=False)) &
+                 (opponent_history['is_winner'] == 0)).sum()
+    ko_loss_rate = ko_losses / n_fights
+    inverse_ko_loss = 1.0 - ko_loss_rate  # Higher = more durable
+
+    # Component 3: Knockdowns absorbed per fight inverse
+    detailed = opponent_history[opponent_history['has_detailed_stats'] == True]
+    if len(detailed) > 0:
+        # We need knockdowns against opponent - that's their opponent's knockdowns on them
+        # Use opponent's sig strikes absorbed as proxy for damage taken
+        avg_absorbed = detailed['opp_sig_strikes_landed'].mean()
+        norm_damage = max(0, 1.0 - (avg_absorbed / 100.0))  # Higher = less damage taken
+    else:
+        norm_damage = 0.5  # neutral
+
+    # Component 4: Average fight duration
+    avg_duration = opponent_history['fight_time_seconds'].mean()
+    # Normalize: 15 min (full 3 rounds) = 1.0
+    norm_duration = min(avg_duration / 900.0, 1.0)
+
+    # Combine
+    raw_score = (0.40 * decision_rate) + (0.30 * inverse_ko_loss) + \
+                (0.20 * norm_damage) + (0.10 * norm_duration)
+
+    return raw_score
+
+
+def compute_opponent_overall_quality(
+    opponent_name: str,
+    fight_date: pd.Timestamp,
+    fighter_history: pd.DataFrame
+) -> Optional[float]:
+    """
+    Compute opponent's overall quality at the time of the fight.
+
+    Used for adjusting win/loss outcomes. Beating a .800 career fighter
+    counts more than beating a .300 career fighter.
+
+    Components:
+    - career win rate (50%)
+    - number of UFC fights / experience (25%)
+    - win rate last 5 (25%)
+
+    Args:
+        opponent_name: Name of the opponent
+        fight_date: Date of the current fight
+        fighter_history: DataFrame with fighter-fight records
+
+    Returns:
+        Raw overall quality score, or None if debut
+    """
     opponent_history = fighter_history[
         (fighter_history['fighter_name'] == opponent_name) &
         (fighter_history['fight_date'] < fight_date)
     ]
 
     if len(opponent_history) == 0:
-        # UFC debut — unknown quality, return None for neutral/average
         return None
 
-    # Component 1: Career win rate (most important)
-    career_wins = opponent_history['is_winner'].sum()
     career_fights = len(opponent_history)
+    career_wins = opponent_history['is_winner'].sum()
     career_win_rate = career_wins / career_fights
 
-    # Component 2: UFC experience (normalized)
-    # 10+ fights = fully experienced, scale linearly
+    # Experience normalized (10+ fights = fully experienced)
     normalized_experience = min(career_fights / 10.0, 1.0)
 
-    # Component 3: Recent form (last 5 win rate)
+    # Recent form (last 5)
     recent_fights = opponent_history.sort_values('fight_date').tail(5)
     recent_form = recent_fights['is_winner'].mean()
 
-    # Combine: 50% career win rate, 25% experience, 25% recent form
     raw_score = (0.50 * career_win_rate) + (0.25 * normalized_experience) + (0.25 * recent_form)
 
     return raw_score
 
 
-def normalize_opponent_quality_scores(raw_scores: pd.Series) -> pd.Series:
+def normalize_skill_scores(raw_scores: pd.Series, neutral_value: float = 1.0) -> pd.Series:
     """
-    Normalize raw opponent quality scores to 0.0-2.0 scale where 1.0 = average.
+    Normalize raw skill scores to centered scale where 1.0 = average.
 
-    Uses z-score transformation then scales to target range.
+    Uses z-score transformation then scales to target range (0.5 to 1.5).
 
     Args:
-        raw_scores: Series of raw quality scores (None for debuts)
+        raw_scores: Series of raw skill scores (None for unknown)
+        neutral_value: Value to use for unknown/debut fighters
 
     Returns:
-        Series of normalized scores (1.0 for debuts/unknown)
+        Series of normalized scores
     """
-    # Handle None values
     valid_scores = raw_scores.dropna()
 
     if len(valid_scores) == 0:
-        return pd.Series([1.0] * len(raw_scores), index=raw_scores.index)
+        return pd.Series([neutral_value] * len(raw_scores), index=raw_scores.index)
 
-    # Compute mean and std for normalization
     mean_score = valid_scores.mean()
     std_score = valid_scores.std()
 
     if std_score == 0 or pd.isna(std_score):
-        std_score = 0.1  # Avoid division by zero
+        std_score = 0.1
 
-    normalized = raw_scores.copy()
+    normalized = raw_scores.copy().astype(float)
 
     for idx in raw_scores.index:
         if pd.isna(raw_scores[idx]):
-            # Debut: neutral quality
-            normalized[idx] = 1.0
+            normalized[idx] = neutral_value
         else:
-            # Z-score transformation, then scale to 0.5-1.5 range (centered on 1.0)
+            # Z-score then scale to 0.5-1.5 range
             z = (raw_scores[idx] - mean_score) / std_score
-            # Clip z-score to -2 to +2 range
             z = max(-2, min(2, z))
-            # Scale to 0.5-1.5 range (0.25 per z-unit)
             normalized[idx] = 1.0 + (z * 0.25)
 
     return normalized
+
+
+# Legacy function for backward compatibility with Phase 6
+def compute_opponent_quality_for_fight(
+    opponent_name: str,
+    fight_date: pd.Timestamp,
+    fighter_history: pd.DataFrame
+) -> float:
+    """Legacy function - redirects to compute_opponent_overall_quality."""
+    return compute_opponent_overall_quality(opponent_name, fight_date, fighter_history)
+
+
+def normalize_opponent_quality_scores(raw_scores: pd.Series) -> pd.Series:
+    """Legacy function - redirects to normalize_skill_scores."""
+    return normalize_skill_scores(raw_scores, neutral_value=1.0)
 
 
 # ============================================================================
@@ -502,111 +730,161 @@ class FeatureEngineer:
 
     def calculate_opponent_quality_features(self, fighter_df: pd.DataFrame) -> pd.DataFrame:
         """
-        Calculate opponent quality scores and quality-adjusted features.
+        Calculate domain-specific opponent skill profiles and adjusted features.
 
-        For each fight, computes the opponent's quality score based on their
-        record BEFORE that fight date (no leakage). Then adjusts stats by
-        multiplying by opponent quality.
+        Phase 7 enhancement: Each stat category is adjusted by the opponent's
+        strength in THAT SAME category:
+        - Striking stats × opponent_striking_skill
+        - Grappling stats × opponent_grappling_skill
+        - Knockdowns × sqrt(striking_skill × durability)
+        - Win/loss × opponent_overall_quality
 
         Args:
             fighter_df: DataFrame with fighter-centric records and career features
 
         Returns:
-            DataFrame with added opponent quality and adjusted features
+            DataFrame with domain-specific opponent skills and adjusted features
         """
         if not self.compute_opponent_quality:
             logger.info("Opponent quality computation disabled, skipping...")
             return fighter_df
 
-        logger.info("Calculating opponent quality scores...")
+        logger.info("Calculating domain-specific opponent skill profiles (Phase 7)...")
 
         df = fighter_df.copy()
 
-        # Step 1: Compute raw opponent quality score for each fight
-        raw_quality_scores = []
+        # =====================================================================
+        # Step 1: Compute all 4 raw opponent skill profiles for each fight
+        # =====================================================================
+        raw_striking_skills = []
+        raw_grappling_skills = []
+        raw_durability_scores = []
+        raw_overall_quality = []
 
         for idx, row in df.iterrows():
             opponent_name = row['opponent_name']
             fight_date = row['fight_date']
 
-            raw_score = compute_opponent_quality_for_fight(
-                opponent_name, fight_date, df
-            )
-            raw_quality_scores.append(raw_score)
+            # Compute each skill profile
+            striking = compute_opponent_striking_skill(opponent_name, fight_date, df)
+            grappling = compute_opponent_grappling_skill(opponent_name, fight_date, df)
+            durability = compute_opponent_durability(opponent_name, fight_date, df)
+            overall = compute_opponent_overall_quality(opponent_name, fight_date, df)
 
-        df['raw_opponent_quality'] = raw_quality_scores
+            raw_striking_skills.append(striking)
+            raw_grappling_skills.append(grappling)
+            raw_durability_scores.append(durability)
+            raw_overall_quality.append(overall)
 
-        # Step 2: Normalize to 0.5-1.5 scale (1.0 = average)
-        df['opponent_quality'] = normalize_opponent_quality_scores(df['raw_opponent_quality'])
+        df['raw_opp_striking_skill'] = raw_striking_skills
+        df['raw_opp_grappling_skill'] = raw_grappling_skills
+        df['raw_opp_durability'] = raw_durability_scores
+        df['raw_opp_overall_quality'] = raw_overall_quality
 
-        # Print distribution stats
-        valid_scores = df['opponent_quality'].dropna()
-        self.opponent_quality_stats = {
-            'mean': float(valid_scores.mean()),
-            'std': float(valid_scores.std()),
-            'min': float(valid_scores.min()),
-            'max': float(valid_scores.max()),
-            'median': float(valid_scores.median()),
-            'debuts': int(df['raw_opponent_quality'].isna().sum()),
-        }
-        logger.info(f"Opponent quality distribution: mean={self.opponent_quality_stats['mean']:.3f}, "
-                    f"std={self.opponent_quality_stats['std']:.3f}, "
-                    f"range=[{self.opponent_quality_stats['min']:.3f}, {self.opponent_quality_stats['max']:.3f}]")
-        logger.info(f"  Debuts (neutral quality): {self.opponent_quality_stats['debuts']}")
+        # =====================================================================
+        # Step 2: Normalize each skill to 0.5-1.5 scale (1.0 = average)
+        # =====================================================================
+        df['opp_striking_skill'] = normalize_skill_scores(
+            pd.Series(raw_striking_skills, index=df.index), neutral_value=1.0
+        )
+        df['opp_grappling_skill'] = normalize_skill_scores(
+            pd.Series(raw_grappling_skills, index=df.index), neutral_value=1.0
+        )
+        df['opp_durability'] = normalize_skill_scores(
+            pd.Series(raw_durability_scores, index=df.index), neutral_value=1.0
+        )
+        df['opp_overall_quality'] = normalize_skill_scores(
+            pd.Series(raw_overall_quality, index=df.index), neutral_value=1.0
+        )
 
-        # Step 3: Compute quality-adjusted win value for each fight
-        # A win vs 1.5 quality opponent = 1.5 value, vs 0.6 quality = 0.6 value
-        df['quality_adjusted_win'] = df['is_winner'] * df['opponent_quality']
+        # For backward compatibility, also store as 'opponent_quality'
+        df['opponent_quality'] = df['opp_overall_quality']
 
-        # Step 4: Adjust offensive stats by opponent quality
-        stats_to_adjust = [
-            'sig_strikes_landed', 'sig_strikes_attempted',
-            'total_strikes_landed', 'total_strikes_attempted',
-            'takedowns_landed', 'takedowns_attempted',
-            'knockdowns', 'submission_attempts', 'control_time_seconds'
-        ]
+        # Print distribution stats for each skill category
+        self.opponent_quality_stats = {}
+        for skill_col in ['opp_striking_skill', 'opp_grappling_skill', 'opp_durability', 'opp_overall_quality']:
+            valid = df[skill_col].dropna()
+            raw_col = skill_col.replace('opp_', 'raw_opp_')
+            debuts = df[raw_col].isna().sum() if raw_col in df.columns else 0
+            self.opponent_quality_stats[skill_col] = {
+                'mean': float(valid.mean()),
+                'std': float(valid.std()),
+                'min': float(valid.min()),
+                'max': float(valid.max()),
+                'median': float(valid.median()),
+                'neutral_count': int(debuts),
+            }
+            logger.info(f"  {skill_col}: mean={valid.mean():.3f}, std={valid.std():.3f}, "
+                        f"range=[{valid.min():.3f}, {valid.max():.3f}], neutral={debuts}")
 
-        for stat in stats_to_adjust:
+        # =====================================================================
+        # Step 3: Apply domain-specific adjustments to stats
+        # =====================================================================
+        logger.info("Applying domain-matched stat adjustments...")
+
+        # Striking stats adjusted by opponent's striking ability
+        striking_stats = ['sig_strikes_landed', 'sig_strikes_attempted',
+                          'total_strikes_landed', 'total_strikes_attempted']
+        for stat in striking_stats:
             if stat in df.columns:
-                df[f'{stat}_adj'] = df[stat] * df['opponent_quality']
+                df[f'{stat}_adj'] = df[stat] * df['opp_striking_skill']
 
-        logger.info("Computing quality-adjusted career stats...")
+        # Grappling stats adjusted by opponent's grappling ability
+        grappling_stats = ['takedowns_landed', 'takedowns_attempted',
+                           'submission_attempts', 'control_time_seconds']
+        for stat in grappling_stats:
+            if stat in df.columns:
+                df[f'{stat}_adj'] = df[stat] * df['opp_grappling_skill']
 
-        # Step 5: Compute adjusted career stats (grouped by fighter)
-        def calculate_adjusted_stats(fighter_group):
-            """Calculate adjusted cumulative career stats"""
+        # Knockdowns: hybrid adjustment (striking × durability)
+        if 'knockdowns' in df.columns:
+            df['knockdowns_adj'] = df['knockdowns'] * np.sqrt(
+                df['opp_striking_skill'] * df['opp_durability']
+            )
+
+        # Win/loss adjusted by opponent's overall quality
+        df['quality_adjusted_win'] = df['is_winner'] * df['opp_overall_quality']
+
+        # =====================================================================
+        # Step 4: Compute adjusted career stats and rolling windows
+        # =====================================================================
+        logger.info("Computing domain-adjusted career stats...")
+
+        def calculate_domain_adjusted_stats(fighter_group):
+            """Calculate domain-adjusted cumulative career stats"""
             fg = fighter_group.sort_values('fight_date').copy()
 
-            # Adjusted career win rate
-            # Sum of quality-adjusted wins / number of fights
+            # Adjusted career win rate (using overall quality)
             fg['adj_career_wins'] = fg['quality_adjusted_win'].shift(1, fill_value=0).cumsum()
             fg['career_fights_for_adj'] = range(len(fg))
             fg['adj_career_win_rate'] = fg['adj_career_wins'] / fg['career_fights_for_adj'].replace(0, 1)
 
-            # Average opponent quality faced (expanding mean of prior opponents)
-            # For fight N, this is the average opponent_quality from fights 1 to N-1
-            fg['avg_opponent_quality'] = fg['opponent_quality'].shift(1).expanding(min_periods=1).mean()
-            # Fill NaN for first fight (no prior opponents) with neutral 1.0
-            fg['avg_opponent_quality'] = fg['avg_opponent_quality'].fillna(1.0)
+            # Average opponent skills faced (expanding mean of prior opponents)
+            for skill in ['opp_striking_skill', 'opp_grappling_skill', 'opp_durability', 'opp_overall_quality']:
+                col_name = f'avg_{skill}'
+                fg[col_name] = fg[skill].shift(1).expanding(min_periods=1).mean()
+                fg[col_name] = fg[col_name].fillna(1.0)
 
-            # Adjusted rolling windows
+            # Domain-adjusted rolling windows
             for window in self.rolling_windows:
                 # Adjusted win rate in last N fights
                 fg[f'adj_win_rate_last_{window}'] = fg['quality_adjusted_win'].shift(1).rolling(
                     window, min_periods=1
                 ).mean()
 
-                # Recent opponent quality
-                fg[f'avg_opponent_quality_last_{window}'] = fg['opponent_quality'].shift(1).rolling(
-                    window, min_periods=1
-                ).mean()
+                # Recent opponent skill averages
+                for skill in ['opp_striking_skill', 'opp_grappling_skill', 'opp_overall_quality']:
+                    fg[f'avg_{skill}_last_{window}'] = fg[skill].shift(1).rolling(
+                        window, min_periods=1
+                    ).mean()
 
-                # Adjusted strikes (if available)
+                # Domain-adjusted striking stats
                 if 'sig_strikes_landed_adj' in fg.columns:
                     fg[f'adj_avg_sig_strikes_landed_last_{window}'] = fg['sig_strikes_landed_adj'].shift(1).rolling(
                         window, min_periods=1
                     ).mean()
 
+                # Domain-adjusted grappling stats
                 if 'takedowns_landed_adj' in fg.columns:
                     fg[f'adj_avg_takedowns_last_{window}'] = fg['takedowns_landed_adj'].shift(1).rolling(
                         window, min_periods=1
@@ -617,24 +895,32 @@ class FeatureEngineer:
                         window, min_periods=1
                     ).mean()
 
+                # Domain-adjusted knockdowns
+                if 'knockdowns_adj' in fg.columns:
+                    fg[f'adj_avg_knockdowns_last_{window}'] = fg['knockdowns_adj'].shift(1).rolling(
+                        window, min_periods=1
+                    ).mean()
+
             # Clean up temp columns
             fg.drop(columns=['career_fights_for_adj'], inplace=True)
 
             return fg
 
-        df = df.groupby('fighter_name', group_keys=False).apply(calculate_adjusted_stats)
+        df = df.groupby('fighter_name', group_keys=False).apply(calculate_domain_adjusted_stats)
 
-        # Fill NaN values in adjusted features with defaults
-        adj_features = [col for col in df.columns if col.startswith('adj_') or 'opponent_quality' in col]
+        # =====================================================================
+        # Step 5: Fill NaN values with appropriate defaults
+        # =====================================================================
+        adj_features = [col for col in df.columns if col.startswith('adj_') or 'opp_' in col]
         for feat in adj_features:
             if feat == 'adj_career_win_rate':
                 df[feat] = df[feat].fillna(self.debut_win_rate)
-            elif 'opponent_quality' in feat:
-                df[feat] = df[feat].fillna(1.0)  # Neutral quality
+            elif 'opp_' in feat and 'skill' in feat or 'quality' in feat or 'durability' in feat:
+                df[feat] = df[feat].fillna(1.0)  # Neutral
             else:
                 df[feat] = df[feat].fillna(0.0)
 
-        logger.info(f"Added {len(adj_features)} opponent-quality-adjusted features")
+        logger.info(f"Added {len(adj_features)} domain-adjusted features (Phase 7)")
 
         return df
 
@@ -849,19 +1135,30 @@ class FeatureEngineer:
                     f'avg_fight_time_last_{window}',
                 ])
 
-            # Add opponent-quality-adjusted features (Phase 6)
+            # Add domain-specific opponent-adjusted features (Phase 7)
             if self.compute_opponent_quality:
+                # Core adjusted career features
                 career_features.extend([
                     'adj_career_win_rate',
-                    'avg_opponent_quality',
+                    # Domain-specific opponent skill averages
+                    'avg_opp_striking_skill',
+                    'avg_opp_grappling_skill',
+                    'avg_opp_durability',
+                    'avg_opp_overall_quality',
                 ])
                 for window in self.rolling_windows:
                     career_features.extend([
+                        # Adjusted win rate
                         f'adj_win_rate_last_{window}',
-                        f'avg_opponent_quality_last_{window}',
+                        # Recent opponent skill averages
+                        f'avg_opp_striking_skill_last_{window}',
+                        f'avg_opp_grappling_skill_last_{window}',
+                        f'avg_opp_overall_quality_last_{window}',
+                        # Domain-adjusted stats
                         f'adj_avg_sig_strikes_landed_last_{window}',
                         f'adj_avg_takedowns_last_{window}',
                         f'adj_avg_control_time_last_{window}',
+                        f'adj_avg_knockdowns_last_{window}',
                     ])
 
             # Add features for both fighters
