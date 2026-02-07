@@ -50,12 +50,25 @@ warnings.filterwarnings('ignore')
 # Configuration
 # =============================================================================
 
-# Paths
-MODEL_PATH = 'data/models/ufc_model_v1.pkl'
-FEATURE_NAMES_PATH = 'data/models/feature_names_v1.json'
+# Paths - Phase 8 model with Elo (falls back to v1 if not found)
+MODEL_PATH_PHASE8 = 'data/models/ufc_model_phase8.pkl'
+MODEL_PATH_V1 = 'data/models/ufc_model_v1.pkl'
+FEATURE_NAMES_PATH_PHASE8 = 'data/models/phase8_feature_list.json'
+FEATURE_NAMES_PATH_V1 = 'data/models/feature_names_v1.json'
 PROCESSED_DATA_PATH = 'data/processed/ufc_fights_features_v1.csv'
 RAW_DATA_PATH = 'data/raw/ufc_fights_v1.csv'
 PREDICTIONS_DIR = 'data/predictions'
+
+# Check which model to use
+from pathlib import Path as _Path
+if _Path(MODEL_PATH_PHASE8).exists():
+    MODEL_PATH = MODEL_PATH_PHASE8
+    FEATURE_NAMES_PATH = FEATURE_NAMES_PATH_PHASE8
+    MODEL_VERSION = 'phase8'
+else:
+    MODEL_PATH = MODEL_PATH_V1
+    FEATURE_NAMES_PATH = FEATURE_NAMES_PATH_V1
+    MODEL_VERSION = 'v1'
 
 # Metadata columns (not features)
 METADATA_COLS = [
@@ -170,6 +183,12 @@ class FighterFeatures:
         # Build fighter index: fighter_name -> most recent features
         self._build_fighter_index()
 
+        # Compute Elo ratings if using Phase 8 model
+        self.elo_ratings = {}
+        self.elo_peak = {}
+        if MODEL_VERSION == 'phase8':
+            self._compute_elo_ratings()
+
         logger.info(f"Loaded {len(self.fighter_index)} fighters with historical data")
 
     def _build_fighter_index(self):
@@ -231,6 +250,95 @@ class FighterFeatures:
                     'fight_count': len(f1_fights) + len(f2_fights)
                 }
 
+    def _compute_elo_ratings(self):
+        """Compute Elo ratings for all fighters from historical data."""
+        logger.info("Computing Elo ratings from historical fights...")
+
+        # Sort fights chronologically
+        df = self.processed_df.sort_values('fight_date').copy()
+
+        K = 32  # Standard K-factor
+        INITIAL_ELO = 1500
+
+        ratings = {}
+        peak_ratings = {}
+        elo_history = {}  # fighter -> list of historical Elo values
+
+        for _, fight in df.iterrows():
+            f1 = fight['f1_name']
+            f2 = fight['f2_name']
+
+            # Get pre-fight ratings
+            r1 = ratings.get(f1, INITIAL_ELO)
+            r2 = ratings.get(f2, INITIAL_ELO)
+
+            # Expected scores
+            e1 = 1.0 / (1.0 + 10 ** ((r2 - r1) / 400.0))
+            e2 = 1.0 - e1
+
+            # Determine outcome
+            method = str(fight.get('method', '')).lower()
+            is_draw = 'draw' in method
+            is_nc = 'no contest' in method or 'nc' in method
+
+            if is_nc:
+                continue  # Skip no contests
+            elif is_draw:
+                s1, s2 = 0.5, 0.5
+            elif fight['f1_is_winner'] == 1:
+                s1, s2 = 1.0, 0.0
+            else:
+                s1, s2 = 0.0, 1.0
+
+            # Update ratings
+            new_r1 = r1 + K * (s1 - e1)
+            new_r2 = r2 + K * (s2 - e2)
+
+            ratings[f1] = new_r1
+            ratings[f2] = new_r2
+
+            # Update peaks
+            peak_ratings[f1] = max(peak_ratings.get(f1, INITIAL_ELO), new_r1)
+            peak_ratings[f2] = max(peak_ratings.get(f2, INITIAL_ELO), new_r2)
+
+            # Track history for momentum
+            if f1 not in elo_history:
+                elo_history[f1] = []
+            elo_history[f1].append(new_r1)
+
+            if f2 not in elo_history:
+                elo_history[f2] = []
+            elo_history[f2].append(new_r2)
+
+        self.elo_ratings = ratings
+        self.elo_peak = peak_ratings
+        self.elo_history = elo_history
+
+        logger.info(f"Computed Elo for {len(ratings)} fighters")
+
+    def get_elo_features(self, fighter_name: str) -> Dict:
+        """Get Elo features for a fighter."""
+        if not self.elo_ratings:
+            return {}
+
+        elo = self.elo_ratings.get(fighter_name, 1500.0)
+        peak = self.elo_peak.get(fighter_name, 1500.0)
+        history = self.elo_history.get(fighter_name, [])
+
+        # Momentum: Elo change over last 3 fights
+        if len(history) >= 3:
+            momentum = elo - history[-3]
+        elif len(history) > 0:
+            momentum = elo - history[0]
+        else:
+            momentum = 0.0
+
+        return {
+            'pre_fight_elo': elo,
+            'elo_momentum': momentum,
+            'elo_vs_peak': elo / max(peak, 1.0),
+        }
+
     def _extract_fighter_features(self, row: pd.Series, prefix: str) -> Dict:
         """
         Extract fighter-level features from a matchup row.
@@ -291,6 +399,10 @@ class FighterFeatures:
             # Otherwise, keep the original value from processed data
             # (it correctly represents days since the PREVIOUS fight)
 
+            # Add Elo features if using Phase 8 model
+            if MODEL_VERSION == 'phase8':
+                features.update(self.get_elo_features(fighter_name))
+
             return features, True, fighter_name
 
         # Try fuzzy match
@@ -305,6 +417,10 @@ class FighterFeatures:
             if last_fight is not None and prediction_date > last_fight:
                 days_since = (prediction_date - last_fight).days
                 features['days_since_last_fight'] = float(days_since)
+
+            # Add Elo features if using Phase 8 model
+            if MODEL_VERSION == 'phase8':
+                features.update(self.get_elo_features(matched_name))
 
             return features, False, matched_name
 
@@ -351,6 +467,12 @@ class FighterFeatures:
         features['experience_ratio'] = 0.0
         features['is_coming_off_layoff'] = 1
         features['is_new_to_weight_class'] = 1
+
+        # Elo defaults for debut fighters (Phase 8)
+        if MODEL_VERSION == 'phase8':
+            features['pre_fight_elo'] = 1500.0
+            features['elo_momentum'] = 0.0
+            features['elo_vs_peak'] = 1.0
 
         return features
 
@@ -412,6 +534,11 @@ def build_matchup_features(
     f1_momentum = f1_features.get('win_streak', 0) - f1_features.get('loss_streak', 0)
     f2_momentum = f2_features.get('win_streak', 0) - f2_features.get('loss_streak', 0)
     matchup['diff_momentum'] = f1_momentum - f2_momentum
+
+    # Special handling for Elo features (Phase 8)
+    # diff_elo uses pre_fight_elo values
+    if 'pre_fight_elo' in f1_features and 'pre_fight_elo' in f2_features:
+        matchup['diff_elo'] = f1_features['pre_fight_elo'] - f2_features['pre_fight_elo']
 
     # Temporal features
     matchup['is_title_fight'] = 1 if 'title' in event_name.lower() else 0
@@ -915,7 +1042,10 @@ def main():
     print("UFC FIGHT PREDICTION PIPELINE")
     print("=" * 70)
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"Model: HistGradientBoostingClassifier")
+    if MODEL_VERSION == 'phase8':
+        print(f"Model: Stacking Ensemble (Phase 8 - Elo + Calibrated)")
+    else:
+        print(f"Model: HistGradientBoostingClassifier (v1)")
     print()
 
     # Initialize pipeline

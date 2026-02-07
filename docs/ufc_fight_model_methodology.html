@@ -894,7 +894,7 @@
     <div class="meta">
         <div class="meta-item">
             <span class="meta-label">Version</span>
-            <span class="meta-value">1.4 (Phase 6 Complete)</span>
+            <span class="meta-value">1.5 (Phase 8 Complete)</span>
         </div>
         <div class="meta-item">
             <span class="meta-label">Date</span>
@@ -1223,18 +1223,18 @@ l2_regularization: 0.1</div>
     <p><strong>Cross-validation:</strong> 5-fold stratified CV on training set.</p>
     <p><strong>Optimization target:</strong> Log loss (penalizes overconfident wrong predictions).</p>
 
-    <h3>Actual Performance</h3>
+    <h3>Actual Performance (Phase 8 — Stacking Ensemble)</h3>
     <div class="stats-row">
         <div class="stat">
-            <div class="stat-value">58.9%</div>
+            <div class="stat-value">60.5%</div>
             <div class="stat-label">Accuracy</div>
         </div>
         <div class="stat">
-            <div class="stat-value">0.635</div>
+            <div class="stat-value">0.658</div>
             <div class="stat-label">ROC-AUC</div>
         </div>
         <div class="stat">
-            <div class="stat-value">0.665</div>
+            <div class="stat-value">0.656</div>
             <div class="stat-label">Log Loss</div>
         </div>
         <div class="stat">
@@ -1245,16 +1245,16 @@ l2_regularization: 0.1</div>
 
     <div class="callout">
         <h4>Performance Analysis</h4>
-        <p>The 58.9% accuracy tells a story about MMA prediction itself. Of 136 engineered features, only 22 showed positive importance — the rest were pure noise. This isn't a failure of feature engineering; it's evidence that MMA outcomes are driven by a narrow set of signals (career win rate, recent form, layoff duration) while most "advanced" metrics add nothing.</p>
-        <p>The 6pp gap to Vegas (~65% implied accuracy) is the cost of using public data only. Sportsbooks incorporate injury reports, training camp intel, and line movement — information asymmetry we can't replicate. But 58.9% with proper calibration still identifies value bets when model and market diverge by 10pp+.</p>
+        <p>The Phase 8 model (Stacking Ensemble with Elo ratings) achieves 60.5% accuracy — a 1.6pp improvement over v1 (58.9%). After aggressive feature pruning, only 51 features remain (down from 145), with Elo differential (diff_elo) emerging as the top predictor alongside career win rate.</p>
+        <p>The remaining ~5pp gap to Vegas (~65% implied) is the cost of using public data only. Sportsbooks incorporate injury reports, training camp intel, and line movement. However, 60.5% with calibrated probabilities (MCE: 9.1%) enables value betting when model and market diverge.</p>
     </div>
 
-    <h3>Top Features by Importance</h3>
-    <div class="code-block">1. diff_career_win_rate    (+0.0086)
-2. f1_days_since_last_fight (+0.0074)
-3. diff_win_rate_last_5     (+0.0058)
-4. diff_win_streak          (+0.0050)
-5. f2_days_since_last_fight (+0.0049)</div>
+    <h3>Top Features by Importance (Phase 8)</h3>
+    <div class="code-block">1. diff_elo                 (Elo rating differential)
+2. diff_career_win_rate     (career win rate gap)
+3. f1_fights_per_year       (activity level)
+4. f2_fights_per_year       (opponent activity)
+5. f1_elo_momentum          (Elo trend over last 3 fights)</div>
 </section>
 
 <!-- Section 06 -->
@@ -1262,27 +1262,27 @@ l2_regularization: 0.1</div>
     <span class="section-num">06</span>
     <h2>Evaluation & Calibration</h2>
 
-    <h3>Actual Performance (Test Set: 1,063 fights, 2024-2026)</h3>
+    <h3>Current Performance (Phase 8 Ensemble — Test Set: 1,063 fights, 2024-2026)</h3>
     <div class="metrics">
         <div class="metric-row">
             <span class="metric-label">Accuracy</span>
-            <div class="metric-bar"><div class="metric-fill" style="width: 58.9%;"></div></div>
-            <span class="metric-value">58.9%</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 60.5%;"></div></div>
+            <span class="metric-value">60.5%</span>
         </div>
         <div class="metric-row">
             <span class="metric-label">Log Loss</span>
-            <div class="metric-bar"><div class="metric-fill" style="width: 66.5%;"></div></div>
-            <span class="metric-value">0.665</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 65.6%;"></div></div>
+            <span class="metric-value">0.656</span>
         </div>
         <div class="metric-row">
             <span class="metric-label">ROC-AUC</span>
-            <div class="metric-bar"><div class="metric-fill" style="width: 63.5%;"></div></div>
-            <span class="metric-value">0.635</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 65.8%;"></div></div>
+            <span class="metric-value">0.658</span>
         </div>
         <div class="metric-row">
             <span class="metric-label">Brier Score</span>
-            <div class="metric-bar"><div class="metric-fill" style="width: 23.6%;"></div></div>
-            <span class="metric-value">0.236</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 23.2%;"></div></div>
+            <span class="metric-value">0.232</span>
         </div>
     </div>
 
@@ -1781,6 +1781,23 @@ python src/predict/serve.py --format json</div>
                 </ul>
             </div>
         </div>
+
+        <div class="roadmap-item">
+            <div class="roadmap-status complete">Complete</div>
+            <div class="roadmap-content">
+                <h4>Phase 8: Elo Ratings, Post-Hoc Calibration, Stacking Ensemble</h4>
+                <ul>
+                    <li>Elo rating system: recursive strength-of-schedule encoding (K=32, validated against all-time great rankings)</li>
+                    <li>Post-hoc calibration: Platt scaling applied after model training</li>
+                    <li>Sample weighting: exponential decay (half-life=8 years) to emphasize recent fights</li>
+                    <li>Feature pruning: 145 → 51 features (removed 89 with zero/negative importance, 5 highly correlated)</li>
+                    <li>Four candidates tested: HGB, XGBoost, Stacking Ensemble, Minimal (top 10)</li>
+                    <li><strong>Result:</strong> Stacking Ensemble deployed — beat v1 on 5/5 metrics:</li>
+                    <li class="phase8-result">Accuracy: 60.5% (+1.9pp), Log Loss: 0.656 (-0.012), ROC-AUC: 0.658 (+0.031), Brier: 0.232 (-0.006), MCE: 9.1% (-3.9pp)</li>
+                    <li>Backtest: UFC 325 = 11/13 correct (84.6%, up from 69.2%)</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <h3>Future Enhancements</h3>
@@ -1793,20 +1810,29 @@ python src/predict/serve.py --format json</div>
         <li><strong>Time-series momentum:</strong> Win/loss streaks and form trajectories may carry more signal than opponent-adjusted stats</li>
     </ul>
 
-    <h3>Lessons Learned from Phase 6-7</h3>
-    <p>Two iterations of opponent-quality adjustment (global and domain-specific) consistently improved calibration (MCE reduced from 13.7% to as low as 4.1%) but degraded discriminative power (ROC-AUC, log loss). This suggests:</p>
+    <h3>Lessons Learned from Phase 6-8</h3>
+    <p>Two iterations of opponent-quality adjustment (Phase 6-7) consistently improved calibration but degraded discriminative power. However, Phase 8's fundamentally different approach succeeded:</p>
     <ul>
-        <li>Opponent strength signal is already implicitly captured in win/loss records and career stats</li>
-        <li>Explicit adjustment adds noise rather than signal for winner prediction</li>
-        <li>The model may be near its ceiling (~59% accuracy) for the available feature space</li>
-        <li>Future improvements likely require new data sources (betting odds, training camp intel) rather than feature engineering on existing stats</li>
+        <li><strong>Elo works where stat-adjustment doesn't:</strong> Elo encodes strength-of-schedule recursively (each opponent's rating reflects THEIR opponents) without touching per-fight stats. This avoids the double-counting problem of multiplicative adjustment.</li>
+        <li><strong>Ensemble models combine strengths:</strong> Stacking HGB + XGBoost + LR achieved the best of both worlds — calibration improvements transferred to accuracy for the first time.</li>
+        <li><strong>Feature pruning matters:</strong> Removing 89 zero/negative-importance features reduced noise, allowing the model to focus on the ~20 truly predictive signals.</li>
+        <li><strong>Sample weighting helps marginally:</strong> +0.4pp accuracy from emphasizing recent fights, consistent with MMA evolving over time.</li>
+        <li><strong>Ceiling analysis:</strong> The model appears to be within 5pp of market (~65%), suggesting remaining gap may require external data sources.</li>
+    </ul>
+
+    <h3>Key Takeaways for Future Iterations</h3>
+    <ul>
+        <li><strong>Elo is the right tool for SOS:</strong> Recursive rating systems outperform one-shot opponent quality scores</li>
+        <li><strong>Post-hoc calibration is free improvement:</strong> Apply Platt scaling or isotonic regression after any model training</li>
+        <li><strong>Less is more:</strong> Aggressive feature pruning + ensembling beats complex feature engineering</li>
+        <li><strong>Validation matters:</strong> Top-25 Elo list should be dominated by known greats (Jon Jones, GSP, Khabib, Amanda Nunes)</li>
     </ul>
 </section>
 
 </main>
 
 <footer>
-    <p>UFC Fight Win Probability Model — Methodology v1.4</p>
+    <p>UFC Fight Win Probability Model — Methodology v1.5 (Phase 8)</p>
     <p>February 2026</p>
 </footer>
 
