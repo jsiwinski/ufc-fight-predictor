@@ -894,7 +894,7 @@
     <div class="meta">
         <div class="meta-item">
             <span class="meta-label">Version</span>
-            <span class="meta-value">1.3 (Phase 5 WIP)</span>
+            <span class="meta-value">1.4 (Phase 6 Complete)</span>
         </div>
         <div class="meta-item">
             <span class="meta-label">Date</span>
@@ -1740,15 +1740,29 @@ python src/predict/serve.py --format json</div>
         </div>
 
         <div class="roadmap-item">
-            <div class="roadmap-status progress">In Progress</div>
+            <div class="roadmap-status complete">Complete</div>
             <div class="roadmap-content">
                 <h4>Phase 5: Web Interface</h4>
                 <ul>
                     <li>Flask app: src/web/app.py</li>
                     <li>Fight card UI with center-out probability bars</li>
-                    <li>Archive page with backtest results</li>
+                    <li>Tornado chart for key factors</li>
+                    <li>Fighter body photos with face direction detection</li>
                     <li>JSON API endpoint for programmatic access</li>
-                    <li>Running on localhost:5000</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="roadmap-item">
+            <div class="roadmap-status complete">Complete</div>
+            <div class="roadmap-content">
+                <h4>Phase 6: Opponent-Quality Adjustment</h4>
+                <ul>
+                    <li>Opponent quality scoring (career win rate, experience, recent form)</li>
+                    <li>Quality-adjusted career stats and rolling windows</li>
+                    <li>51 new features added to pipeline (196 total)</li>
+                    <li>Three v2 variants tested against v1 baseline</li>
+                    <li><strong>Result:</strong> v1 retained — adjusted features improved calibration (MCE: 13.7% → 4.1%) but slightly degraded discriminative metrics. Opponent strength signal may already be captured in win/loss records.</li>
                 </ul>
             </div>
         </div>
@@ -1761,13 +1775,14 @@ python src/predict/serve.py --format json</div>
         <li><strong>Pre-UFC records:</strong> Include fighter records before UFC debut</li>
         <li><strong>Method prediction:</strong> Predict KO/Sub/Decision, not just winner</li>
         <li><strong>Ensemble models:</strong> Combine XGBoost + RF + NN</li>
+        <li><strong>Refined opponent quality:</strong> Investigate why opponent-adjusted features improved calibration but not accuracy. May need different weighting or use in ensemble.</li>
     </ul>
 </section>
 
 </main>
 
 <footer>
-    <p>UFC Fight Win Probability Model — Methodology v1.3</p>
+    <p>UFC Fight Win Probability Model — Methodology v1.4</p>
     <p>February 2026</p>
 </footer>
 

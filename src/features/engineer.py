@@ -96,6 +96,99 @@ def parse_percentage(pct_str: str) -> float:
 
 
 # ============================================================================
+# Opponent Quality Scoring
+# ============================================================================
+
+def compute_opponent_quality_for_fight(
+    opponent_name: str,
+    fight_date: pd.Timestamp,
+    fighter_history: pd.DataFrame
+) -> float:
+    """
+    Compute opponent quality score at the time of the fight.
+
+    Uses only fights that occurred BEFORE fight_date (no leakage).
+
+    Args:
+        opponent_name: Name of the opponent
+        fight_date: Date of the current fight
+        fighter_history: DataFrame with all fighter-fight records (fighter_name, fight_date, is_winner)
+
+    Returns:
+        Raw quality score (not yet normalized to 0-2 scale)
+    """
+    # Get all of opponent's fights BEFORE this date
+    opponent_history = fighter_history[
+        (fighter_history['fighter_name'] == opponent_name) &
+        (fighter_history['fight_date'] < fight_date)
+    ]
+
+    if len(opponent_history) == 0:
+        # UFC debut — unknown quality, return None for neutral/average
+        return None
+
+    # Component 1: Career win rate (most important)
+    career_wins = opponent_history['is_winner'].sum()
+    career_fights = len(opponent_history)
+    career_win_rate = career_wins / career_fights
+
+    # Component 2: UFC experience (normalized)
+    # 10+ fights = fully experienced, scale linearly
+    normalized_experience = min(career_fights / 10.0, 1.0)
+
+    # Component 3: Recent form (last 5 win rate)
+    recent_fights = opponent_history.sort_values('fight_date').tail(5)
+    recent_form = recent_fights['is_winner'].mean()
+
+    # Combine: 50% career win rate, 25% experience, 25% recent form
+    raw_score = (0.50 * career_win_rate) + (0.25 * normalized_experience) + (0.25 * recent_form)
+
+    return raw_score
+
+
+def normalize_opponent_quality_scores(raw_scores: pd.Series) -> pd.Series:
+    """
+    Normalize raw opponent quality scores to 0.0-2.0 scale where 1.0 = average.
+
+    Uses z-score transformation then scales to target range.
+
+    Args:
+        raw_scores: Series of raw quality scores (None for debuts)
+
+    Returns:
+        Series of normalized scores (1.0 for debuts/unknown)
+    """
+    # Handle None values
+    valid_scores = raw_scores.dropna()
+
+    if len(valid_scores) == 0:
+        return pd.Series([1.0] * len(raw_scores), index=raw_scores.index)
+
+    # Compute mean and std for normalization
+    mean_score = valid_scores.mean()
+    std_score = valid_scores.std()
+
+    if std_score == 0 or pd.isna(std_score):
+        std_score = 0.1  # Avoid division by zero
+
+    normalized = raw_scores.copy()
+
+    for idx in raw_scores.index:
+        if pd.isna(raw_scores[idx]):
+            # Debut: neutral quality
+            normalized[idx] = 1.0
+        else:
+            # Z-score transformation, then scale to 0.5-1.5 range (centered on 1.0)
+            z = (raw_scores[idx] - mean_score) / std_score
+            # Clip z-score to -2 to +2 range
+            z = max(-2, min(2, z))
+            # Scale to 0.5-1.5 range (0.25 per z-unit)
+            normalized[idx] = 1.0 + (z * 0.25)
+
+    return normalized
+
+
+# ============================================================================
 # Main Feature Engineering Class
 # ============================================================================
 
@@ -142,6 +235,10 @@ class FeatureEngineer:
         # Feature metadata
         self.feature_names = []
         self.imputation_stats = {}
+
+        # Opponent quality scoring (Phase 6)
+        self.compute_opponent_quality = self.config.get('compute_opponent_quality', True)
+        self.opponent_quality_stats = {}
 
 
     def preprocess_raw_data(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -403,6 +500,145 @@ class FeatureEngineer:
         return df
 
 
+    def calculate_opponent_quality_features(self, fighter_df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Calculate opponent quality scores and quality-adjusted features.
+
+        For each fight, computes the opponent's quality score based on their
+        record BEFORE that fight date (no leakage). Then adjusts stats by
+        multiplying by opponent quality.
+
+        Args:
+            fighter_df: DataFrame with fighter-centric records and career features
+
+        Returns:
+            DataFrame with added opponent quality and adjusted features
+        """
+        if not self.compute_opponent_quality:
+            logger.info("Opponent quality computation disabled, skipping...")
+            return fighter_df
+
+        logger.info("Calculating opponent quality scores...")
+
+        df = fighter_df.copy()
+
+        # Step 1: Compute raw opponent quality score for each fight
+        raw_quality_scores = []
+
+        for idx, row in df.iterrows():
+            opponent_name = row['opponent_name']
+            fight_date = row['fight_date']
+
+            raw_score = compute_opponent_quality_for_fight(
+                opponent_name, fight_date, df
+            )
+            raw_quality_scores.append(raw_score)
+
+        df['raw_opponent_quality'] = raw_quality_scores
+
+        # Step 2: Normalize to 0.5-1.5 scale (1.0 = average)
+        df['opponent_quality'] = normalize_opponent_quality_scores(df['raw_opponent_quality'])
+
+        # Print distribution stats
+        valid_scores = df['opponent_quality'].dropna()
+        self.opponent_quality_stats = {
+            'mean': float(valid_scores.mean()),
+            'std': float(valid_scores.std()),
+            'min': float(valid_scores.min()),
+            'max': float(valid_scores.max()),
+            'median': float(valid_scores.median()),
+            'debuts': int(df['raw_opponent_quality'].isna().sum()),
+        }
+        logger.info(f"Opponent quality distribution: mean={self.opponent_quality_stats['mean']:.3f}, "
+                    f"std={self.opponent_quality_stats['std']:.3f}, "
+                    f"range=[{self.opponent_quality_stats['min']:.3f}, {self.opponent_quality_stats['max']:.3f}]")
+        logger.info(f"  Debuts (neutral quality): {self.opponent_quality_stats['debuts']}")
+
+        # Step 3: Compute quality-adjusted win value for each fight
+        # A win vs 1.5 quality opponent = 1.5 value, vs 0.6 quality = 0.6 value
+        df['quality_adjusted_win'] = df['is_winner'] * df['opponent_quality']
+
+        # Step 4: Adjust offensive stats by opponent quality
+        stats_to_adjust = [
+            'sig_strikes_landed', 'sig_strikes_attempted',
+            'total_strikes_landed', 'total_strikes_attempted',
+            'takedowns_landed', 'takedowns_attempted',
+            'knockdowns', 'submission_attempts', 'control_time_seconds'
+        ]
+
+        for stat in stats_to_adjust:
+            if stat in df.columns:
+                df[f'{stat}_adj'] = df[stat] * df['opponent_quality']
+
+        logger.info("Computing quality-adjusted career stats...")
+
+        # Step 5: Compute adjusted career stats (grouped by fighter)
+        def calculate_adjusted_stats(fighter_group):
+            """Calculate adjusted cumulative career stats"""
+            fg = fighter_group.sort_values('fight_date').copy()
+
+            # Adjusted career win rate
+            # Sum of quality-adjusted wins / number of fights
+            fg['adj_career_wins'] = fg['quality_adjusted_win'].shift(1, fill_value=0).cumsum()
+            fg['career_fights_for_adj'] = range(len(fg))
+            fg['adj_career_win_rate'] = fg['adj_career_wins'] / fg['career_fights_for_adj'].replace(0, 1)
+
+            # Average opponent quality faced (expanding mean of prior opponents)
+            # For fight N, this is the average opponent_quality from fights 1 to N-1
+            fg['avg_opponent_quality'] = fg['opponent_quality'].shift(1).expanding(min_periods=1).mean()
+            # Fill NaN for first fight (no prior opponents) with neutral 1.0
+            fg['avg_opponent_quality'] = fg['avg_opponent_quality'].fillna(1.0)
+
+            # Adjusted rolling windows
+            for window in self.rolling_windows:
+                # Adjusted win rate in last N fights
+                fg[f'adj_win_rate_last_{window}'] = fg['quality_adjusted_win'].shift(1).rolling(
+                    window, min_periods=1
+                ).mean()
+
+                # Recent opponent quality
+                fg[f'avg_opponent_quality_last_{window}'] = fg['opponent_quality'].shift(1).rolling(
+                    window, min_periods=1
+                ).mean()
+
+                # Adjusted strikes (if available)
+                if 'sig_strikes_landed_adj' in fg.columns:
+                    fg[f'adj_avg_sig_strikes_landed_last_{window}'] = fg['sig_strikes_landed_adj'].shift(1).rolling(
+                        window, min_periods=1
+                    ).mean()
+
+                if 'takedowns_landed_adj' in fg.columns:
+                    fg[f'adj_avg_takedowns_last_{window}'] = fg['takedowns_landed_adj'].shift(1).rolling(
+                        window, min_periods=1
+                    ).mean()
+
+                if 'control_time_seconds_adj' in fg.columns:
+                    fg[f'adj_avg_control_time_last_{window}'] = fg['control_time_seconds_adj'].shift(1).rolling(
+                        window, min_periods=1
+                    ).mean()
+
+            # Clean up temp columns
+            fg.drop(columns=['career_fights_for_adj'], inplace=True)
+
+            return fg
+
+        df = df.groupby('fighter_name', group_keys=False).apply(calculate_adjusted_stats)
+
+        # Fill NaN values in adjusted features with defaults
+        adj_features = [col for col in df.columns if col.startswith('adj_') or 'opponent_quality' in col]
+        for feat in adj_features:
+            if feat == 'adj_career_win_rate':
+                df[feat] = df[feat].fillna(self.debut_win_rate)
+            elif 'opponent_quality' in feat:
+                df[feat] = df[feat].fillna(1.0)  # Neutral quality
+            else:
+                df[feat] = df[feat].fillna(0.0)
+
+        logger.info(f"Added {len(adj_features)} opponent-quality-adjusted features")
+
+        return df
+
+
     def calculate_weight_class_medians(self, df: pd.DataFrame) -> Dict:
         """
         Calculate median statistics by weight class for imputation.
@@ -613,6 +849,21 @@ class FeatureEngineer:
                     f'avg_fight_time_last_{window}',
                 ])
 
+            # Add opponent-quality-adjusted features (Phase 6)
+            if self.compute_opponent_quality:
+                career_features.extend([
+                    'adj_career_win_rate',
+                    'avg_opponent_quality',
+                ])
+                for window in self.rolling_windows:
+                    career_features.extend([
+                        f'adj_win_rate_last_{window}',
+                        f'avg_opponent_quality_last_{window}',
+                        f'adj_avg_sig_strikes_landed_last_{window}',
+                        f'adj_avg_takedowns_last_{window}',
+                        f'adj_avg_control_time_last_{window}',
+                    ])
+
             # Add features for both fighters
             for feat in career_features:
                 if feat in f1 and feat in f2:
@@ -680,6 +931,10 @@ class FeatureEngineer:
 
         # Phase 2: Calculate career features
         fighter_df = self.calculate_career_features(fighter_df)
+
+        # Phase 2b: Calculate opponent quality features (Phase 6 addition)
+        if self.compute_opponent_quality:
+            fighter_df = self.calculate_opponent_quality_features(fighter_df)
 
         # Phase 3: Apply early-career imputation
         fighter_df = self.impute_early_career(fighter_df)
@@ -768,15 +1023,30 @@ class FeatureEngineer:
                     validation_report['issues'].append(f"{feat} has {null_count} null values")
 
         # Check percentage features are in [0, 1] range
-        pct_features = [col for col in df.columns if 'rate' in col or 'ratio' in col]
+        # Note: adj_ features can be outside [0,1] due to opponent quality scaling
+        pct_features = [col for col in df.columns if ('rate' in col or 'ratio' in col)
+                        and not col.startswith('diff_')
+                        and 'adj_' not in col
+                        and 'f1_adj_' not in col
+                        and 'f2_adj_' not in col]
         for feat in pct_features:
             if feat in df.columns:
                 out_of_range = ((df[feat] < 0) | (df[feat] > 1)).sum()
                 if out_of_range > 0:
                     validation_report['issues'].append(f"{feat} has {out_of_range} values outside [0, 1]")
 
-        # Check count features are non-negative
-        count_features = [col for col in df.columns if 'career_fights' in col or 'career_wins' in col]
+        # Check opponent quality features are in valid range [0.5, 1.5]
+        oq_features = [col for col in df.columns if 'opponent_quality' in col and not col.startswith('diff_')]
+        for feat in oq_features:
+            if feat in df.columns:
+                out_of_range = ((df[feat] < 0.4) | (df[feat] > 1.6)).sum()
+                if out_of_range > 0:
+                    validation_report['issues'].append(f"{feat} has {out_of_range} values outside [0.4, 1.6]")
+
+        # Check count features are non-negative (excluding diff_ features)
+        count_features = [col for col in df.columns
+                          if ('career_fights' in col or 'career_wins' in col)
+                          and not col.startswith('diff_')]
         for feat in count_features:
             if feat in df.columns:
                 negative = (df[feat] < 0).sum()
@@ -845,7 +1115,136 @@ class FeatureEngineer:
             'debut_dec_rate': self.debut_dec_rate,
             'experience_tiers': self.experience_tiers,
             'rolling_windows': self.rolling_windows,
+            'compute_opponent_quality': self.compute_opponent_quality,
+            'opponent_quality_stats': self.opponent_quality_stats,
         }
         with open(config_file, 'w') as f:
             json.dump(config, f, indent=2)
         logger.info(f"Saved feature config to {config_file}")
+
+
+    def validate_opponent_quality_no_leakage(
+        self,
+        fighter_df: pd.DataFrame,
+        sample_size: int = 20
+    ) -> Dict:
+        """
+        Validate that opponent quality scores use only pre-fight data.
+
+        Randomly samples fights and verifies that opponent quality was
+        computed only from fights BEFORE the current fight date.
+
+        Args:
+            fighter_df: Fighter-centric DataFrame with opponent_quality column
+            sample_size: Number of fights to sample for validation
+
+        Returns:
+            Dictionary with validation results
+        """
+        logger.info(f"Validating opponent quality no-leakage (sample={sample_size})...")
+
+        validation = {
+            'samples': [],
+            'all_passed': True,
+        }
+
+        # Sample random fights
+        sample_indices = np.random.choice(
+            fighter_df.index,
+            min(sample_size, len(fighter_df)),
+            replace=False
+        )
+
+        for idx in sample_indices:
+            row = fighter_df.loc[idx]
+            opponent = row['opponent_name']
+            fight_date = row['fight_date']
+
+            # Get opponent's fights
+            opponent_all = fighter_df[fighter_df['fighter_name'] == opponent]
+            opponent_pre_fight = opponent_all[opponent_all['fight_date'] < fight_date]
+
+            sample = {
+                'fighter': row['fighter_name'],
+                'opponent': opponent,
+                'fight_date': str(fight_date.date()),
+                'opponent_total_fights': len(opponent_all),
+                'opponent_pre_fight_count': len(opponent_pre_fight),
+                'opponent_quality_used': row.get('opponent_quality', None),
+            }
+
+            # Verify: if opponent had 0 pre-fight fights, quality should be 1.0 (neutral)
+            if len(opponent_pre_fight) == 0:
+                expected_quality = 1.0
+                if sample['opponent_quality_used'] is not None:
+                    if abs(sample['opponent_quality_used'] - expected_quality) > 0.01:
+                        sample['leakage_detected'] = True
+                        validation['all_passed'] = False
+                    else:
+                        sample['leakage_detected'] = False
+
+            validation['samples'].append(sample)
+
+        if validation['all_passed']:
+            logger.info("✓ No leakage detected in opponent quality scores")
+        else:
+            logger.warning("✗ Potential leakage detected in opponent quality scores")
+
+        return validation
+
+
+    def get_extreme_opponent_quality_fighters(
+        self,
+        fighter_df: pd.DataFrame,
+        top_n: int = 5
+    ) -> Dict:
+        """
+        Find fighters with highest and lowest average opponent quality.
+
+        Useful for validation: highest should be top contenders,
+        lowest should be fighters who faced mostly weak opponents.
+
+        Args:
+            fighter_df: Fighter-centric DataFrame with opponent_quality column
+            top_n: Number of fighters to return in each category
+
+        Returns:
+            Dictionary with highest and lowest average opponent quality fighters
+        """
+        if 'avg_opponent_quality' not in fighter_df.columns:
+            return {'error': 'avg_opponent_quality not computed'}
+
+        # Get last record for each fighter (most complete career data)
+        latest = fighter_df.sort_values('fight_date').groupby('fighter_name').last()
+
+        # Filter to fighters with at least 5 fights for meaningful averages
+        experienced = latest[latest['career_fights'] >= 5]
+
+        if len(experienced) == 0:
+            return {'error': 'No fighters with 5+ fights found'}
+
+        # Sort by average opponent quality
+        sorted_by_oq = experienced.sort_values('avg_opponent_quality', ascending=False)
+
+        highest = []
+        for name, row in sorted_by_oq.head(top_n).iterrows():
+            highest.append({
+                'fighter': name,
+                'avg_opponent_quality': float(row['avg_opponent_quality']),
+                'career_fights': int(row['career_fights']),
+                'career_win_rate': float(row['career_win_rate']),
+            })
+
+        lowest = []
+        for name, row in sorted_by_oq.tail(top_n).iterrows():
+            lowest.append({
+                'fighter': name,
+                'avg_opponent_quality': float(row['avg_opponent_quality']),
+                'career_fights': int(row['career_fights']),
+                'career_win_rate': float(row['career_win_rate']),
+            })
+
+        return {
+            'highest_opponent_quality': highest,
+            'lowest_opponent_quality': lowest,
+        }
