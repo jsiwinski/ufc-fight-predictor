@@ -718,6 +718,70 @@
             font-size: 0.9rem;
         }
 
+        /* Feature Importance Chart */
+        .importance-chart {
+            margin: 40px 0;
+        }
+
+        .importance-row {
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            gap: 16px;
+            align-items: start;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .importance-row:first-child {
+            border-top: 1px solid var(--border);
+        }
+
+        .importance-rank {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--red);
+            font-weight: 500;
+            padding-top: 2px;
+        }
+
+        .importance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .importance-label {
+            font-family: 'Fraunces', serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .importance-score {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .importance-bar-track {
+            height: 6px;
+            background: var(--border);
+            width: 100%;
+            margin-bottom: 8px;
+        }
+
+        .importance-bar-fill {
+            height: 100%;
+            background: var(--red);
+        }
+
+        .importance-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
         /* Limitations */
         .limitations {
             display: grid;
@@ -1422,13 +1486,146 @@ l2_regularization: 0.1</div>
     </div>
 
     <h3>What Drives Predictions</h3>
-    <p>Predictions are driven by differential features — the gap between fighters on key metrics. The top 5 most predictive differentials:</p>
-    <div class="code-block">1. diff_career_win_rate    — Long-term success matters most
-2. diff_days_since_last_fight — Ring rust is real
-3. diff_win_rate_last_5    — Recent form captures momentum
-4. diff_win_streak         — Confidence builds
-5. diff_fights_last_12mo   — Activity level signals focus</div>
-    <p style="font-size: 0.85rem; color: var(--text-muted);">These 5 features account for ~60% of model's predictive power. The remaining 131 features add marginal signal or noise.</p>
+    <p>Predictions are driven by differential features — the gap between fighters on key metrics. Feature importance is measured via permutation: shuffle a feature's values, measure accuracy drop. Larger drop = more important.</p>
+
+    <div class="importance-chart">
+        <div class="importance-row">
+            <div class="importance-rank">01</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Career Win Rate Gap</span>
+                    <span class="importance-score">+0.0086</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 100%;"></div>
+                </div>
+                <div class="importance-desc">Difference in overall win percentage — the model's strongest signal for fighter quality.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">02</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Fighter 1 Inactivity</span>
+                    <span class="importance-score">+0.0074</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 86%;"></div>
+                </div>
+                <div class="importance-desc">Days since Fighter 1's last bout. Extended layoffs correlate with ring rust.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">03</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Recent Form Gap</span>
+                    <span class="importance-score">+0.0058</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 67%;"></div>
+                </div>
+                <div class="importance-desc">Who's been winning recently? Last 5 fights capture momentum and current form.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">04</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Win Streak Gap</span>
+                    <span class="importance-score">+0.0050</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 58%;"></div>
+                </div>
+                <div class="importance-desc">Consecutive wins build confidence; losing streaks often compound.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">05</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Fighter 2 Inactivity</span>
+                    <span class="importance-score">+0.0049</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 57%;"></div>
+                </div>
+                <div class="importance-desc">Days since Fighter 2's last bout. Same ring rust signal, other side.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">06</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Experience Gap</span>
+                    <span class="importance-score">+0.0041</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 48%;"></div>
+                </div>
+                <div class="importance-desc">Total UFC fights — a proxy for octagon experience and adaptability.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">07</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Career Wins Gap</span>
+                    <span class="importance-score">+0.0038</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 44%;"></div>
+                </div>
+                <div class="importance-desc">Raw victory count. More wins = more proven at this level.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">08</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Division Experience Gap</span>
+                    <span class="importance-score">+0.0032</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 37%;"></div>
+                </div>
+                <div class="importance-desc">Fights at this specific weight class. Division familiarity matters.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">09</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Career Losses Gap</span>
+                    <span class="importance-score">+0.0028</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 33%;"></div>
+                </div>
+                <div class="importance-desc">Total losses — but context matters. Losing to top 5 isn't the same as losing to unranked.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">10</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Extended Form Gap</span>
+                    <span class="importance-score">+0.0024</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 28%;"></div>
+                </div>
+                <div class="importance-desc">Wider window of recent performance. Smooths out single-fight variance.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="callout">
+        <h4>What This Means</h4>
+        <p>The model relies overwhelmingly on <strong>who wins more often</strong> and <strong>who's been active recently</strong>. Career win rate and recent form account for the majority of predictive power. Advanced statistics (strike accuracy, takedown defense, submission rates) add minimal signal — they're already captured in whether a fighter wins or loses.</p>
+        <p>The practical implication: the model is strongest on matchups between established fighters with clear form differences, and weakest on debuts, comebacks, and closely-matched opponents.</p>
+    </div>
 
     <h3>CLI Usage</h3>
     <p>The pipeline runs from command line against live or historical events.</p>
