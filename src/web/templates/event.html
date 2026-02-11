@@ -76,9 +76,6 @@
                     <div class="fighter-name">{{ fight.fighter1 }}</div>
                     <div class="fighter-meta">{{ fight.weight_class }}</div>
                     <div class="fighter-elo {% if fight.f1_elo > fight.f2_elo %}higher{% endif %}">Elo: {{ fight.f1_elo }}</div>
-                    {% if not fight.f1_exact_match %}
-                    <div class="match-warning">Matched to: {{ fight.fighter1_matched }}</div>
-                    {% endif %}
                 </div>
                 <div class="prob-display">
                     <span class="probability red">{{ fight.f1_pct }}%</span>
@@ -103,9 +100,6 @@
                     <div class="fighter-name">{{ fight.fighter2 }}</div>
                     <div class="fighter-meta">{{ fight.weight_class }}</div>
                     <div class="fighter-elo {% if fight.f2_elo > fight.f1_elo %}higher{% endif %}">Elo: {{ fight.f2_elo }}</div>
-                    {% if not fight.f2_exact_match %}
-                    <div class="match-warning">Matched to: {{ fight.fighter2_matched }}</div>
-                    {% endif %}
                 </div>
 
                 {# Headshot #}

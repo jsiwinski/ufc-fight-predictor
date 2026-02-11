@@ -10,13 +10,15 @@ Usage:
     python src/odds/populate_ledger_odds.py              # Dry run (show what would change)
     python src/odds/populate_ledger_odds.py --apply      # Apply changes to ledger
     python src/odds/populate_ledger_odds.py --force      # Re-fetch even if odds exist
+    python src/odds/populate_ledger_odds.py --local-only # Re-match using existing data (no API call)
+    python src/odds/populate_ledger_odds.py --local-only --apply --force  # Full re-match with save
 
 Environment:
     ODDS_API_KEY: API key for The Odds API (https://the-odds-api.com)
 
 Odds are fetched and attached to ledger entries during prediction generation.
 To refresh odds independently: python src/odds/fetch_odds.py
-Odds require ODDS_API_KEY environment variable to be set.
+Odds require ODDS_API_KEY environment variable to be set (unless using --local-only).
 """
 
 import argparse
@@ -36,6 +38,7 @@ from src.odds.scraper import (
     normalize_name,
     fuzzy_match_score,
     load_ledger,
+    load_upcoming_odds,
     get_known_fighters_from_ledger,
 )
 
@@ -47,49 +50,78 @@ def match_fight_to_odds(
     fighter1: str,
     fighter2: str,
     odds_fights: List[Dict],
-) -> Optional[Dict]:
+) -> Optional[Tuple[Dict, bool]]:
     """
-    Find matching odds data for a fight.
+    Find matching odds data for a fight using pair-based scoring.
+
+    Uses pair-based matching that:
+    - Normalizes names (handles accents, hyphens, transliterations)
+    - Tries both fighter orderings (straight and flipped)
+    - Uses fuzzy matching with a combined pair score threshold
 
     Args:
-        fighter1: First fighter name
-        fighter2: Second fighter name
+        fighter1: First fighter name from ledger
+        fighter2: Second fighter name from ledger
         odds_fights: List of fight odds from the scraper
 
     Returns:
-        Matched odds dict or None
+        Tuple of (odds dict, is_flipped) or None if no match
+        is_flipped=True means fighter order is reversed in odds vs ledger
     """
-    fight_names = [normalize_name(fighter1), normalize_name(fighter2)]
+    l1_norm = normalize_name(fighter1)
+    l2_norm = normalize_name(fighter2)
+
+    best_match = None
+    best_score = 0.0
+    best_flipped = False
 
     for odds_fight in odds_fights:
-        f1 = odds_fight.get('fighter_1_canonical') or odds_fight.get('fighter_1', '')
-        f2 = odds_fight.get('fighter_2_canonical') or odds_fight.get('fighter_2', '')
-        odds_names = [normalize_name(f1), normalize_name(f2)]
+        # Skip fights without actual odds data
+        odds = odds_fight.get('odds', {})
+        if not odds or (not odds.get('draftkings') and not odds.get('fanduel')):
+            continue
 
-        # Check exact match
-        if set(fight_names) == set(odds_names):
-            return odds_fight.get('odds', {})
+        o1 = odds_fight.get('fighter_1_canonical') or odds_fight.get('fighter_1', '')
+        o2 = odds_fight.get('fighter_2_canonical') or odds_fight.get('fighter_2', '')
+        o1_norm = normalize_name(o1)
+        o2_norm = normalize_name(o2)
 
-        # Try fuzzy match
-        matches = 0
-        for fn in fight_names:
-            for on in odds_names:
-                if fuzzy_match_score(fn, on) > 0.85:
-                    matches += 1
-                    break
+        # Try straight matching (ledger F1 -> odds F1, ledger F2 -> odds F2)
+        score_straight = fuzzy_match_score(l1_norm, o1_norm) + fuzzy_match_score(l2_norm, o2_norm)
 
-        if matches == 2:
-            return odds_fight.get('odds', {})
+        # Try flipped matching (ledger F1 -> odds F2, ledger F2 -> odds F1)
+        score_flipped = fuzzy_match_score(l1_norm, o2_norm) + fuzzy_match_score(l2_norm, o1_norm)
+
+        # Take the better orientation
+        if score_straight >= score_flipped:
+            score = score_straight
+            flipped = False
+        else:
+            score = score_flipped
+            flipped = True
+
+        if score > best_score:
+            best_score = score
+            best_match = odds_fight
+            best_flipped = flipped
+
+    # Threshold: 1.7 out of 2.0 means both names must average ~85% similarity
+    if best_score >= 1.7 and best_match:
+        return best_match.get('odds', {}), best_flipped
 
     return None
 
 
-def format_odds_for_ledger(raw_odds: Dict) -> Dict:
+def format_odds_for_ledger(raw_odds: Dict, flipped: bool = False) -> Dict:
     """
     Format raw scraper odds for ledger storage.
 
+    Handles fighter order flipping: if the odds API has the fighters in
+    opposite order compared to the ledger, swap the moneylines and probabilities.
+
     Args:
         raw_odds: Raw odds dict from scraper
+        flipped: If True, swap F1/F2 values to match ledger order
 
     Returns:
         Formatted odds dict for ledger
@@ -99,24 +131,40 @@ def format_odds_for_ledger(raw_odds: Dict) -> Dict:
     # DraftKings
     dk = raw_odds.get('draftkings', {})
     if dk:
-        result['draftkings'] = {
-            'f1_ml': dk.get('f1_moneyline'),
-            'f2_ml': dk.get('f2_moneyline'),
-        }
+        if flipped:
+            result['draftkings'] = {
+                'f1_ml': dk.get('f2_moneyline'),
+                'f2_ml': dk.get('f1_moneyline'),
+            }
+        else:
+            result['draftkings'] = {
+                'f1_ml': dk.get('f1_moneyline'),
+                'f2_ml': dk.get('f2_moneyline'),
+            }
 
     # FanDuel
     fd = raw_odds.get('fanduel', {})
     if fd:
-        result['fanduel'] = {
-            'f1_ml': fd.get('f1_moneyline'),
-            'f2_ml': fd.get('f2_moneyline'),
-        }
+        if flipped:
+            result['fanduel'] = {
+                'f1_ml': fd.get('f2_moneyline'),
+                'f2_ml': fd.get('f1_moneyline'),
+            }
+        else:
+            result['fanduel'] = {
+                'f1_ml': fd.get('f1_moneyline'),
+                'f2_ml': fd.get('f2_moneyline'),
+            }
 
     # Consensus
     consensus = raw_odds.get('consensus', {})
     if consensus:
-        result['consensus_f1_fair'] = consensus.get('f1_fair')
-        result['consensus_f2_fair'] = consensus.get('f2_fair')
+        if flipped:
+            result['consensus_f1_fair'] = consensus.get('f2_fair')
+            result['consensus_f2_fair'] = consensus.get('f1_fair')
+        else:
+            result['consensus_f1_fair'] = consensus.get('f1_fair')
+            result['consensus_f2_fair'] = consensus.get('f2_fair')
 
     result['scraped_at'] = datetime.utcnow().isoformat() + 'Z'
 
@@ -126,7 +174,8 @@ def format_odds_for_ledger(raw_odds: Dict) -> Dict:
 def populate_ledger_odds(
     apply: bool = False,
     force: bool = False,
-    api_key: Optional[str] = None
+    api_key: Optional[str] = None,
+    local_only: bool = False
 ) -> Tuple[int, int, int]:
     """
     Populate odds for unlocked ledger entries.
@@ -135,6 +184,7 @@ def populate_ledger_odds(
         apply: If True, save changes to ledger. If False, dry run only.
         force: If True, re-fetch odds even if already present.
         api_key: Optional API key (else reads from env)
+        local_only: If True, use existing scraped data instead of calling API
 
     Returns:
         Tuple of (events_updated, fights_matched, fights_unmatched)
@@ -145,41 +195,55 @@ def populate_ledger_odds(
         print("ERROR: Could not load ledger")
         return 0, 0, 0
 
-    # Check for API key
-    key = api_key or os.getenv('ODDS_API_KEY')
-    if not key:
-        print()
-        print("ERROR: No API key provided.")
-        print()
-        print("To use this tool, you need an API key from The Odds API.")
-        print()
-        print("1. Sign up at: https://the-odds-api.com")
-        print("2. Get your free API key (500 requests/month)")
-        print("3. Set the key: export ODDS_API_KEY='your-key-here'")
-        print()
-        return 0, 0, 0
-
-    # Fetch current odds
-    print("Fetching odds from The Odds API...")
-    with UFCOddsScraper(api_key=key) as scraper:
-        odds_fights = scraper.scrape_upcoming_odds()
-
-        if not odds_fights:
-            print("No odds data available from API.")
+    if local_only:
+        # Use existing scraped odds from disk
+        print("Loading odds from local file (no API call)...")
+        odds_data = load_upcoming_odds()
+        if not odds_data:
+            print("ERROR: No local odds data found at data/odds/upcoming_odds.json")
+            print("Run 'python src/odds/fetch_odds.py' first to scrape odds data.")
             return 0, 0, 0
 
-        # Match fighters to canonical names
-        known_fighters = get_known_fighters_from_ledger()
-        if known_fighters:
-            odds_fights, _, _ = scraper.match_fighters_to_canonical(
-                odds_fights, known_fighters
-            )
+        odds_fights = odds_data.get('fights', [])
+        print(f"Loaded odds for {len(odds_fights)} fights (scraped: {odds_data.get('scraped_at', 'unknown')})")
+    else:
+        # Check for API key
+        key = api_key or os.getenv('ODDS_API_KEY')
+        if not key:
+            print()
+            print("ERROR: No API key provided.")
+            print()
+            print("To use this tool, you need an API key from The Odds API.")
+            print()
+            print("1. Sign up at: https://the-odds-api.com")
+            print("2. Get your free API key (500 requests/month)")
+            print("3. Set the key: export ODDS_API_KEY='your-key-here'")
+            print()
+            print("Or use --local-only to re-match using existing scraped data.")
+            print()
+            return 0, 0, 0
 
-        print(f"Fetched odds for {len(odds_fights)} fights")
+        # Fetch current odds
+        print("Fetching odds from The Odds API...")
+        with UFCOddsScraper(api_key=key) as scraper:
+            odds_fights = scraper.scrape_upcoming_odds()
 
-        # Also save to upcoming_odds.json
-        scraper.save_odds(odds_fights)
-        scraper.append_to_history(odds_fights)
+            if not odds_fights:
+                print("No odds data available from API.")
+                return 0, 0, 0
+
+            # Match fighters to canonical names
+            known_fighters = get_known_fighters_from_ledger()
+            if known_fighters:
+                odds_fights, _, _ = scraper.match_fighters_to_canonical(
+                    odds_fights, known_fighters
+                )
+
+            print(f"Fetched odds for {len(odds_fights)} fights")
+
+            # Also save to upcoming_odds.json
+            scraper.save_odds(odds_fights)
+            scraper.append_to_history(odds_fights)
 
     # Process ledger entries
     events_updated = 0
@@ -206,10 +270,11 @@ def populate_ledger_odds(
                 continue
 
             # Find matching odds
-            raw_odds = match_fight_to_odds(f1, f2, odds_fights)
+            match_result = match_fight_to_odds(f1, f2, odds_fights)
 
-            if raw_odds:
-                formatted = format_odds_for_ledger(raw_odds)
+            if match_result:
+                raw_odds, is_flipped = match_result
+                formatted = format_odds_for_ledger(raw_odds, flipped=is_flipped)
 
                 # Calculate edge
                 f1_prob = fight.get('f1_win_prob', 0.5)
@@ -273,6 +338,11 @@ def main():
         type=str,
         help='The Odds API key (or set ODDS_API_KEY env var)'
     )
+    parser.add_argument(
+        '--local-only',
+        action='store_true',
+        help='Re-match using existing scraped data (no API call)'
+    )
 
     args = parser.parse_args()
 
@@ -282,12 +352,14 @@ def main():
     print("=" * 60)
     print(f"Mode: {'APPLY' if args.apply else 'DRY RUN'}")
     print(f"Force re-fetch: {args.force}")
+    print(f"Local only: {args.local_only}")
     print()
 
     events, matched, unmatched = populate_ledger_odds(
         apply=args.apply,
         force=args.force,
-        api_key=args.api_key
+        api_key=args.api_key,
+        local_only=args.local_only
     )
 
     print()

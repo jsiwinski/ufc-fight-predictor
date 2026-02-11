@@ -15,7 +15,9 @@ Usage:
 import json
 import logging
 import os
+import re
 import time
+import unicodedata
 from datetime import datetime
 from difflib import SequenceMatcher
 from pathlib import Path
@@ -101,13 +103,38 @@ def remove_vig(f1_implied: float, f2_implied: float) -> Tuple[float, float]:
 # =============================================================================
 
 def normalize_name(name: str) -> str:
-    """Normalize fighter name for matching."""
+    """
+    Normalize fighter name for matching.
+
+    Handles:
+    - Unicode/accent characters (José -> jose)
+    - Transliteration variants (Sergey/Serghei)
+    - Hyphens, apostrophes, periods
+    - Common suffixes (Jr, Jr., II, III)
+    """
     if not name:
         return ""
-    # Lowercase, strip whitespace, remove extra spaces
-    name = ' '.join(name.lower().strip().split())
-    # Remove common suffixes/prefixes
-    name = name.replace("'", "").replace("-", " ").replace(".", "")
+
+    # Unicode normalize — decompose accents
+    name = unicodedata.normalize('NFKD', name)
+    # Strip accent marks (combining characters)
+    name = ''.join(c for c in name if not unicodedata.combining(c))
+
+    # Lowercase
+    name = name.lower()
+
+    # Remove apostrophes (various unicode variants)
+    name = name.replace("'", "").replace("'", "").replace("'", "").replace("`", "")
+
+    # Replace hyphens and periods with spaces
+    name = name.replace("-", " ").replace(".", " ")
+
+    # Remove common suffixes that vary
+    name = re.sub(r'\b(jr|sr|ii|iii|iv)\b', '', name)
+
+    # Collapse whitespace
+    name = re.sub(r'\s+', ' ', name).strip()
+
     return name
 
 
