@@ -821,7 +821,12 @@ def match_fight_to_odds(
     odds_lookup: Dict[str, Dict]
 ) -> Optional[Dict]:
     """
-    Find matching odds data for a fight.
+    Find matching odds data for a fight using pair-based scoring.
+
+    Uses pair-based matching that:
+    - Normalizes names (handles accents, hyphens, transliterations)
+    - Tries both fighter orderings
+    - Uses combined pair score threshold of 1.7/2.0
 
     Args:
         fighter1: First fighter name
@@ -835,27 +840,39 @@ def match_fight_to_odds(
         return None
 
     # Create normalized key
-    names = sorted([normalize_name(fighter1), normalize_name(fighter2)])
+    f1_norm = normalize_name(fighter1)
+    f2_norm = normalize_name(fighter2)
+    names = sorted([f1_norm, f2_norm])
     key = f"{names[0]}|{names[1]}"
 
+    # Try exact match first
     if key in odds_lookup:
         return odds_lookup[key]
 
-    # Try fuzzy matching
+    # Try pair-based fuzzy matching
+    best_match = None
+    best_score = 0.0
+
     for odds_key, odds in odds_lookup.items():
         odds_names = odds_key.split('|')
-        fight_names = [normalize_name(fighter1), normalize_name(fighter2)]
+        o1_norm = odds_names[0]
+        o2_norm = odds_names[1] if len(odds_names) > 1 else ''
 
-        # Check if both fighters match with fuzzy logic
-        matches = 0
-        for fn in fight_names:
-            for on in odds_names:
-                if fuzzy_match_score(fn, on) > 0.85:
-                    matches += 1
-                    break
+        # Try both orderings and take the better one
+        # Straight: f1->o1, f2->o2
+        score_straight = fuzzy_match_score(f1_norm, o1_norm) + fuzzy_match_score(f2_norm, o2_norm)
+        # Flipped: f1->o2, f2->o1
+        score_flipped = fuzzy_match_score(f1_norm, o2_norm) + fuzzy_match_score(f2_norm, o1_norm)
 
-        if matches == 2:
-            return odds
+        score = max(score_straight, score_flipped)
+
+        if score > best_score:
+            best_score = score
+            best_match = odds
+
+    # Threshold: 1.7 out of 2.0 means both names must average ~85% similarity
+    if best_score >= 1.7 and best_match:
+        return best_match
 
     return None
 
