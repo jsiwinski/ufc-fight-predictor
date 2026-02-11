@@ -42,9 +42,13 @@ wheels/
 data/raw/*
 data/processed/*
 data/predictions/*
+data/odds/*
+data/ledger/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/predictions/.gitkeep
+!data/odds/.gitkeep
+!data/ledger/.gitkeep
 
 # Model files
 data/models/*
