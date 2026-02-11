@@ -425,6 +425,36 @@ main {
     border: 1px solid var(--border);
 }
 
+/* Vegas Odds Row */
+.odds-row {
+    text-align: center;
+    padding: 8px 0;
+    margin-top: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.odds-moneylines {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.odds-consensus {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.odds-edge {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.odds-edge.value-edge {
+    color: var(--red);
+    font-weight: 500;
+}
+
 /* Fight Details (expanded on hover/click) */
 .fight-details {
     margin-top: 16px;

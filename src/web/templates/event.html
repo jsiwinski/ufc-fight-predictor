@@ -117,6 +117,29 @@
             </div>
         </div>
 
+        {# Vegas Odds Row - only show if odds data exists #}
+        {% if fight.odds %}
+        <div class="odds-row">
+            {% if fight.odds.draftkings or fight.odds.fanduel %}
+            <div class="odds-moneylines">
+                {% if fight.odds.draftkings %}DK: {{ fight.odds.draftkings.f1_ml|format_ml }}/{{ fight.odds.draftkings.f2_ml|format_ml }}{% endif %}
+                {% if fight.odds.draftkings and fight.odds.fanduel %} · {% endif %}
+                {% if fight.odds.fanduel %}FD: {{ fight.odds.fanduel.f1_ml|format_ml }}/{{ fight.odds.fanduel.f2_ml|format_ml }}{% endif %}
+            </div>
+            {% endif %}
+
+            {% if fight.odds.consensus_f1_fair %}
+            <div class="odds-consensus">
+                Vegas: {{ "%.1f"|format(fight.odds.consensus_f1_fair * 100) }}% vs {{ "%.1f"|format(fight.odds.consensus_f2_fair * 100) }}%
+            </div>
+
+            <div class="odds-edge {% if fight.odds.edge_pct >= 5 %}value-edge{% endif %}">
+                Edge: {{ "%+.1f"|format(fight.odds.edge * 100) }}pp
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
         {# Confidence Badge #}
         <div style="text-align: center;">
             <span class="confidence-badge {% if fight.confidence == 'HIGH' %}high{% elif fight.confidence == 'MEDIUM' %}medium{% endif %}">{{ fight.confidence }}</span>

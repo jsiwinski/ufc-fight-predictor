@@ -65,6 +65,12 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.predict.serve import PredictionPipeline
+from src.odds.scraper import (
+    UFCOddsScraper,
+    load_upcoming_odds,
+    normalize_name,
+    fuzzy_match_score,
+)
 
 # Configure logging
 logging.basicConfig(
@@ -323,8 +329,21 @@ def compute_tornado_bars(factors: List, top_n: int = 5) -> List[Dict]:
     return parsed
 
 
-def format_prediction(pred: Dict, position: int = 0, total_fights: int = 13) -> Dict:
-    """Format a prediction dict for template rendering."""
+def format_prediction(
+    pred: Dict,
+    position: int = 0,
+    total_fights: int = 13,
+    odds_lookup: Optional[Dict[str, Dict]] = None
+) -> Dict:
+    """
+    Format a prediction dict for template rendering.
+
+    Args:
+        pred: Raw prediction dict
+        position: Fight position in card (0 = main event)
+        total_fights: Total fights on card
+        odds_lookup: Optional dict of odds data keyed by normalized fighter pair
+    """
     f1_prob = pred['f1_win_prob']
     f2_prob = pred['f2_win_prob']
 
@@ -379,6 +398,21 @@ def format_prediction(pred: Dict, position: int = 0, total_fights: int = 13) -> 
     f1_name = pred['fighter1']
     f2_name = pred['fighter2']
 
+    # Match and format odds data
+    odds_display = None
+    if odds_lookup:
+        raw_odds = match_fight_to_odds(f1_name, f2_name, odds_lookup)
+        if raw_odds:
+            odds_display = format_odds_for_display(
+                raw_odds, f1_name, f2_name, f1_prob, f2_prob
+            )
+
+    # Also check if odds came directly in pred (from ledger)
+    if not odds_display and pred.get('odds'):
+        odds_display = format_odds_for_display(
+            pred['odds'], f1_name, f2_name, f1_prob, f2_prob
+        )
+
     return {
         'fighter1': f1_name,
         'fighter2': f2_name,
@@ -415,6 +449,8 @@ def format_prediction(pred: Dict, position: int = 0, total_fights: int = 13) -> 
         'actual_winner': pred.get('actual_winner'),
         'correct': pred.get('correct'),
         'method': pred.get('method'),
+        # Odds fields (may be None if no odds available)
+        'odds': odds_display,
     }
 
 
@@ -439,9 +475,15 @@ def get_upcoming_predictions() -> Optional[Dict]:
         event_date = predictions[0].get('event_date', '')
         event_slug = slugify(event_name)
 
-        # Format predictions
+        # Load odds data for matching
+        odds_lookup = get_odds_for_fights(predictions)
+
+        # Format predictions with odds
         total = len(predictions)
-        formatted = [format_prediction(p, i, total) for i, p in enumerate(predictions)]
+        formatted = [
+            format_prediction(p, i, total, odds_lookup)
+            for i, p in enumerate(predictions)
+        ]
 
         # Count confidence levels
         confidence_counts = {'HIGH': 0, 'MEDIUM': 0, 'LOW': 0}
@@ -484,9 +526,12 @@ def get_backtest_predictions(date_str: str) -> Optional[Dict]:
         event_date = predictions[0].get('event_date', '')
         event_slug = slugify(event_name)
 
-        # Format predictions
+        # Format predictions (no odds for backtests - historical data not available)
         total = len(predictions)
-        formatted = [format_prediction(p, i, total) for i, p in enumerate(predictions)]
+        formatted = [
+            format_prediction(p, i, total, odds_lookup=None)
+            for i, p in enumerate(predictions)
+        ]
 
         # Calculate accuracy
         correct = sum(1 for p in predictions if p.get('correct', False))
@@ -611,6 +656,10 @@ def format_event_from_json(event_data: Dict) -> Optional[Dict]:
     total_fights = len(fights)
     formatted_predictions = []
 
+    # Load odds data for matching (only for upcoming events)
+    is_completed = event_data.get('status') == 'completed'
+    odds_lookup = get_odds_for_fights(fights) if not is_completed else {}
+
     for i, fight in enumerate(fights):
         # Convert events.json fight format to the format expected by format_prediction
         pred = {
@@ -629,8 +678,10 @@ def format_event_from_json(event_data: Dict) -> Optional[Dict]:
             'actual_winner': fight.get('actual_winner'),
             'correct': fight.get('correct'),
             'method': fight.get('method'),
+            # Odds from event data if available
+            'odds': fight.get('odds'),
         }
-        formatted_predictions.append(format_prediction(pred, i, total_fights))
+        formatted_predictions.append(format_prediction(pred, i, total_fights, odds_lookup))
 
     # Count confidence levels
     confidence_counts = {'HIGH': 0, 'MEDIUM': 0, 'LOW': 0}
@@ -728,6 +779,159 @@ def load_model_registry() -> Optional[Dict]:
     except Exception as e:
         logger.warning(f"Error loading model registry: {e}")
         return None
+
+
+# =============================================================================
+# Odds Integration Functions
+# =============================================================================
+
+def get_odds_for_fights(fights: List[Dict]) -> Dict[str, Dict]:
+    """
+    Load odds data and match to fights by fighter names.
+
+    Args:
+        fights: List of fight dicts with fighter_1/fighter_2 or fighter1/fighter2 keys
+
+    Returns:
+        Dict mapping normalized fight key to odds data
+    """
+    odds_data = load_upcoming_odds()
+    if not odds_data:
+        return {}
+
+    # Build lookup dict by normalized fighter pair
+    odds_lookup = {}
+    for fight in odds_data.get('fights', []):
+        f1 = fight.get('fighter_1', '') or fight.get('fighter_1_canonical', '')
+        f2 = fight.get('fighter_2', '') or fight.get('fighter_2_canonical', '')
+        if not f1 or not f2:
+            continue
+
+        # Create normalized key (alphabetical order for consistency)
+        names = sorted([normalize_name(f1), normalize_name(f2)])
+        key = f"{names[0]}|{names[1]}"
+        odds_lookup[key] = fight.get('odds', {})
+
+    return odds_lookup
+
+
+def match_fight_to_odds(
+    fighter1: str,
+    fighter2: str,
+    odds_lookup: Dict[str, Dict]
+) -> Optional[Dict]:
+    """
+    Find matching odds data for a fight.
+
+    Args:
+        fighter1: First fighter name
+        fighter2: Second fighter name
+        odds_lookup: Dict of odds data keyed by normalized fighter pair
+
+    Returns:
+        Matched odds data or None
+    """
+    if not odds_lookup:
+        return None
+
+    # Create normalized key
+    names = sorted([normalize_name(fighter1), normalize_name(fighter2)])
+    key = f"{names[0]}|{names[1]}"
+
+    if key in odds_lookup:
+        return odds_lookup[key]
+
+    # Try fuzzy matching
+    for odds_key, odds in odds_lookup.items():
+        odds_names = odds_key.split('|')
+        fight_names = [normalize_name(fighter1), normalize_name(fighter2)]
+
+        # Check if both fighters match with fuzzy logic
+        matches = 0
+        for fn in fight_names:
+            for on in odds_names:
+                if fuzzy_match_score(fn, on) > 0.85:
+                    matches += 1
+                    break
+
+        if matches == 2:
+            return odds
+
+    return None
+
+
+def format_odds_for_display(
+    odds: Optional[Dict],
+    f1_name: str,
+    f2_name: str,
+    f1_model_prob: float,
+    f2_model_prob: float
+) -> Optional[Dict]:
+    """
+    Format odds data for template display.
+
+    Args:
+        odds: Raw odds dict from scraper (may be None)
+        f1_name: Fighter 1 name (for matching moneylines to correct fighter)
+        f2_name: Fighter 2 name
+        f1_model_prob: Model probability for fighter 1
+        f2_model_prob: Model probability for fighter 2
+
+    Returns:
+        Formatted odds dict for template or None if no odds
+    """
+    if not odds:
+        return None
+
+    result = {}
+
+    # DraftKings moneylines
+    dk = odds.get('draftkings', {})
+    if dk:
+        result['draftkings'] = {
+            'f1_ml': dk.get('f1_moneyline'),
+            'f2_ml': dk.get('f2_moneyline'),
+        }
+
+    # FanDuel moneylines
+    fd = odds.get('fanduel', {})
+    if fd:
+        result['fanduel'] = {
+            'f1_ml': fd.get('f1_moneyline'),
+            'f2_ml': fd.get('f2_moneyline'),
+        }
+
+    # Consensus fair probabilities
+    consensus = odds.get('consensus', {})
+    if consensus:
+        consensus_f1 = consensus.get('f1_fair', 0.5)
+        consensus_f2 = consensus.get('f2_fair', 0.5)
+
+        result['consensus_f1_fair'] = consensus_f1
+        result['consensus_f2_fair'] = consensus_f2
+
+        # Calculate edge from predicted winner's perspective
+        # Positive edge = model sees value the market is missing
+        if f1_model_prob >= f2_model_prob:
+            # Model picks F1
+            edge = f1_model_prob - consensus_f1
+        else:
+            # Model picks F2
+            edge = f2_model_prob - consensus_f2
+
+        result['edge'] = edge
+        result['edge_pct'] = abs(edge) * 100  # For threshold comparison in template
+
+    return result if (result.get('draftkings') or result.get('fanduel') or result.get('consensus_f1_fair')) else None
+
+
+def format_moneyline(ml: Optional[int]) -> str:
+    """Format moneyline with +/- prefix."""
+    if ml is None:
+        return 'N/A'
+    if ml >= 0:
+        return f"+{ml}"
+    return str(ml)
 
 
 def get_ledger_stats() -> Dict:
@@ -863,6 +1067,10 @@ def format_ledger_event(entry: Dict) -> Optional[Dict]:
     total_fights = len(fights)
     formatted_predictions = []
 
+    # Load odds data for matching (only for unlocked/upcoming events)
+    is_locked = entry.get('locked', False)
+    odds_lookup = get_odds_for_fights(fights) if not is_locked else {}
+
     for i, fight in enumerate(fights):
         # Convert ledger fight format to format_prediction input
         # top_factors from ledger is already in dict format [{'feature': ..., 'value': ...}]
@@ -882,8 +1090,10 @@ def format_ledger_event(entry: Dict) -> Optional[Dict]:
             'actual_winner': fight.get('actual_winner'),
             'correct': fight.get('correct'),
             'method': fight.get('actual_method'),  # Note: ledger uses actual_method
+            # Odds from ledger if available
+            'odds': fight.get('odds'),
         }
-        formatted_predictions.append(format_prediction(pred, i, total_fights))
+        formatted_predictions.append(format_prediction(pred, i, total_fights, odds_lookup))
 
     # Count confidence levels
     confidence_counts = {'HIGH': 0, 'MEDIUM': 0, 'LOW': 0}
@@ -1127,6 +1337,20 @@ def format_date_long_filter(date_str):
             return f"{dt.strftime('%A, %B')} {day}, {dt.year}"
         except Exception:
             return date_str
+
+
+@app.template_filter('format_ml')
+def format_moneyline_filter(ml):
+    """Template filter to format American moneyline odds with +/- prefix."""
+    if ml is None:
+        return 'N/A'
+    try:
+        ml = int(ml)
+        if ml >= 0:
+            return f"+{ml}"
+        return str(ml)
+    except (ValueError, TypeError):
+        return 'N/A'
 
 
 if __name__ == '__main__':
