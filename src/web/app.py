@@ -973,19 +973,35 @@ def event_detail(event_slug: str):
     return render_template('event.html', event=data)
 
 
+@app.route('/upcoming')
+def upcoming():
+    """
+    List of all upcoming events with predictions.
+
+    Shows all scheduled UFC events with predictions already generated,
+    sorted by date (soonest first).
+    """
+    # Get upcoming events from ledger
+    upcoming_events, _ = get_ledger_events()
+
+    return render_template(
+        'upcoming.html',
+        upcoming=upcoming_events
+    )
+
+
 @app.route('/archive')
 @app.route('/events')
 def archive():
     """
-    List of all predicted events with running stats.
+    List of all completed events with results (track record).
 
     Shows:
     - Running stats banner (total accuracy, events tracked, current model)
-    - Upcoming events (unlocked predictions)
-    - Completed events (locked with results)
+    - Completed events only (locked with results)
     """
     # Try ledger first
-    upcoming, completed = get_ledger_events()
+    _, completed = get_ledger_events()
     stats = get_ledger_stats()
 
     # Get model info
@@ -993,13 +1009,12 @@ def archive():
     current_model = registry.get('current', 'unknown') if registry else 'unknown'
 
     # If ledger is empty, fall back to events.json
-    if not upcoming and not completed:
+    if not completed:
         events = get_archived_events()
         return render_template('archive.html', events=events, stats=None)
 
     return render_template(
         'archive.html',
-        upcoming=upcoming,
         completed=completed,
         stats=stats,
         current_model=current_model

@@ -45,35 +45,6 @@
 {% endif %}
 {% endif %}
 
-{# Upcoming Events Section #}
-{% if upcoming %}
-<div class="archive-section">
-    <h2 class="archive-section-title">Upcoming Events</h2>
-    <div class="event-cards">
-        {% for event in upcoming %}
-        <a href="/event/{{ event.event_slug }}" class="event-card-link">
-            <div class="event-card upcoming-card">
-                <div class="event-card-header">
-                    <span class="event-card-title">{{ event.event_name }}</span>
-                    <span class="badge badge-upcoming">UPCOMING</span>
-                </div>
-                <div class="event-card-meta">
-                    {{ event.event_date|format_date_long }}{% if event.location %} &middot; {{ event.location }}{% endif %}
-                </div>
-                <div class="event-card-info">
-                    {{ event.fight_count }} fights &middot; Predictions ready
-                </div>
-                <div class="event-card-model">
-                    Model: {{ event.model_version|replace('_ensemble_v1', '')|replace('_v1', '')|replace('phase8', 'Phase 8') }}
-                </div>
-                <div class="event-card-action">View Predictions &rarr;</div>
-            </div>
-        </a>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-
 {# Completed Events Section #}
 {% if completed %}
 <div class="archive-section">
@@ -118,31 +89,8 @@
 {% endif %}
 
 {# Legacy fallback for events list (when ledger is empty) #}
-{% if events and not upcoming and not completed %}
-{% set upcoming_legacy = events|selectattr('status', 'equalto', 'upcoming')|list %}
+{% if events and not completed %}
 {% set completed_legacy = events|rejectattr('status', 'equalto', 'upcoming')|list %}
-
-{% if upcoming_legacy %}
-<div class="archive-section">
-    <h2 class="archive-section-title">Upcoming Events</h2>
-    <ul class="archive-list">
-        {% for event in upcoming_legacy %}
-        <li class="archive-item upcoming">
-            <div>
-                <a href="/event/{{ event.event_slug }}" class="archive-event">{{ event.event_name }}</a>
-                <div class="archive-meta">{{ event.event_date }} &middot; {{ event.fight_count }} fights</div>
-            </div>
-            <div class="archive-status upcoming">
-                <span class="status-badge">Upcoming</span>
-            </div>
-            <div>
-                <a href="/event/{{ event.event_slug }}" class="archive-link">View predictions &rarr;</a>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
 
 {% if completed_legacy %}
 <div class="archive-section">
@@ -172,12 +120,12 @@
 {% endif %}
 
 {# Empty state #}
-{% if not events and not upcoming and not completed %}
+{% if not events and not completed %}
 <div class="empty-state">
-    <h2>No events yet</h2>
-    <p>Predictions will appear here after they're generated.</p>
+    <h2>No completed events yet</h2>
+    <p>Results will appear here after events are completed.</p>
     <p style="margin-top: 20px;">
-        <a href="/" style="color: var(--red);">View predictions for the next event</a>
+        <a href="/upcoming" style="color: var(--red);">View upcoming predictions</a>
     </p>
 </div>
 {% endif %}
