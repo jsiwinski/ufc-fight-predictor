@@ -130,6 +130,34 @@ def get_initials(name: str) -> str:
     return "??"
 
 
+def get_last_name(full_name: str) -> str:
+    """
+    Extract last name from fighter's full name.
+
+    Handles multi-word last names like "de la Cruz" by checking if name
+    contains common prefixes (de, da, van, von, etc).
+    """
+    if not full_name:
+        return ""
+
+    parts = full_name.strip().split()
+    if len(parts) <= 1:
+        return full_name
+
+    # Check for multi-word last name prefixes
+    lower_parts = [p.lower() for p in parts]
+    prefixes = {'de', 'da', 'do', 'van', 'von', 'la', 'le', 'del', 'dos'}
+
+    # Find where the last name starts (after first name)
+    last_name_start = 1
+    for i in range(1, len(parts) - 1):
+        if lower_parts[i] in prefixes:
+            last_name_start = i
+            break
+
+    return ' '.join(parts[last_name_start:])
+
+
 def get_headshot_url(fighter_name: str) -> Optional[str]:
     """
     Get headshot URL for a fighter if image exists.
@@ -1032,19 +1060,36 @@ def get_ledger_events() -> Tuple[List[Dict], List[Dict]]:
     completed = []
 
     for entry in entries:
+        # Get main event fighter info (first fight in list)
+        fights = entry.get('fights', [])
+        main_event = fights[0] if fights else None
+
         event_info = {
             'event_id': entry.get('event_id', ''),
             'event_name': entry.get('event_name', ''),
             'event_date': entry.get('event_date', ''),
             'event_slug': entry.get('event_id', ''),  # Use event_id as slug
             'location': entry.get('location', ''),
-            'fight_count': entry.get('overall_total') or len(entry.get('fights', [])),
+            'fight_count': entry.get('overall_total') or len(fights),
             'locked': entry.get('locked', False),
             'locked_at': entry.get('locked_at'),
             'model_version': entry.get('model_version', ''),
             'model_description': entry.get('model_description', ''),
             'prediction_type': entry.get('prediction_type', 'unknown'),
         }
+
+        # Add main event fighter data for preview cards
+        if main_event:
+            f1_name = main_event.get('fighter_1', '')
+            f2_name = main_event.get('fighter_2', '')
+            event_info['main_event_f1'] = f1_name
+            event_info['main_event_f2'] = f2_name
+            event_info['main_event_f1_photo'] = get_headshot_url(f1_name)
+            event_info['main_event_f2_photo'] = get_headshot_url(f2_name)
+            event_info['main_event_f1_last'] = get_last_name(f1_name)
+            event_info['main_event_f2_last'] = get_last_name(f2_name)
+            event_info['main_event_f1_initials'] = get_initials(f1_name)
+            event_info['main_event_f2_initials'] = get_initials(f2_name)
 
         if entry.get('locked', False):
             event_info['status'] = 'completed'

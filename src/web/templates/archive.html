@@ -66,6 +66,29 @@
                     {{ event.event_date|format_date_long }}{% if event.location %} &middot; {{ event.location }}{% endif %}
                 </div>
 
+                {# Main Event Matchup #}
+                {% if event.main_event_f1 and event.main_event_f2 %}
+                <div class="event-card-matchup">
+                    <div class="event-card-fighter">
+                        {% if event.main_event_f1_photo %}
+                        <img src="{{ event.main_event_f1_photo }}" alt="{{ event.main_event_f1 }}" loading="lazy">
+                        {% else %}
+                        <div class="event-card-fighter-fallback">{{ event.main_event_f1_initials }}</div>
+                        {% endif %}
+                        <span class="event-card-fighter-name">{{ event.main_event_f1_last }}</span>
+                    </div>
+                    <span class="event-card-vs">vs</span>
+                    <div class="event-card-fighter">
+                        {% if event.main_event_f2_photo %}
+                        <img src="{{ event.main_event_f2_photo }}" alt="{{ event.main_event_f2 }}" loading="lazy">
+                        {% else %}
+                        <div class="event-card-fighter-fallback">{{ event.main_event_f2_initials }}</div>
+                        {% endif %}
+                        <span class="event-card-fighter-name">{{ event.main_event_f2_last }}</span>
+                    </div>
+                </div>
+                {% endif %}
+
                 {# Accuracy bar #}
                 <div class="accuracy-bar-container">
                     <div class="accuracy-bar-fill {% if accuracy_pct >= 65 %}high{% elif accuracy_pct >= 55 %}medium{% else %}low{% endif %}" style="width: {{ accuracy_pct }}%;"></div>
