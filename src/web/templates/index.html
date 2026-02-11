@@ -107,8 +107,8 @@
             <span class="confidence-badge {% if fight.confidence == 'HIGH' %}high{% elif fight.confidence == 'MEDIUM' %}medium{% endif %}">{{ fight.confidence }}</span>
         </div>
 
-        {# Tornado Chart (visible on hover) with Body Photos #}
-        {% if fight.tornado_factors %}
+        {# Expanded Details (visible on hover) - Body Photos and Tornado Chart #}
+        {% if fight.f1_body_photo or fight.f2_body_photo or fight.tornado_factors %}
         <div class="fight-details">
             <div class="fight-details-content {% if fight.f1_body_photo and fight.f2_body_photo %}has-both-photos{% elif fight.f1_body_photo %}has-left-photo{% elif fight.f2_body_photo %}has-right-photo{% else %}no-photos{% endif %}">
                 {# Fighter 1 Body Photo #}
@@ -116,6 +116,8 @@
                 <img src="{{ fight.f1_body_photo }}" alt="{{ fight.fighter1 }}" class="fighter-body-photo left {% if fight.f1_flip %}flipped{% endif %}" loading="lazy">
                 {% endif %}
 
+                {# Tornado Chart - only if factor data exists #}
+                {% if fight.tornado_factors %}
                 <div class="tornado-section">
                     {% for factor in fight.tornado_factors %}
                     <div class="tornado-row">
@@ -129,6 +131,7 @@
                     </div>
                     {% endfor %}
                 </div>
+                {% endif %}
 
                 {# Fighter 2 Body Photo #}
                 {% if fight.f2_body_photo %}
