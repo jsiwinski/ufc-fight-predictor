@@ -870,8 +870,12 @@ def format_odds_for_display(
     """
     Format odds data for template display.
 
+    Handles two input formats:
+    1. Scraper format: {'draftkings': {'f1_moneyline': X}, 'consensus': {'f1_fair': Y}}
+    2. Ledger format: {'draftkings': {'f1_ml': X}, 'consensus_f1_fair': Y}
+
     Args:
-        odds: Raw odds dict from scraper (may be None)
+        odds: Raw odds dict from scraper or ledger (may be None)
         f1_name: Fighter 1 name (for matching moneylines to correct fighter)
         f2_name: Fighter 2 name
         f1_model_prob: Model probability for fighter 1
@@ -885,28 +889,41 @@ def format_odds_for_display(
 
     result = {}
 
-    # DraftKings moneylines
+    # DraftKings moneylines (handle both 'f1_moneyline' and 'f1_ml' formats)
     dk = odds.get('draftkings', {})
     if dk:
-        result['draftkings'] = {
-            'f1_ml': dk.get('f1_moneyline'),
-            'f2_ml': dk.get('f2_moneyline'),
-        }
+        f1_ml = dk.get('f1_moneyline') or dk.get('f1_ml')
+        f2_ml = dk.get('f2_moneyline') or dk.get('f2_ml')
+        if f1_ml is not None or f2_ml is not None:
+            result['draftkings'] = {
+                'f1_ml': f1_ml,
+                'f2_ml': f2_ml,
+            }
 
-    # FanDuel moneylines
+    # FanDuel moneylines (handle both formats)
     fd = odds.get('fanduel', {})
     if fd:
-        result['fanduel'] = {
-            'f1_ml': fd.get('f1_moneyline'),
-            'f2_ml': fd.get('f2_moneyline'),
-        }
+        f1_ml = fd.get('f1_moneyline') or fd.get('f1_ml')
+        f2_ml = fd.get('f2_moneyline') or fd.get('f2_ml')
+        if f1_ml is not None or f2_ml is not None:
+            result['fanduel'] = {
+                'f1_ml': f1_ml,
+                'f2_ml': f2_ml,
+            }
 
-    # Consensus fair probabilities
+    # Consensus fair probabilities (handle both nested and flat formats)
+    # Scraper format: {'consensus': {'f1_fair': X, 'f2_fair': Y}}
+    # Ledger format: {'consensus_f1_fair': X, 'consensus_f2_fair': Y}
     consensus = odds.get('consensus', {})
     if consensus:
-        consensus_f1 = consensus.get('f1_fair', 0.5)
-        consensus_f2 = consensus.get('f2_fair', 0.5)
+        consensus_f1 = consensus.get('f1_fair')
+        consensus_f2 = consensus.get('f2_fair')
+    else:
+        # Try flat ledger format
+        consensus_f1 = odds.get('consensus_f1_fair')
+        consensus_f2 = odds.get('consensus_f2_fair')
 
+    if consensus_f1 is not None and consensus_f2 is not None:
         result['consensus_f1_fair'] = consensus_f1
         result['consensus_f2_fair'] = consensus_f2
 
