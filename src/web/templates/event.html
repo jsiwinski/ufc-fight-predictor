@@ -22,7 +22,13 @@
 {% if event.is_backtest %}
 <div class="backtest-banner">
     <div>
+        {% if event.prediction_type == 'backtest' %}
         <span class="label">Backtest Results</span>
+        {% elif event.locked %}
+        <span class="label">Locked Results</span>
+        {% else %}
+        <span class="label">Results</span>
+        {% endif %}
     </div>
     <div class="result">
         {{ event.correct }}/{{ event.total }} correct
@@ -31,6 +37,14 @@
         {{ event.accuracy_pct }}% accuracy
     </div>
 </div>
+{% if event.model_version %}
+<div class="model-info-banner">
+    <span class="model-label">Model: {{ event.model_version|replace('_ensemble_v1', '')|replace('_v1', '') }}</span>
+    {% if event.locked_at %}
+    <span class="lock-date">&middot; Locked {{ event.locked_at[:10] }}</span>
+    {% endif %}
+</div>
+{% endif %}
 {% endif %}
 
 <div class="fight-list">

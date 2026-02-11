@@ -74,6 +74,8 @@ logger = logging.getLogger(__name__)
 
 # Paths
 PREDICTIONS_DIR = PROJECT_ROOT / 'data' / 'predictions'
+LEDGER_PATH = PROJECT_ROOT / 'data' / 'ledger' / 'prediction_ledger.json'
+MODEL_REGISTRY_PATH = PROJECT_ROOT / 'data' / 'models' / 'model_registry.json'
 CACHE_MAX_AGE_HOURS = 24
 
 # Global pipeline (loaded once)
@@ -690,6 +692,221 @@ def get_archived_events() -> List[Dict]:
     return events
 
 
+def load_ledger() -> Optional[Dict]:
+    """Load the prediction ledger."""
+    if not LEDGER_PATH.exists():
+        return None
+
+    try:
+        with open(LEDGER_PATH, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        logger.warning(f"Error loading ledger: {e}")
+        return None
+
+
+def load_model_registry() -> Optional[Dict]:
+    """Load the model registry."""
+    if not MODEL_REGISTRY_PATH.exists():
+        return None
+
+    try:
+        with open(MODEL_REGISTRY_PATH, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        logger.warning(f"Error loading model registry: {e}")
+        return None
+
+
+def get_ledger_stats() -> Dict:
+    """Get summary statistics from the ledger."""
+    ledger = load_ledger()
+    if not ledger:
+        return {
+            'total_fights': 0,
+            'total_correct': 0,
+            'overall_accuracy': 0,
+            'events_tracked': 0,
+            'live_fights': 0,
+            'live_correct': 0,
+            'live_accuracy': 0,
+            'backtest_fights': 0,
+            'backtest_correct': 0,
+            'backtest_accuracy': 0,
+        }
+
+    entries = ledger.get('entries', [])
+    locked = [e for e in entries if e.get('locked', False)]
+
+    # Separate by prediction type
+    live = [e for e in locked if e.get('prediction_type') == 'live']
+    backtest = [e for e in locked if e.get('prediction_type') == 'backtest']
+
+    # Calculate overall accuracy
+    total_correct = sum(e.get('overall_correct', 0) or 0 for e in locked)
+    total_fights = sum(e.get('overall_total', 0) or 0 for e in locked)
+
+    live_correct = sum(e.get('overall_correct', 0) or 0 for e in live)
+    live_fights = sum(e.get('overall_total', 0) or 0 for e in live)
+
+    backtest_correct = sum(e.get('overall_correct', 0) or 0 for e in backtest)
+    backtest_fights = sum(e.get('overall_total', 0) or 0 for e in backtest)
+
+    return {
+        'total_fights': total_fights,
+        'total_correct': total_correct,
+        'overall_accuracy': total_correct / total_fights if total_fights > 0 else 0,
+        'events_tracked': len(locked),
+        'live_fights': live_fights,
+        'live_correct': live_correct,
+        'live_accuracy': live_correct / live_fights if live_fights > 0 else 0,
+        'backtest_fights': backtest_fights,
+        'backtest_correct': backtest_correct,
+        'backtest_accuracy': backtest_correct / backtest_fights if backtest_fights > 0 else 0,
+    }
+
+
+def get_ledger_events() -> Tuple[List[Dict], List[Dict]]:
+    """
+    Get events from the ledger, split into upcoming (unlocked) and completed (locked).
+
+    Returns:
+        Tuple of (upcoming_events, completed_events)
+    """
+    ledger = load_ledger()
+    if not ledger:
+        return [], []
+
+    entries = ledger.get('entries', [])
+    upcoming = []
+    completed = []
+
+    for entry in entries:
+        event_info = {
+            'event_id': entry.get('event_id', ''),
+            'event_name': entry.get('event_name', ''),
+            'event_date': entry.get('event_date', ''),
+            'event_slug': entry.get('event_id', ''),  # Use event_id as slug
+            'location': entry.get('location', ''),
+            'fight_count': entry.get('overall_total') or len(entry.get('fights', [])),
+            'locked': entry.get('locked', False),
+            'locked_at': entry.get('locked_at'),
+            'model_version': entry.get('model_version', ''),
+            'model_description': entry.get('model_description', ''),
+            'prediction_type': entry.get('prediction_type', 'unknown'),
+        }
+
+        if entry.get('locked', False):
+            event_info['status'] = 'completed'
+            event_info['is_backtest'] = True
+            event_info['correct'] = entry.get('overall_correct', 0)
+            event_info['total'] = entry.get('overall_total', 0)
+            event_info['accuracy'] = entry.get('overall_accuracy', 0)
+            event_info['accuracy_pct'] = f"{(entry.get('overall_accuracy', 0) or 0) * 100:.1f}"
+            completed.append(event_info)
+        else:
+            event_info['status'] = 'upcoming'
+            event_info['is_backtest'] = False
+            upcoming.append(event_info)
+
+    # Sort completed by date (most recent first)
+    completed.sort(key=lambda x: x.get('event_date', ''), reverse=True)
+
+    # Sort upcoming by date (soonest first)
+    upcoming.sort(key=lambda x: x.get('event_date', ''))
+
+    return upcoming, completed
+
+
+def get_ledger_event(event_id: str) -> Optional[Dict]:
+    """Get a specific event from the ledger."""
+    ledger = load_ledger()
+    if not ledger:
+        return None
+
+    for entry in ledger.get('entries', []):
+        if entry.get('event_id') == event_id:
+            return entry
+
+    return None
+
+
+def format_ledger_event(entry: Dict) -> Optional[Dict]:
+    """
+    Format a ledger entry for template rendering.
+
+    Args:
+        entry: Raw entry from the ledger
+
+    Returns:
+        Formatted event dict for template
+    """
+    if not entry:
+        return None
+
+    fights = entry.get('fights', [])
+    if not fights:
+        return None
+
+    total_fights = len(fights)
+    formatted_predictions = []
+
+    for i, fight in enumerate(fights):
+        # Convert ledger fight format to format_prediction input
+        pred = {
+            'fighter1': fight.get('fighter_1', ''),
+            'fighter2': fight.get('fighter_2', ''),
+            'f1_win_prob': fight.get('f1_win_prob', 0.5),
+            'f2_win_prob': fight.get('f2_win_prob', 0.5),
+            'confidence': fight.get('confidence', 'LOW'),
+            'weight_class': fight.get('weight_class', ''),
+            'f1_elo': fight.get('f1_elo', 1500),
+            'f2_elo': fight.get('f2_elo', 1500),
+            'f1_exact_match': True,
+            'f2_exact_match': True,
+            'top_factors': [],
+            # Backtest fields from ledger
+            'actual_winner': fight.get('actual_winner'),
+            'correct': fight.get('correct'),
+            'method': fight.get('actual_method'),  # Note: ledger uses actual_method
+        }
+        formatted_predictions.append(format_prediction(pred, i, total_fights))
+
+    # Count confidence levels
+    confidence_counts = {'HIGH': 0, 'MEDIUM': 0, 'LOW': 0}
+    for fight in fights:
+        conf = fight.get('confidence', 'Low')
+        # Normalize confidence to uppercase
+        conf_upper = conf.upper() if conf else 'LOW'
+        confidence_counts[conf_upper] = confidence_counts.get(conf_upper, 0) + 1
+
+    is_locked = entry.get('locked', False)
+
+    result = {
+        'event_name': entry.get('event_name', ''),
+        'event_date': entry.get('event_date', ''),
+        'event_slug': entry.get('event_id', ''),
+        'location': entry.get('location', ''),
+        'predictions': formatted_predictions,
+        'fight_count': total_fights,
+        'confidence_counts': confidence_counts,
+        'is_backtest': is_locked,
+        'locked': is_locked,
+        'locked_at': entry.get('locked_at'),
+        'model_version': entry.get('model_version', ''),
+        'model_description': entry.get('model_description', ''),
+        'prediction_type': entry.get('prediction_type', ''),
+    }
+
+    if is_locked:
+        result['correct'] = entry.get('overall_correct', 0)
+        result['total'] = entry.get('overall_total', total_fights)
+        result['accuracy'] = entry.get('overall_accuracy', 0)
+        result['accuracy_pct'] = f"{(entry.get('overall_accuracy', 0) or 0) * 100:.1f}"
+
+    return result
+
+
 # Create Flask app
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -730,7 +947,15 @@ def index():
 @app.route('/event/<event_slug>')
 def event_detail(event_slug: str):
     """Display predictions for a specific event."""
-    # First try events.json
+    # First try the ledger
+    ledger_entry = get_ledger_event(event_slug)
+
+    if ledger_entry:
+        formatted = format_ledger_event(ledger_entry)
+        if formatted:
+            return render_template('event.html', event=formatted)
+
+    # Try events.json
     event_data = get_event_from_json(event_slug)
 
     if event_data:
@@ -743,16 +968,42 @@ def event_detail(event_slug: str):
     data = get_cached_predictions(event_slug)
 
     if data is None:
-        return render_template('event.html', error=f"Event '{event_slug}' not found in cache.")
+        return render_template('event.html', error=f"Event '{event_slug}' not found.")
 
     return render_template('event.html', event=data)
 
 
 @app.route('/archive')
+@app.route('/events')
 def archive():
-    """List of past predicted events."""
-    events = get_archived_events()
-    return render_template('archive.html', events=events)
+    """
+    List of all predicted events with running stats.
+
+    Shows:
+    - Running stats banner (total accuracy, events tracked, current model)
+    - Upcoming events (unlocked predictions)
+    - Completed events (locked with results)
+    """
+    # Try ledger first
+    upcoming, completed = get_ledger_events()
+    stats = get_ledger_stats()
+
+    # Get model info
+    registry = load_model_registry()
+    current_model = registry.get('current', 'unknown') if registry else 'unknown'
+
+    # If ledger is empty, fall back to events.json
+    if not upcoming and not completed:
+        events = get_archived_events()
+        return render_template('archive.html', events=events, stats=None)
+
+    return render_template(
+        'archive.html',
+        upcoming=upcoming,
+        completed=completed,
+        stats=stats,
+        current_model=current_model
+    )
 
 
 @app.route('/backtest/<date_str>')

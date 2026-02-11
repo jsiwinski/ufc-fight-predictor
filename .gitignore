@@ -49,6 +49,7 @@ data/predictions/*
 # Model files
 data/models/*
 !data/models/.gitkeep
+!data/models/model_registry.json
 *.pkl
 *.joblib
 *.h5

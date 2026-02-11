@@ -1,22 +1,132 @@
 {% extends "base.html" %}
 
-{% block title %}Archive - UFC Predictions{% endblock %}
+{% block title %}Events - UFC Predictions{% endblock %}
 
 {% block content %}
 <div class="event-header">
-    <h1 class="event-name">All Events</h1>
-    <p class="event-meta">Upcoming predictions and past backtest results</p>
+    <h1 class="event-name">Prediction Track Record</h1>
+    <p class="event-meta">Immutable ledger of all predictions and results</p>
 </div>
 
-{% set upcoming = events|selectattr('status', 'equalto', 'upcoming')|list %}
-{% set completed = events|rejectattr('status', 'equalto', 'upcoming')|list %}
+{# Stats Banner - only show if we have stats #}
+{% if stats and stats.total_fights > 0 %}
+<div class="stats-row">
+    <div class="stat-item">
+        <div class="stat-value">{{ stats.total_fights }}</div>
+        <div class="stat-label">Fights Predicted</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value {% if stats.overall_accuracy >= 0.65 %}stat-positive{% elif stats.overall_accuracy < 0.55 %}stat-negative{% endif %}">{{ "%.1f"|format(stats.overall_accuracy * 100) }}%</div>
+        <div class="stat-label">Overall Accuracy</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">{{ stats.events_tracked }}</div>
+        <div class="stat-label">Events Tracked</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value stat-model">{{ model_version }}</div>
+        <div class="stat-label">Current Model</div>
+    </div>
+</div>
+
+{# Accuracy breakdown #}
+{% if stats.live_fights > 0 or stats.backtest_fights > 0 %}
+<div class="accuracy-breakdown">
+    {% if stats.live_fights > 0 %}
+    <span class="breakdown-item">Live: {{ stats.live_correct }}/{{ stats.live_fights }} ({{ "%.1f"|format(stats.live_accuracy * 100) }}%)</span>
+    {% endif %}
+    {% if stats.live_fights > 0 and stats.backtest_fights > 0 %}
+    <span class="breakdown-separator">&middot;</span>
+    {% endif %}
+    {% if stats.backtest_fights > 0 %}
+    <span class="breakdown-item">Backtests: {{ stats.backtest_correct }}/{{ stats.backtest_fights }} ({{ "%.1f"|format(stats.backtest_accuracy * 100) }}%)</span>
+    {% endif %}
+</div>
+{% endif %}
+{% endif %}
 
 {# Upcoming Events Section #}
 {% if upcoming %}
 <div class="archive-section">
     <h2 class="archive-section-title">Upcoming Events</h2>
-    <ul class="archive-list">
+    <div class="event-cards">
         {% for event in upcoming %}
+        <a href="/event/{{ event.event_slug }}" class="event-card-link">
+            <div class="event-card upcoming-card">
+                <div class="event-card-header">
+                    <span class="event-card-title">{{ event.event_name }}</span>
+                    <span class="badge badge-upcoming">UPCOMING</span>
+                </div>
+                <div class="event-card-meta">
+                    {{ event.event_date }}{% if event.location %} &middot; {{ event.location }}{% endif %}
+                </div>
+                <div class="event-card-info">
+                    {{ event.fight_count }} fights &middot; Predictions generated
+                </div>
+                <div class="event-card-model">
+                    Model: {{ event.model_version|replace('_ensemble_v1', '')|replace('_v1', '') }}
+                </div>
+                <div class="event-card-action">View Predictions &rarr;</div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{# Completed Events Section #}
+{% if completed %}
+<div class="archive-section">
+    <h2 class="archive-section-title">Completed Events</h2>
+    <div class="event-cards">
+        {% for event in completed %}
+        {% set accuracy_pct = (event.accuracy * 100)|int if event.accuracy else 0 %}
+        <a href="/event/{{ event.event_slug }}" class="event-card-link">
+            <div class="event-card completed-card">
+                <div class="event-card-header">
+                    <span class="event-card-title">{{ event.event_name }}</span>
+                    {% if event.prediction_type == 'backtest' %}
+                    <span class="badge badge-backtest">BACKTEST</span>
+                    {% else %}
+                    <span class="badge badge-locked">LOCKED</span>
+                    {% endif %}
+                </div>
+                <div class="event-card-meta">
+                    {{ event.event_date }}{% if event.location %} &middot; {{ event.location }}{% endif %}
+                </div>
+
+                {# Accuracy bar #}
+                <div class="accuracy-bar-container">
+                    <div class="accuracy-bar-fill {% if accuracy_pct >= 65 %}high{% elif accuracy_pct >= 55 %}medium{% else %}low{% endif %}" style="width: {{ accuracy_pct }}%;"></div>
+                </div>
+                <div class="accuracy-text {% if accuracy_pct >= 65 %}high{% elif accuracy_pct >= 55 %}medium{% else %}low{% endif %}">
+                    {{ event.correct }}/{{ event.total }} &middot; {{ event.accuracy_pct }}%
+                </div>
+
+                <div class="event-card-model">
+                    Model: {{ event.model_version|replace('_ensemble_v1', '')|replace('_v1', '') }}
+                    {% if event.locked_at %}
+                    &middot; Locked {{ event.locked_at[:10] }}
+                    {% endif %}
+                </div>
+                <div class="event-card-action">View Results &rarr;</div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{# Legacy fallback for events list (when ledger is empty) #}
+{% if events and not upcoming and not completed %}
+{% set upcoming_legacy = events|selectattr('status', 'equalto', 'upcoming')|list %}
+{% set completed_legacy = events|rejectattr('status', 'equalto', 'upcoming')|list %}
+
+{% if upcoming_legacy %}
+<div class="archive-section">
+    <h2 class="archive-section-title">Upcoming Events</h2>
+    <ul class="archive-list">
+        {% for event in upcoming_legacy %}
         <li class="archive-item upcoming">
             <div>
                 <a href="/event/{{ event.event_slug }}" class="archive-event">{{ event.event_name }}</a>
@@ -34,12 +144,11 @@
 </div>
 {% endif %}
 
-{# Completed Events Section #}
-{% if completed %}
+{% if completed_legacy %}
 <div class="archive-section">
     <h2 class="archive-section-title">Completed Events</h2>
     <ul class="archive-list">
-        {% for event in completed %}
+        {% for event in completed_legacy %}
         <li class="archive-item completed">
             <div>
                 <a href="/event/{{ event.event_slug }}" class="archive-event">{{ event.event_name }}</a>
@@ -60,13 +169,15 @@
     </ul>
 </div>
 {% endif %}
+{% endif %}
 
-{% if not events %}
+{# Empty state #}
+{% if not events and not upcoming and not completed %}
 <div class="empty-state">
     <h2>No events yet</h2>
     <p>Predictions will appear here after they're generated.</p>
     <p style="margin-top: 20px;">
-        <a href="/" style="color: var(--red);">Generate predictions for the next event</a>
+        <a href="/" style="color: var(--red);">View predictions for the next event</a>
     </p>
 </div>
 {% endif %}

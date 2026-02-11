@@ -5,9 +5,12 @@ Generate predictions for all upcoming and recent UFC events.
 This script scrapes ALL upcoming events and recent completed events,
 runs predictions using the Phase 8 model, and saves results to events.json.
 
+Also writes predictions to the immutable ledger for historical tracking.
+
 Usage:
     python src/predict/generate_all_events.py
     python src/predict/generate_all_events.py --completed-limit 10
+    python src/predict/generate_all_events.py --write-ledger  # Also write to ledger
 """
 
 import argparse
@@ -25,6 +28,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from src.predict.serve import PredictionPipeline, MODEL_VERSION
 from src.etl.scraper import UFCDataScraper
+from src.predict.lock_results import record_predictions, get_ledger_stats
 
 logging.basicConfig(
     level=logging.INFO,
@@ -345,6 +349,16 @@ def main():
         default=str(EVENTS_JSON_PATH),
         help='Output JSON file path'
     )
+    parser.add_argument(
+        '--write-ledger',
+        action='store_true',
+        help='Write predictions to the immutable ledger'
+    )
+    parser.add_argument(
+        '--ledger-only',
+        action='store_true',
+        help='Only write to ledger (skip events.json)'
+    )
 
     args = parser.parse_args()
 
@@ -373,21 +387,84 @@ def main():
         # Generate backtest for completed
         completed_results = generate_backtest_predictions(pipeline, completed_events)
 
-        # Combine and save
-        output_data = {
-            'generated_at': datetime.now().isoformat(),
-            'model_version': MODEL_VERSION,
-            'upcoming_count': len(upcoming_results),
-            'completed_count': len(completed_results),
-            'events': upcoming_results + completed_results
-        }
+        # Combine and save to events.json (unless ledger-only)
+        if not args.ledger_only:
+            output_data = {
+                'generated_at': datetime.now().isoformat(),
+                'model_version': MODEL_VERSION,
+                'upcoming_count': len(upcoming_results),
+                'completed_count': len(completed_results),
+                'events': upcoming_results + completed_results
+            }
 
-        # Ensure output directory exists
-        output_path = Path(args.output)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+            # Ensure output directory exists
+            output_path = Path(args.output)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(output_path, 'w') as f:
-            json.dump(output_data, f, indent=2, default=str)
+            with open(output_path, 'w') as f:
+                json.dump(output_data, f, indent=2, default=str)
+
+        # Write to ledger if requested
+        if args.write_ledger or args.ledger_only:
+            print()
+            print("-" * 70)
+            print("Writing predictions to ledger...")
+            print("-" * 70)
+
+            # Model description based on version
+            if MODEL_VERSION == 'phase8':
+                model_desc = "Stacking Ensemble (HGB + XGB + LR), 51 features, Elo + Platt calibration"
+            else:
+                model_desc = "HistGradientBoosting, 145 features"
+
+            # Write upcoming events as unlocked entries
+            for event in upcoming_results:
+                # Parse date to YYYY-MM-DD format
+                try:
+                    event_dt = datetime.strptime(event['date'], '%B %d, %Y')
+                    date_str = event_dt.strftime('%Y-%m-%d')
+                except ValueError:
+                    date_str = event['date']
+
+                success = record_predictions(
+                    event_id=event['slug'],
+                    event_name=event['name'],
+                    event_date=date_str,
+                    location=event.get('location', ''),
+                    fights=event['fights'],
+                    model_version=f"{MODEL_VERSION}_ensemble_v1" if MODEL_VERSION == 'phase8' else f"{MODEL_VERSION}_v1",
+                    model_description=f"{model_desc} (live prediction)",
+                    prediction_type='live'
+                )
+                if success:
+                    print(f"  Recorded: {event['name']} ({len(event['fights'])} fights)")
+
+            # Write completed events as locked entries (backtests)
+            for event in completed_results:
+                # Parse date to YYYY-MM-DD format
+                try:
+                    event_dt = datetime.strptime(event['date'], '%B %d, %Y')
+                    date_str = event_dt.strftime('%Y-%m-%d')
+                except ValueError:
+                    date_str = event['date']
+
+                success = record_predictions(
+                    event_id=event['slug'],
+                    event_name=event['name'],
+                    event_date=date_str,
+                    location=event.get('location', ''),
+                    fights=event['fights'],
+                    model_version=f"{MODEL_VERSION}_ensemble_v1" if MODEL_VERSION == 'phase8' else f"{MODEL_VERSION}_v1",
+                    model_description=f"{model_desc} (backtest)",
+                    prediction_type='backtest'
+                )
+                if success:
+                    print(f"  Recorded: {event['name']} ({len(event['fights'])} fights) - backtest")
+
+            # Show ledger stats
+            stats = get_ledger_stats()
+            print()
+            print(f"Ledger: {stats['locked_entries']} locked, {stats['unlocked_entries']} pending")
 
         print()
         print("=" * 70)
@@ -395,7 +472,10 @@ def main():
         print("=" * 70)
         print(f"Upcoming events: {len(upcoming_results)}")
         print(f"Completed events: {len(completed_results)}")
-        print(f"Output: {output_path}")
+        if not args.ledger_only:
+            print(f"Output: {args.output}")
+        if args.write_ledger or args.ledger_only:
+            print(f"Ledger: data/ledger/prediction_ledger.json")
 
         # Show accuracy summary for completed events
         if completed_results:

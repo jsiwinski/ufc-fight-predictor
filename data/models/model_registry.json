@@ -1,0 +1,24 @@
+{
+  "registry_version": "1.0",
+  "models": [
+    {
+      "version": "v1_hgb",
+      "description": "HistGradientBoosting, 145 features, no Elo",
+      "deployed_at": "2026-02-03T00:00:00Z",
+      "retired_at": "2026-02-07T00:00:00Z",
+      "test_accuracy": 0.589,
+      "test_log_loss": 0.665,
+      "notes": "Initial production model from Phase 4 training"
+    },
+    {
+      "version": "phase8_ensemble_v1",
+      "description": "Stacking Ensemble (HGB + XGB + LR), 51 features, Elo + Platt calibration",
+      "deployed_at": "2026-02-07T00:00:00Z",
+      "retired_at": null,
+      "test_accuracy": 0.605,
+      "test_log_loss": 0.656,
+      "notes": "Phase 8 model with Elo ratings, opponent quality features, and Platt calibration"
+    }
+  ],
+  "current": "phase8_ensemble_v1"
+}
