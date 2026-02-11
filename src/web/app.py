@@ -6,7 +6,9 @@ Routes:
     /                   - Next upcoming event predictions
     /event/<slug>       - Specific event predictions
     /archive            - Past predicted events with results
-    /about              - Link to methodology
+    /upcoming           - List of upcoming events
+    /methodology        - Model methodology summary
+    /methodology/full   - Full technical methodology document
     /api/predict/<slug> - JSON API for predictions
 """
 
@@ -19,7 +21,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from flask import Flask, jsonify, render_template, redirect, url_for
+from flask import Flask, jsonify, render_template, redirect, url_for, send_from_directory
 
 # Human-readable feature name mapping (shortened for bar chart display)
 FEATURE_LABELS = {
@@ -1047,10 +1049,22 @@ def backtest(date_str: str):
     return render_template('event.html', event=data)
 
 
+@app.route('/methodology')
+def methodology():
+    """Methodology summary page."""
+    return render_template('methodology.html')
+
+
+@app.route('/methodology/full')
+def methodology_full():
+    """Serve the full technical methodology document."""
+    return send_from_directory(PROJECT_ROOT / 'docs', 'ufc_fight_model_methodology.html')
+
+
 @app.route('/about')
 def about():
-    """Redirect to methodology document."""
-    return redirect('/static/methodology.html')
+    """Redirect to methodology page."""
+    return redirect('/methodology')
 
 
 @app.route('/api/predict/next')

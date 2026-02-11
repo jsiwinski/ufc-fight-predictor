@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+
+{% block title %}Methodology - UFC Predictions{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Methodology Page Styles */
+.methodology-header {
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border);
+}
+
+.methodology-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+}
+
+.methodology-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+/* Section styling */
+.methodology-section {
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.methodology-section:last-of-type {
+    border-bottom: none;
+}
+
+.methodology-section h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.methodology-section p {
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    max-width: 680px;
+}
+
+.methodology-section p:last-child {
+    margin-bottom: 0;
+}
+
+/* Stats row for methodology */
+.methodology-stats {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px 24px;
+    margin: 24px 0;
+    gap: 24px;
+}
+
+.methodology-stat {
+    text-align: center;
+    flex: 1;
+}
+
+.methodology-stat-value {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.methodology-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Callout box */
+.callout {
+    background: var(--code-bg);
+    padding: 24px 28px;
+    margin: 24px 0;
+    border-radius: 2px;
+}
+
+.callout p {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+.callout p:last-child {
+    margin-bottom: 0;
+}
+
+/* Feature importance list */
+.importance-list {
+    margin: 24px 0;
+}
+
+.importance-item {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.importance-item:first-child {
+    border-top: 1px solid var(--border);
+}
+
+.importance-rank {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--red);
+    min-width: 24px;
+}
+
+.importance-content {
+    flex: 1;
+}
+
+.importance-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.importance-desc {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Limitations grid */
+.limitations-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 24px 0;
+}
+
+.limitation-item {
+    background: var(--code-bg);
+    padding: 20px;
+}
+
+.limitation-item strong {
+    color: var(--text);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+.limitation-item span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Link styling */
+.methodology-link {
+    color: var(--red);
+    text-decoration: none;
+}
+
+.methodology-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .methodology-stats {
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 20px 16px;
+    }
+
+    .methodology-stat {
+        min-width: 45%;
+    }
+
+    .methodology-stat-value {
+        font-size: 1.5rem;
+    }
+
+    .limitations-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="methodology-header">
+    <h1 class="methodology-title">How the Model Works</h1>
+    <p class="methodology-subtitle">Probabilistic MMA prediction using gradient boosting, Elo ratings, and 30 years of fight data.</p>
+</div>
+
+{# Section 1: The Approach #}
+<section class="methodology-section">
+    <h2>The Approach</h2>
+    <p>This model outputs win <strong>probabilities</strong>, not binary picks. A 65% prediction means Fighter A wins 65 out of 100 similar matchups. This probabilistic approach acknowledges uncertainty and provides actionable information: 90% vs 55% predictions have vastly different confidence levels, even if both predict the same winner.</p>
+    <p>The model uses only public historical data from ufcstats.com. No insider info, no injury reports, no training camp intel. Probabilistic output enables value detection: edge is found in the gap between model and market, not in being right every fight.</p>
+</section>
+
+{# Section 2: Data #}
+<section class="methodology-section">
+    <h2>Data</h2>
+    <div class="methodology-stats">
+        <div class="methodology-stat">
+            <div class="methodology-stat-value">8,520</div>
+            <div class="methodology-stat-label">Fights</div>
+        </div>
+        <div class="methodology-stat">
+            <div class="methodology-stat-value">760</div>
+            <div class="methodology-stat-label">Events</div>
+        </div>
+        <div class="methodology-stat">
+            <div class="methodology-stat-value">~3,000</div>
+            <div class="methodology-stat-label">Fighters</div>
+        </div>
+        <div class="methodology-stat">
+            <div class="methodology-stat-value">31</div>
+            <div class="methodology-stat-label">Years of Data</div>
+        </div>
+    </div>
+    <p>All data scraped from ufcstats.com, the official UFC statistics provider, covering every sanctioned bout from UFC 1 (1993) through present.</p>
+    <p>Pre-2009 fights (28% of data) lack detailed statistics. The model handles this gracefully using conditional imputation.</p>
+</section>
+
+{# Section 3: Features & Elo #}
+<section class="methodology-section">
+    <h2>Features & Elo</h2>
+    <p>The model distills 58 raw statistical columns into engineered features across five categories: career statistics, rolling performance windows, head-to-head differentials, style indicators, and Elo ratings.</p>
+    <div class="callout">
+        <p><strong>Elo Ratings:</strong> Each fighter carries an Elo rating &mdash; a single number reflecting their skill level, updated after every fight. Beating a higher-rated opponent earns more Elo than beating a lower-rated one.</p>
+        <p>This recursively encodes strength of schedule: a fighter's rating already reflects the quality of everyone they've beaten. Elo emerged as the model's strongest predictor after Phase 8 development.</p>
+    </div>
+    <p>Matchups are encoded as differentials: the gap between fighters on each metric. A +15% win rate gap, -2 takedown gap encodes "striker vs wrestler" in a single vector.</p>
+</section>
+
+{# Section 4: The Model #}
+<section class="methodology-section">
+    <h2>The Model</h2>
+    <div class="methodology-stats">
+        <div class="methodology-stat">
+            <div class="methodology-stat-value">60.5%</div>
+            <div class="methodology-stat-label">Accuracy</div>
+        </div>
+        <div class="methodology-stat">
+            <div class="methodology-stat-value">0.656</div>
+            <div class="methodology-stat-label">Log Loss</div>
+        </div>
+        <div class="methodology-stat">
+            <div class="methodology-stat-value">0.658</div>
+            <div class="methodology-stat-label">ROC-AUC</div>
+        </div>
+        <div class="methodology-stat">
+            <div class="methodology-stat-value">Phase 8</div>
+            <div class="methodology-stat-label">Current Model</div>
+        </div>
+    </div>
+    <p>The current production model is a stacking ensemble combining HistGradientBoosting, XGBoost, and Logistic Regression, trained on 7,457 fights and tested on 1,063 held-out fights from 2024-2026. Post-hoc Platt calibration ensures predicted probabilities match observed win rates. The model uses 51 features after aggressive pruning &mdash; down from 145 &mdash; focusing on the signals that actually predict outcomes.</p>
+</section>
+
+{# Section 5: What Drives Predictions #}
+<section class="methodology-section">
+    <h2>What Drives Predictions</h2>
+    <div class="importance-list">
+        <div class="importance-item">
+            <span class="importance-rank">01</span>
+            <div class="importance-content">
+                <span class="importance-name">Elo Rating Differential</span>
+                <span class="importance-desc"> &mdash; recursive strength-of-schedule gap</span>
+            </div>
+        </div>
+        <div class="importance-item">
+            <span class="importance-rank">02</span>
+            <div class="importance-content">
+                <span class="importance-name">Career Win Rate Gap</span>
+                <span class="importance-desc"> &mdash; who wins more often, historically</span>
+            </div>
+        </div>
+        <div class="importance-item">
+            <span class="importance-rank">03</span>
+            <div class="importance-content">
+                <span class="importance-name">Fighter Activity</span>
+                <span class="importance-desc"> &mdash; fights per year, ring rust indicator</span>
+            </div>
+        </div>
+        <div class="importance-item">
+            <span class="importance-rank">04</span>
+            <div class="importance-content">
+                <span class="importance-name">Elo Momentum</span>
+                <span class="importance-desc"> &mdash; trending up or down over last 3 fights</span>
+            </div>
+        </div>
+        <div class="importance-item">
+            <span class="importance-rank">05</span>
+            <div class="importance-content">
+                <span class="importance-name">Recent Form</span>
+                <span class="importance-desc"> &mdash; win rate over last 5 fights</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# Section 6: Limitations #}
+<section class="methodology-section">
+    <h2>Limitations</h2>
+    <div class="limitations-grid">
+        <div class="limitation-item">
+            <strong>No injury or camp intel</strong>
+            <span>Public data only. Fighter injuries, weight cut issues, and training camp problems are invisible to the model.</span>
+        </div>
+        <div class="limitation-item">
+            <strong>Debuts are high-variance</strong>
+            <span>Zero UFC history means high prediction uncertainty. Unknown talent vs no octagon experience.</span>
+        </div>
+        <div class="limitation-item">
+            <strong>~5pp gap to Vegas</strong>
+            <span>Sportsbooks achieve ~65% implied accuracy with data we don't have. The gap may be irreducible.</span>
+        </div>
+        <div class="limitation-item">
+            <strong>Close decisions are coin flips</strong>
+            <span>Judging is subjective. The model predicts fight outcome, not judge behavior.</span>
+        </div>
+    </div>
+</section>
+
+{# Section 7: Evolution #}
+<section class="methodology-section">
+    <h2>Evolution</h2>
+    <p>This is Phase 8 of the model. Through 8 iterations, the system evolved from a basic HistGradientBoosting classifier to a stacking ensemble with Elo ratings, post-hoc calibration, and aggressive feature pruning. Each phase brought incremental improvements &mdash; the biggest gains came from adding Elo (strength-of-schedule encoding) and pruning 89 zero-importance features.</p>
+    <p><a href="/methodology/full" class="methodology-link">Read the full technical methodology &rarr;</a></p>
+</section>
+{% endblock %}
