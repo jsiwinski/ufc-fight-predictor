@@ -15,7 +15,6 @@
     --text-muted: #888888;
     --red: #c41e3a;
     --blue: #2563eb;
-    --green: #2d8a4e;
     --border: #e5e5e0;
     --code-bg: #f5f5f0;
     --card-bg: #ffffff;
@@ -320,7 +319,7 @@ main {
 }
 
 .fighter-elo.higher {
-    color: var(--green);
+    color: var(--blue);
     font-weight: 500;
 }
 
@@ -417,8 +416,8 @@ main {
 }
 
 .confidence-badge.high {
-    color: var(--green);
-    border: 1px solid var(--green);
+    color: var(--blue);
+    border: 1px solid var(--blue);
 }
 
 .confidence-badge.medium {
@@ -662,7 +661,7 @@ main {
 
 /* Confidence Summary Styling */
 .confidence-high {
-    color: var(--green);
+    color: var(--blue);
 }
 
 .confidence-medium {
@@ -682,7 +681,7 @@ main {
 }
 
 .result-indicator.correct {
-    color: var(--green);
+    color: var(--blue);
 }
 
 .result-indicator.wrong {
@@ -780,7 +779,7 @@ footer p {
 }
 
 .archive-accuracy.has-result {
-    color: var(--green);
+    color: var(--blue);
 }
 
 .archive-section {
@@ -864,7 +863,7 @@ footer p {
 }
 
 .stat-value.stat-positive {
-    color: var(--green);
+    color: var(--blue);
 }
 
 .stat-value.stat-negative {
@@ -952,13 +951,15 @@ footer p {
 }
 
 .badge-upcoming {
-    background: var(--blue);
-    color: white;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px dashed var(--text-muted);
 }
 
 .badge-locked {
-    background: var(--green);
-    color: white;
+    background: var(--code-bg);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
 }
 
 .badge-backtest {
@@ -1007,7 +1008,7 @@ footer p {
 }
 
 .accuracy-bar-fill.high {
-    background: var(--green);
+    background: var(--blue);
 }
 
 .accuracy-bar-fill.medium {
@@ -1026,7 +1027,7 @@ footer p {
 }
 
 .accuracy-text.high {
-    color: var(--green);
+    color: var(--blue);
 }
 
 .accuracy-text.medium {

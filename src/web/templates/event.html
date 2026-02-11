@@ -39,7 +39,7 @@
 </div>
 {% if event.model_version %}
 <div class="model-info-banner">
-    <span class="model-label">Model: {{ event.model_version|replace('_ensemble_v1', '')|replace('_v1', '') }}</span>
+    <span class="model-label">Model: {{ event.model_version|replace('_ensemble_v1', '')|replace('_v1', '')|replace('phase8', 'Phase 8') }}</span>
     {% if event.locked_at %}
     <span class="lock-date">&middot; Locked {{ event.locked_at[:10] }}</span>
     {% endif %}
