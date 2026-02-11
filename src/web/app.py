@@ -282,6 +282,12 @@ def compute_tornado_bars(factors: List, top_n: int = 5) -> List[Dict]:
         else:
             continue
 
+        # Convert string values to float (handles JSON serialization issues)
+        try:
+            val = float(val)
+        except (ValueError, TypeError):
+            continue
+
         if val == 0:
             continue
 
@@ -339,6 +345,11 @@ def format_prediction(pred: Dict, position: int = 0, total_fights: int = 13) -> 
         elif isinstance(factor, dict):
             name, val = factor.get('feature', ''), factor.get('value', 0)
         else:
+            continue
+        # Convert string values to float
+        try:
+            val = float(val)
+        except (ValueError, TypeError):
             continue
         name = name.replace('diff_', '').replace('_', ' ')
         factors.append({
@@ -853,6 +864,7 @@ def format_ledger_event(entry: Dict) -> Optional[Dict]:
 
     for i, fight in enumerate(fights):
         # Convert ledger fight format to format_prediction input
+        # top_factors from ledger is already in dict format [{'feature': ..., 'value': ...}]
         pred = {
             'fighter1': fight.get('fighter_1', ''),
             'fighter2': fight.get('fighter_2', ''),
@@ -864,7 +876,7 @@ def format_ledger_event(entry: Dict) -> Optional[Dict]:
             'f2_elo': fight.get('f2_elo', 1500),
             'f1_exact_match': True,
             'f2_exact_match': True,
-            'top_factors': [],
+            'top_factors': fight.get('top_factors', []),
             # Backtest fields from ledger
             'actual_winner': fight.get('actual_winner'),
             'correct': fight.get('correct'),

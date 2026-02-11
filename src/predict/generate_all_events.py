@@ -231,6 +231,14 @@ def generate_upcoming_predictions(
         }
 
         for pred in predictions:
+            # Store top_factors for tornado chart display
+            # Convert from list of tuples to list of dicts for JSON serialization
+            top_factors = pred.get('top_factors', [])
+            factors_for_json = [
+                {'feature': f[0], 'value': f[1]}
+                for f in top_factors if isinstance(f, (list, tuple))
+            ]
+
             fight = {
                 'fighter_1': pred['fighter1'],
                 'fighter_2': pred['fighter2'],
@@ -243,6 +251,7 @@ def generate_upcoming_predictions(
                 'f2_elo': pred.get('f2_elo', 1500),
                 'f1_exact_match': pred.get('f1_exact_match', True),
                 'f2_exact_match': pred.get('f2_exact_match', True),
+                'top_factors': factors_for_json,
             }
             event_result['fights'].append(fight)
 
@@ -312,6 +321,14 @@ def generate_backtest_predictions(
         }
 
         for pred in predictions:
+            # Store top_factors for tornado chart display
+            # Convert from list of tuples to list of dicts for JSON serialization
+            top_factors = pred.get('top_factors', [])
+            factors_for_json = [
+                {'feature': f[0], 'value': f[1]}
+                for f in top_factors if isinstance(f, (list, tuple))
+            ]
+
             fight = {
                 'fighter_1': pred['fighter1'],
                 'fighter_2': pred['fighter2'],
@@ -325,6 +342,7 @@ def generate_backtest_predictions(
                 'actual_winner': pred.get('actual_winner'),
                 'method': pred.get('method'),
                 'correct': pred.get('correct', False),
+                'top_factors': factors_for_json,
             }
             event_result['fights'].append(fight)
 

@@ -453,6 +453,8 @@ def record_predictions(
             'confidence': fight.get('confidence', 'Low'),
             'f1_elo': fight.get('f1_elo', 1500),
             'f2_elo': fight.get('f2_elo', 1500),
+            # Top factors for tornado chart (already in dict format from generate_all_events)
+            'top_factors': fight.get('top_factors', []),
             # Results to be filled in at lock time
             'actual_winner': None,
             'actual_method': None,

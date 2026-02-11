@@ -31,7 +31,29 @@
           "actual_winner": "Mario Bautista",
           "actual_method": "SUB",
           "actual_round": "",
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -98.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -40.7804
+            },
+            {
+              "feature": "diff_elo",
+              "value": 34.4722
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 9.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 9.0
+            }
+          ]
         },
         {
           "fighter_1": "Kyoji Horiguchi",
@@ -47,7 +69,29 @@
           "actual_winner": "Kyoji Horiguchi",
           "actual_method": "U-DEC",
           "actual_round": "",
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -385.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 40.2061
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 30.3493
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Rizvan Kuniev",
@@ -63,7 +107,29 @@
           "actual_winner": "Rizvan Kuniev",
           "actual_method": "U-DEC",
           "actual_round": "",
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 126.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -104.4831
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -9.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -7.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -2.4207
+            }
+          ]
         },
         {
           "fighter_1": "Michal Oleksiejczuk",
@@ -79,7 +145,29 @@
           "actual_winner": "Michal Oleksiejczuk",
           "actual_method": "U-DEC",
           "actual_round": "",
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 77.7666
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 27.3192
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -21.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -6.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Farid Basharat",
@@ -95,7 +183,29 @@
           "actual_winner": "Farid Basharat",
           "actual_method": "S-DEC",
           "actual_round": "",
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -56.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 45.0636
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 28.3182
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Dustin Jacoby",
@@ -111,7 +221,29 @@
           "actual_winner": "Dustin Jacoby",
           "actual_method": "KO/TKO",
           "actual_round": "",
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 70.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 36.0915
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 18.4037
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 12.0
+            }
+          ]
         },
         {
           "fighter_1": "Daniil Donchenko",
@@ -127,7 +259,29 @@
           "actual_winner": "Daniil Donchenko",
           "actual_method": "U-DEC",
           "actual_round": "",
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -189.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 35.0777
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -22.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -21.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -7.5993
+            }
+          ]
         },
         {
           "fighter_1": "Nikolay Veretennikov",
@@ -143,7 +297,29 @@
           "actual_winner": "Nikolay Veretennikov",
           "actual_method": "KO/TKO",
           "actual_round": "",
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -98.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -42.4255
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 35.0348
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -16.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -15.0
+            }
+          ]
         },
         {
           "fighter_1": "Ketlen Souza",
@@ -159,7 +335,29 @@
           "actual_winner": "Ketlen Souza",
           "actual_method": "U-DEC",
           "actual_round": "",
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -33.1524
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 20.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -18.8246
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Javid Basharat",
@@ -175,7 +373,29 @@
           "actual_winner": "Javid Basharat",
           "actual_method": "U-DEC",
           "actual_round": "",
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -31.9741
+            },
+            {
+              "feature": "diff_elo",
+              "value": 15.8912
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -15.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 5.0
+            }
+          ]
         },
         {
           "fighter_1": "Wang Cong",
@@ -191,7 +411,29 @@
           "actual_winner": "Wang Cong",
           "actual_method": "U-DEC",
           "actual_round": "",
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 35.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -3.5149
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -2.2638
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 2.0391
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Jakub Wiklacz",
@@ -207,7 +449,29 @@
           "actual_winner": "Jakub Wiklacz",
           "actual_method": "SUB",
           "actual_round": "",
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -259.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -38.6141
+            },
+            {
+              "feature": "diff_elo",
+              "value": 5.2566
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -3.0
+            }
+          ]
         },
         {
           "fighter_1": "Klaudia Sygula",
@@ -223,7 +487,29 @@
           "actual_winner": "Klaudia Sygula",
           "actual_method": "U-DEC",
           "actual_round": "",
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 49.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 22.1074
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 13.5769
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -10.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -2.0
+            }
+          ]
         }
       ]
     },
@@ -255,7 +541,29 @@
           "actual_winner": "Alexander Volkanovski",
           "actual_method": "U-DEC",
           "actual_round": 5,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 154.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 108.2452
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 20.2755
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 9.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 6.0
+            }
+          ]
         },
         {
           "fighter_1": "Benoit Saint Denis",
@@ -271,7 +579,29 @@
           "actual_winner": "Benoit Saint Denis",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 66.0782
+            },
+            {
+              "feature": "diff_elo",
+              "value": 34.0017
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -12.0
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -6.0
+            }
+          ]
         },
         {
           "fighter_1": "Mauricio Ruffy",
@@ -287,7 +617,29 @@
           "actual_winner": "Mauricio Ruffy",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -77.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 9.2273
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -8.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -7.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 1.3733
+            }
+          ]
         },
         {
           "fighter_1": "Tai Tuivasa",
@@ -303,7 +655,29 @@
           "actual_winner": "Tallison Teixeira",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 329.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -34.8352
+            },
+            {
+              "feature": "diff_elo",
+              "value": -27.08
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 14.0
+            }
+          ]
         },
         {
           "fighter_1": "Billy Elekana",
@@ -319,7 +693,29 @@
           "actual_winner": "Billy Elekana",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -112.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 73.8088
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 60.6169
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Cam Rowston",
@@ -335,7 +731,29 @@
           "actual_winner": "Cam Rowston",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 72.9153
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -49.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 44.1141
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -12.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -11.0
+            }
+          ]
         },
         {
           "fighter_1": "Kaan Ofli",
@@ -351,7 +769,29 @@
           "actual_winner": "Kaan Ofli",
           "actual_method": "M-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -49.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 35.6513
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 32.8765
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 1.0837
+            },
+            {
+              "feature": "diff_finish_rate_last_3",
+              "value": -0.3333
+            }
+          ]
         },
         {
           "fighter_1": "Jamie Mullarkey",
@@ -367,7 +807,29 @@
           "actual_winner": "Quillan Salkilld",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -72.8925
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -32.2511
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 28.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 9.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 9.0
+            }
+          ]
         },
         {
           "fighter_1": "Keiichiro Nakamura",
@@ -383,7 +845,13 @@
           "actual_winner": "Keiichiro Nakamura",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 32.0
+            }
+          ]
         },
         {
           "fighter_1": "Lawrence Lui",
@@ -399,7 +867,13 @@
           "actual_winner": "Lawrence Lui",
           "actual_method": "S-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 32.0
+            }
+          ]
         },
         {
           "fighter_1": "Dom Mar Fan",
@@ -415,7 +889,13 @@
           "actual_winner": "Dom Mar Fan",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 32.0
+            }
+          ]
         },
         {
           "fighter_1": "Jacob Malkoun",
@@ -431,7 +911,29 @@
           "actual_winner": "Jacob Malkoun",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 371.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 50.1449
+            },
+            {
+              "feature": "diff_elo",
+              "value": 36.3636
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 6.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 6.0
+            }
+          ]
         },
         {
           "fighter_1": "Jonathan Micallef",
@@ -447,7 +949,29 @@
           "actual_winner": "Jonathan Micallef",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 133.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 51.0739
+            },
+            {
+              "feature": "diff_elo",
+              "value": 22.2775
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -3.0
+            }
+          ]
         }
       ]
     },
@@ -479,7 +1003,29 @@
           "actual_winner": "Justin Gaethje",
           "actual_method": "U-DEC",
           "actual_round": 5,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 35.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 34.2777
+            },
+            {
+              "feature": "diff_elo",
+              "value": 33.108
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 7.0
+            }
+          ]
         },
         {
           "fighter_1": "Deiveson Figueiredo",
@@ -495,7 +1041,29 @@
           "actual_winner": "Umar Nurmagomedov",
           "actual_method": "U-DEC",
           "actual_round": 5,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -37.8818
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 12.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 1.7493
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Sean O'Malley",
@@ -511,7 +1079,29 @@
           "actual_winner": "Sean O'Malley",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -105.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 16.1287
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 3.5078
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Natalia Silva",
@@ -527,7 +1117,29 @@
           "actual_winner": "Natalia Silva",
           "actual_method": "U-DEC",
           "actual_round": 5,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 35.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 34.8207
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 30.9066
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -11.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 6.0
+            }
+          ]
         },
         {
           "fighter_1": "Derrick Lewis",
@@ -543,7 +1155,29 @@
           "actual_winner": "Waldo Cortes Acosta",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 133.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -34.732
+            },
+            {
+              "feature": "diff_elo",
+              "value": -19.6503
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 19.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 19.0
+            }
+          ]
         },
         {
           "fighter_1": "Arnold Allen",
@@ -559,7 +1193,29 @@
           "actual_winner": "Jean Silva",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 413.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 24.6746
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 8.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -5.3058
+            }
+          ]
         },
         {
           "fighter_1": "Modestas Bukauskas",
@@ -575,7 +1231,29 @@
           "actual_winner": "Nikita Krylov",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -42.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -19.1798
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -9.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -6.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 4.0
+            }
+          ]
         },
         {
           "fighter_1": "Alex Perez",
@@ -591,7 +1269,29 @@
           "actual_winner": "Alex Perez",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -91.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 17.6209
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 2.0948
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -1.8217
+            }
+          ]
         },
         {
           "fighter_1": "Andrey Pulyaev",
@@ -607,7 +1307,29 @@
           "actual_winner": "Ateba Gautier",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -71.1668
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 63.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -26.7095
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -1.2686
+            }
+          ]
         },
         {
           "fighter_1": "Denzel Freeman",
@@ -623,7 +1345,29 @@
           "actual_winner": "Josh Hokit",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -32.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -32.0
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -14.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 1.0541
+            },
+            {
+              "feature": "diff_finish_rate_last_3",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Adam Fugitt",
@@ -639,7 +1383,29 @@
           "actual_winner": "Ty Miller",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -176.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -44.1671
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -31.5086
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 5.0
+            }
+          ]
         }
       ]
     },
@@ -671,7 +1437,29 @@
           "actual_winner": "Manel Kape",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -119.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -65.2612
+            },
+            {
+              "feature": "diff_elo",
+              "value": -27.9002
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Giga Chikadze",
@@ -687,7 +1475,29 @@
           "actual_winner": "Kevin Vallejos",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 98.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -70.0056
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 9.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 9.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Melquizael Costa",
@@ -703,7 +1513,29 @@
           "actual_winner": "Melquizael Costa",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 64.0153
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 56.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 28.5677
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Neil Magny",
@@ -719,7 +1551,29 @@
           "actual_winner": "Yaroslav Amosov",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -288.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 82.877
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 36.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 36.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -6.082
+            }
+          ]
         },
         {
           "fighter_1": "Isaac Thomson",
@@ -735,7 +1589,29 @@
           "actual_winner": "Joanderson Brito",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 113.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -63.4256
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -8.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -8.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -2.0462
+            }
+          ]
         },
         {
           "fighter_1": "Cesar Almeida",
@@ -751,7 +1627,29 @@
           "actual_winner": "Cezary Oleksiejczuk",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -29.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -4.5134
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 2.3718
+            }
+          ]
         },
         {
           "fighter_1": "King Green",
@@ -767,7 +1665,29 @@
           "actual_winner": "King Green",
           "actual_method": "S-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -85.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 54.653
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 27.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 2.0996
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Luana Santos",
@@ -783,7 +1703,29 @@
           "actual_winner": "Luana Santos",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 154.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 56.8685
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 45.6158
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -4.3839
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 4.0
+            }
+          ]
         },
         {
           "fighter_1": "Jamey-Lyn Horth",
@@ -799,7 +1741,29 @@
           "actual_winner": "Jamey-Lyn Horth",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -728.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 46.4852
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 31.0332
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Sean Sharaf",
@@ -815,7 +1779,29 @@
           "actual_winner": "Steven Asplund",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 62.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -47.7123
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -15.2037
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Allen Frye Jr.",
@@ -831,7 +1817,13 @@
           "actual_winner": "Guilherme Pat",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -32.0
+            }
+          ]
         },
         {
           "fighter_1": "Kennedy Nzechukwu",
@@ -847,7 +1839,29 @@
           "actual_winner": "Marcus Buchecha",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -52.584
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 13.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 0.9511
+            }
+          ]
         }
       ]
     },
@@ -879,7 +1893,29 @@
           "actual_winner": "Petr Yan",
           "actual_method": "U-DEC",
           "actual_round": 5,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -70.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -38.9931
+            },
+            {
+              "feature": "diff_elo",
+              "value": 32.9098
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 11.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Alexandre Pantoja",
@@ -895,7 +1931,29 @@
           "actual_winner": "Joshua Van",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -40.414
+            },
+            {
+              "feature": "diff_elo",
+              "value": 17.1704
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 8.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 8.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Brandon Moreno",
@@ -911,7 +1969,29 @@
           "actual_winner": "Tatsuro Taira",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 126.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -35.1989
+            },
+            {
+              "feature": "diff_elo",
+              "value": -19.2272
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 11.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 10.0
+            }
+          ]
         },
         {
           "fighter_1": "Bogdan Guskov",
@@ -927,7 +2007,29 @@
           "actual_winner": "Jan Blachowicz",
           "actual_method": "M-DEC",
           "actual_round": 3,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -126.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -47.3109
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -16.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -16.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 4.0
+            }
+          ]
         },
         {
           "fighter_1": "Brunno Ferreira",
@@ -943,7 +2045,29 @@
           "actual_winner": "Brunno Ferreira",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 59.0465
+            },
+            {
+              "feature": "diff_elo",
+              "value": 40.7165
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -10.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -9.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -3.0
+            }
+          ]
         },
         {
           "fighter_1": "Karine Silva",
@@ -959,7 +2083,29 @@
           "actual_winner": "Maycee Barber",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -525.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -73.3644
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -28.9871
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -5.0
+            }
+          ]
         },
         {
           "fighter_1": "Edson Barboza",
@@ -975,7 +2121,29 @@
           "actual_winner": "Jalin Turner",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -161.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -34.7005
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 18.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 12.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -3.7886
+            }
+          ]
         },
         {
           "fighter_1": "Chris Duncan",
@@ -991,7 +2159,29 @@
           "actual_winner": "Chris Duncan",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 51.1521
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -35.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 31.3471
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -5.0
+            }
+          ]
         },
         {
           "fighter_1": "Mairon Santos",
@@ -1007,7 +2197,29 @@
           "actual_winner": "Mairon Santos",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 35.0756
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 35.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 21.5253
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -3.0
+            }
+          ]
         },
         {
           "fighter_1": "Henry Cejudo",
@@ -1023,7 +2235,29 @@
           "actual_winner": "Payton Talbott",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 126.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -68.3783
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 10.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 9.1335
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Fares Ziam",
@@ -1039,7 +2273,29 @@
           "actual_winner": "Fares Ziam",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 140.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 62.5766
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 29.4194
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 4.0
+            }
+          ]
         },
         {
           "fighter_1": "Antonio Trocoli",
@@ -1055,7 +2311,29 @@
           "actual_winner": "Mansur Abdul-Malik",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 217.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -101.4993
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -55.8338
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -1.4222
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Ibo Aslan",
@@ -1071,7 +2349,29 @@
           "actual_winner": "Iwo Baraniewski",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -232.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -36.8284
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -32.9992
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 4.0
+            }
+          ]
         },
         {
           "fighter_1": "Grant Dawson",
@@ -1087,7 +2387,29 @@
           "actual_winner": "Manuel Torres",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 70.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 42.2849
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -41.2802
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 8.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 4.0
+            }
+          ]
         }
       ]
     },
@@ -1119,7 +2441,29 @@
           "actual_winner": "Arman Tsarukyan",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 518.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 67.089
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 65.8425
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -12.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -5.0
+            }
+          ]
         },
         {
           "fighter_1": "Belal Muhammad",
@@ -1135,7 +2479,29 @@
           "actual_winner": "Ian Machado Garry",
           "actual_method": "U-DEC",
           "actual_round": 5,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -70.3152
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -14.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 12.9707
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 10.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 10.0
+            }
+          ]
         },
         {
           "fighter_1": "Shamil Gaziev",
@@ -1151,7 +2517,29 @@
           "actual_winner": "Waldo Cortes Acosta",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 231.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -94.004
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -28.8499
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -7.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -7.0
+            }
+          ]
         },
         {
           "fighter_1": "Jack Hermansson",
@@ -1167,7 +2555,29 @@
           "actual_winner": "Myktybek Orolbai",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -66.4843
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -7.4855
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -7.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Kyoji Horiguchi",
@@ -1183,7 +2593,29 @@
           "actual_winner": "Kyoji Horiguchi",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 3136.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 41.2393
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 32.4067
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Alonzo Menifield",
@@ -1199,7 +2631,29 @@
           "actual_winner": "Volkan Oezdemir",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -203.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -10.254
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -4.0494
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Nicolas Dalby",
@@ -1215,7 +2669,29 @@
           "actual_winner": "Nicolas Dalby",
           "actual_method": "S-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -155.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 88.0062
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Nurullo Aliev",
@@ -1231,7 +2707,29 @@
           "actual_winner": "Nurullo Aliev",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 61.2702
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -50.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 31.2542
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Alex Perez",
@@ -1247,7 +2745,29 @@
           "actual_winner": "Asu Almabayev",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -56.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -37.8134
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -26.9563
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 5.0
+            }
+          ]
         },
         {
           "fighter_1": "Aleksandre Topuria",
@@ -1263,7 +2783,29 @@
           "actual_winner": "Aleksandre Topuria",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 91.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 43.4865
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 14.4953
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Ismail Naurdiev",
@@ -1279,7 +2821,29 @@
           "actual_winner": "Ismail Naurdiev",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -49.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 38.6877
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 33.5356
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -0.7161
+            }
+          ]
         },
         {
           "fighter_1": "Denzel Freeman",
@@ -1295,7 +2859,29 @@
           "actual_winner": "Denzel Freeman",
           "actual_method": "U-DEC",
           "actual_round": 3,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -302.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 16.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -16.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 5.7976
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Bogdan Grad",
@@ -1311,7 +2897,29 @@
           "actual_winner": "Luke Riley",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -211.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -31.4627
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -30.6707
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 2.4847
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Abdul Rakhman Yakhyaev",
@@ -1327,7 +2935,29 @@
           "actual_winner": "Abdul Rakhman Yakhyaev",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 260.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 73.4985
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 29.1856
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -3.0
+            }
+          ]
         }
       ]
     },
@@ -1359,7 +2989,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 182.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -36.3169
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 12.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -6.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Dan Ige",
@@ -1375,7 +3027,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 147.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -37.0834
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -30.7102
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 13.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 12.0
+            }
+          ]
         },
         {
           "fighter_1": "Serghei Spivac",
@@ -1391,7 +3065,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 147.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 34.9395
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -16.548
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 12.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 12.0
+            }
+          ]
         },
         {
           "fighter_1": "Jacobe Smith",
@@ -1407,7 +3103,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 126.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -2.1523
+            },
+            {
+              "feature": "diff_finish_rate_last_3",
+              "value": 1.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -0.5721
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 0.408
+            }
+          ]
         },
         {
           "fighter_1": "Zach Reese",
@@ -1423,7 +3141,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -77.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 68.1513
+            },
+            {
+              "feature": "diff_elo",
+              "value": -25.9977
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -7.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -5.0
+            }
+          ]
         },
         {
           "fighter_1": "Chidi Njokuani",
@@ -1439,7 +3179,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 25.1906
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 6.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Ode Osbourne",
@@ -1455,7 +3217,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -13.5113
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 11.0
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 2.4506
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 1.9792
+            }
+          ]
         },
         {
           "fighter_1": "Alden Coria",
@@ -1471,7 +3255,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 48.1837
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 14.5319
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -2.2686
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Nora Cornolle",
@@ -1487,7 +3293,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -31.4521
+            },
+            {
+              "feature": "diff_elo",
+              "value": -25.272
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -6.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -5.0
+            }
+          ]
         },
         {
           "fighter_1": "Austin Vanderford",
@@ -1503,7 +3331,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -225.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -15.9717
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 1.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -0.6743
+            }
+          ]
         },
         {
           "fighter_1": "Jordan Leavitt",
@@ -1519,7 +3369,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 154.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -19.9463
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 6.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 6.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -3.3911
+            }
+          ]
         },
         {
           "fighter_1": "Juliana Miller",
@@ -1535,7 +3407,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 77.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -31.9023
+            },
+            {
+              "feature": "diff_elo",
+              "value": -17.0714
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            }
+          ]
         }
       ]
     },
@@ -1567,7 +3461,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -105.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 69.2172
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 16.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 16.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -1.942
+            }
+          ]
         },
         {
           "fighter_1": "Marlon Vera",
@@ -1583,7 +3499,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -49.5449
+            },
+            {
+              "feature": "diff_elo",
+              "value": 38.5325
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -35.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 23.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 20.0
+            }
+          ]
         },
         {
           "fighter_1": "Daniel Zellhuber",
@@ -1599,7 +3537,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 147.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -41.1429
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -30.6865
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -22.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 4.0
+            }
+          ]
         },
         {
           "fighter_1": "Edgar Chairez",
@@ -1615,7 +3575,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 126.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 25.7786
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -1.4878
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 1.0307
+            }
+          ]
         },
         {
           "fighter_1": "Imanol Rodriguez",
@@ -1631,7 +3613,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 4635.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 12.1049
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -3.1563
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -3.0
+            }
+          ]
         },
         {
           "fighter_1": "Ryan Gandra",
@@ -1647,7 +3651,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 197.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 48.0389
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 32.0347
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Ailin Perez",
@@ -1663,7 +3689,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 259.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 65.6002
+            },
+            {
+              "feature": "diff_elo",
+              "value": 25.9277
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -7.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 4.0
+            }
+          ]
         },
         {
           "fighter_1": "Cristian Quinonez",
@@ -1679,7 +3727,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 476.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 31.1653
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 2.51
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -1.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 0.8462
+            }
+          ]
         },
         {
           "fighter_1": "Douglas Silva de Andrade",
@@ -1695,7 +3765,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 258.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 18.8396
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 12.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 8.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 1.811
+            }
+          ]
         },
         {
           "fighter_1": "Sofia Montenegro",
@@ -1711,7 +3803,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -48.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -16.7363
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -1.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Erik Silva",
@@ -1727,7 +3841,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 378.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -14.6144
+            },
+            {
+              "feature": "diff_elo",
+              "value": -14.0094
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Damian Pinas",
@@ -1759,7 +3895,17 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -532.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 32.1516
+            }
+          ]
         }
       ]
     },
@@ -1791,7 +3937,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 84.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -21.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 18.2346
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 0.7256
+            }
+          ]
         },
         {
           "fighter_1": "Renato Moicano",
@@ -1807,7 +3975,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 56.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 27.3212
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 9.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 3.2599
+            }
+          ]
         },
         {
           "fighter_1": "Caio Borralho",
@@ -1823,7 +4013,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 42.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 32.6583
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -7.2292
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Cody Garbrandt",
@@ -1839,7 +4051,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 70.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 50.5728
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -30.4807
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 13.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 11.0
+            }
+          ]
         },
         {
           "fighter_1": "Sumudaerji",
@@ -1855,7 +4089,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 34.0053
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 21.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -17.0735
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Luke Fernandez",
@@ -1871,7 +4127,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 204.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -15.4662
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Gregory Rodrigues",
@@ -1887,7 +4165,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 29.6509
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 21.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Rob Font",
@@ -1903,7 +4203,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -168.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -31.5641
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 12.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 10.4532
+            }
+          ]
         },
         {
           "fighter_1": "Cody Durden",
@@ -1919,7 +4241,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -71.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -49.1125
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 12.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -10.7381
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 1.1328
+            }
+          ]
         },
         {
           "fighter_1": "Donte Johnson",
@@ -1935,7 +4279,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -49.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 47.0967
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -9.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -9.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -3.0
+            }
+          ]
         },
         {
           "fighter_1": "JooSang Yoo",
@@ -1951,7 +4317,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -154.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -13.1905
+            },
+            {
+              "feature": "diff_elo",
+              "value": 3.4949
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -2.0
+            }
+          ]
         }
       ]
     },
@@ -1983,7 +4371,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 70.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -66.7996
+            },
+            {
+              "feature": "diff_elo",
+              "value": 14.7693
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 13.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 10.0
+            }
+          ]
         },
         {
           "fighter_1": "Amanda Lemos",
@@ -1999,7 +4409,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -133.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -27.7678
+            },
+            {
+              "feature": "diff_elo",
+              "value": -25.1625
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -5.0
+            }
+          ]
         },
         {
           "fighter_1": "Ion Cutelaba",
@@ -2015,7 +4447,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 119.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -30.3051
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 15.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 15.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 2.335
+            }
+          ]
         },
         {
           "fighter_1": "Marwan Rahiki",
@@ -2031,7 +4485,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 176.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 15.2712
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_win_rate_last_3",
+              "value": 0.52
+            },
+            {
+              "feature": "diff_win_rate_last_10",
+              "value": 0.52
+            }
+          ]
         },
         {
           "fighter_1": "Luan Lacerda",
@@ -2047,7 +4523,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -211.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -16.4435
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Bia Mesquita",
@@ -2063,7 +4561,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -28.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -1.0132
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Piera Rodriguez",
@@ -2079,7 +4599,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 35.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 1.0166
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Charles Johnson",
@@ -2095,7 +4637,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -98.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 46.1574
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -8.3864
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -8.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -4.0
+            }
+          ]
         }
       ]
     },
@@ -2127,7 +4691,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 252.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 17.5726
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 8.3783
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Luke Riley",
@@ -2143,7 +4729,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -42.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -16.1449
+            },
+            {
+              "feature": "diff_elo",
+              "value": 15.8827
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -2.7462
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Michael Page",
@@ -2159,7 +4767,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 21.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -4.2949
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 4.1333
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Iwo Baraniewski",
@@ -2175,7 +4805,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -147.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 58.3603
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 28.8513
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -5.0
+            }
+          ]
         },
         {
           "fighter_1": "Roman Dolidze",
@@ -2191,7 +4843,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 91.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -31.2405
+            },
+            {
+              "feature": "diff_elo",
+              "value": 15.5002
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Kurtis Campbell",
@@ -2207,7 +4881,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 134.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -15.9261
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Mason Jones",
@@ -2223,7 +4919,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 32.6083
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 3.3173
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 1.0806
+            }
+          ]
         },
         {
           "fighter_1": "Nathaniel Wood",
@@ -2239,7 +4957,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -218.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 94.6113
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 27.495
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 12.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 6.0
+            }
+          ]
         },
         {
           "fighter_1": "Louie Sutherland",
@@ -2255,7 +4995,17 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -30.5954
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -28.0
+            }
+          ]
         },
         {
           "fighter_1": "Mantas Kondratavicius",
@@ -2271,7 +5021,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 260.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 43.6824
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 28.474
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Mick Parkin",
@@ -2287,7 +5059,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 203.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -19.2517
+            },
+            {
+              "feature": "diff_elo",
+              "value": 13.8908
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Shem Rock",
@@ -2303,7 +5097,17 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -630.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 1.48
+            }
+          ]
         },
         {
           "fighter_1": "Shanelle Dyer",
@@ -2319,7 +5123,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 211.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 30.5912
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 15.3058
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 1.5031
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Melissa Mullins",
@@ -2335,7 +5161,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 98.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -19.8759
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -6.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 4.7636
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 3.0
+            }
+          ]
         }
       ]
     },
@@ -2367,7 +5215,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 245.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -66.4515
+            },
+            {
+              "feature": "diff_elo",
+              "value": 34.8236
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 11.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 10.0
+            }
+          ]
         },
         {
           "fighter_1": "Alexa Grasso",
@@ -2383,7 +5253,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 210.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -74.2378
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -56.8963
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -6.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -3.0
+            }
+          ]
         },
         {
           "fighter_1": "Chase Hooper",
@@ -2399,7 +5291,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 119.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 70.1951
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 11.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 5.0
+            }
+          ]
         },
         {
           "fighter_1": "Navajo Stirling",
@@ -2415,7 +5329,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -119.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 46.4152
+            },
+            {
+              "feature": "diff_elo",
+              "value": 44.9764
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Marcin Tybura",
@@ -2431,7 +5367,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 49.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -37.2061
+            },
+            {
+              "feature": "diff_elo",
+              "value": 31.9188
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 18.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 18.0
+            }
+          ]
         },
         {
           "fighter_1": "Michael Chiesa",
@@ -2447,7 +5405,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -154.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 88.5923
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 55.741
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Mansur Abdul-Malik",
@@ -2463,7 +5443,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -49.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 40.3155
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 27.3598
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Casey O'Neill",
@@ -2479,7 +5481,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 357.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -31.2566
+            },
+            {
+              "feature": "diff_elo",
+              "value": 22.7662
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Julian Erosa",
@@ -2495,7 +5519,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -50.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 32.6901
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 16.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 12.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Zhu Kangjie",
@@ -2527,7 +5573,29 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 204.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -15.1049
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 1.6314
+            }
+          ]
         }
       ]
     },
@@ -2559,7 +5627,29 @@
           "actual_winner": "Valentina Shevchenko",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -91.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 66.904
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 26.8148
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 13.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 6.0
+            }
+          ]
         },
         {
           "fighter_1": "Chepe Mariscal",
@@ -2575,7 +5665,29 @@
           "actual_winner": "Pat Sabatini",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 35.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -33.9398
+            },
+            {
+              "feature": "diff_elo",
+              "value": -25.2975
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -4.0
+            }
+          ]
         },
         {
           "fighter_1": "Beneil Dariush",
@@ -2591,7 +5703,29 @@
           "actual_winner": "Benoit Saint Denis",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 63.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -39.7374
+            },
+            {
+              "feature": "diff_elo",
+              "value": 17.2386
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 13.0
+            }
+          ]
         },
         {
           "fighter_1": "Erin Blanchfield",
@@ -2607,7 +5741,29 @@
           "actual_winner": "Erin Blanchfield",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 238.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 52.8712
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 32.149
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Baisangur Susurkaev",
@@ -2623,7 +5779,29 @@
           "actual_winner": "Baisangur Susurkaev",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 45.5438
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 14.3875
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -7.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 1.2675
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Ethyn Ewing",
@@ -2639,7 +5817,29 @@
           "actual_winner": "Ethyn Ewing",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 211.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 4.3821
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -3.5985
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 3.5579
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Gerald Meerschaert",
@@ -2655,7 +5855,29 @@
           "actual_winner": "Kyle Daukaus",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -65.8569
+            },
+            {
+              "feature": "diff_elo",
+              "value": -45.1925
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 17.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 16.0
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 7.0
+            }
+          ]
         },
         {
           "fighter_1": "Gregory Rodrigues",
@@ -2671,7 +5893,29 @@
           "actual_winner": "Gregory Rodrigues",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 69.6512
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 61.5196
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 21.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Bo Nickal",
@@ -2687,7 +5931,29 @@
           "actual_winner": "Bo Nickal",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 91.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 32.0705
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -4.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -4.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Angela Hill",
@@ -2703,7 +5969,29 @@
           "actual_winner": "Fatima Kline",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -61.6707
+            },
+            {
+              "feature": "diff_elo",
+              "value": -46.1337
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -28.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 25.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 25.0
+            }
+          ]
         },
         {
           "fighter_1": "Matheus Camilo",
@@ -2719,7 +6007,29 @@
           "actual_winner": "Matheus Camilo",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 47.0768
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 42.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 29.7494
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -8.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -8.0
+            }
+          ]
         },
         {
           "fighter_1": "Michael Morales",
@@ -2735,7 +6045,29 @@
           "actual_winner": "Michael Morales",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -56.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 30.9495
+            },
+            {
+              "feature": "diff_elo",
+              "value": 13.6041
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Islam Makhachev",
@@ -2751,7 +6083,29 @@
           "actual_winner": "Islam Makhachev",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 118.0943
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 112.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 15.2646
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 9.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -8.0
+            }
+          ]
         },
         {
           "fighter_1": "Carlos Prates",
@@ -2767,7 +6121,29 @@
           "actual_winner": "Carlos Prates",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -147.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 75.9946
+            },
+            {
+              "feature": "diff_elo",
+              "value": -46.3522
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -13.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -13.0
+            }
+          ]
         }
       ]
     },
@@ -2799,7 +6175,29 @@
           "actual_winner": "Jamall Emmers",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -91.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -67.7694
+            },
+            {
+              "feature": "diff_elo",
+              "value": -7.6447
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -4.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -4.0
+            }
+          ]
         },
         {
           "fighter_1": "Raoni Barcelos",
@@ -2815,7 +6213,29 @@
           "actual_winner": "Raoni Barcelos",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 35.735
+            },
+            {
+              "feature": "diff_elo",
+              "value": 24.1226
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Muslim Salikhov",
@@ -2831,7 +6251,29 @@
           "actual_winner": "Uros Medic",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -38.7696
+            },
+            {
+              "feature": "diff_elo",
+              "value": 18.8883
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 8.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 5.0
+            }
+          ]
         },
         {
           "fighter_1": "Chris Padilla",
@@ -2847,7 +6289,29 @@
           "actual_winner": "Chris Padilla",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 68.6625
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 58.3597
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -35.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Christian Leroy Duncan",
@@ -2863,7 +6327,29 @@
           "actual_winner": "Christian Leroy Duncan",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -119.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 46.5345
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 30.8532
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 5.0
+            }
+          ]
         },
         {
           "fighter_1": "Josh Hokit",
@@ -2879,7 +6365,29 @@
           "actual_winner": "Josh Hokit",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -288.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 48.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 16.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 4.7435
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Joseph Morales",
@@ -2895,7 +6403,29 @@
           "actual_winner": "Joseph Morales",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -112.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 38.1617
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 31.8077
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -11.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -7.0
+            }
+          ]
         },
         {
           "fighter_1": "Jacqueline Cavalcanti",
@@ -2911,7 +6441,29 @@
           "actual_winner": "Jacqueline Cavalcanti",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 82.3573
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 55.33
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -14.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -8.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 4.0
+            }
+          ]
         },
         {
           "fighter_1": "Jackson McVey",
@@ -2927,7 +6479,29 @@
           "actual_winner": "Zach Reese",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -57.6979
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 56.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -43.8973
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_data_completeness_score",
+              "value": -0.8333
+            }
+          ]
         },
         {
           "fighter_1": "Daniel Marcos",
@@ -2943,7 +6517,29 @@
           "actual_winner": "Daniel Marcos",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 98.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 46.6775
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 33.3607
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -4.0
+            }
+          ]
         },
         {
           "fighter_1": "Denise Gomes",
@@ -2959,7 +6555,29 @@
           "actual_winner": "Denise Gomes",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 33.0477
+            },
+            {
+              "feature": "diff_elo",
+              "value": 26.8787
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -11.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -11.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Gabriel Bonfim",
@@ -2975,7 +6593,29 @@
           "actual_winner": "Gabriel Bonfim",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -77.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 37.5496
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -14.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -14.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -12.6044
+            }
+          ]
         }
       ]
     },
@@ -3007,7 +6647,29 @@
           "actual_winner": "Billy Elekana",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -274.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 47.8003
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 29.7961
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "David Onama",
@@ -3023,7 +6685,29 @@
           "actual_winner": "Steve Garcia",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 77.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -43.2828
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -27.1104
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Charles Radtke",
@@ -3039,7 +6723,29 @@
           "actual_winner": "Charles Radtke",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 61.3083
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -35.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 13.9785
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 4.0
+            }
+          ]
         },
         {
           "fighter_1": "ChangHo Lee",
@@ -3055,7 +6761,29 @@
           "actual_winner": "Timmy Cuamba",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -38.4495
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 21.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 9.4319
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -1.0
+            }
+          ]
         },
         {
           "fighter_1": "Isaac Dulgarian",
@@ -3071,7 +6799,29 @@
           "actual_winner": "Yadier del Valle",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 252.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -30.5623
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -16.8942
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Jeremiah Wells",
@@ -3087,7 +6837,29 @@
           "actual_winner": "Jeremiah Wells",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 301.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 28.2542
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 27.6853
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": 1.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -0.8412
+            }
+          ]
         },
         {
           "fighter_1": "Ariane Carnelossi",
@@ -3103,7 +6875,29 @@
           "actual_winner": "Talita Alencar",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 322.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -33.2308
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -32.4501
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Ketlen Vieira",
@@ -3119,7 +6913,29 @@
           "actual_winner": "Norma Dumont",
           "actual_method": "S-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -259.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -55.7375
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -27.8578
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 9.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -4.0
+            }
+          ]
         },
         {
           "fighter_1": "Ante Delija",
@@ -3135,7 +6951,29 @@
           "actual_winner": "Waldo Cortes Acosta",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -107.9969
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -44.0435
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -10.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -10.0
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -7.0
+            }
+          ]
         },
         {
           "fighter_1": "Donte Johnson",
@@ -3151,7 +6989,29 @@
           "actual_winner": "Donte Johnson",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 316.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 35.154
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 32.0757
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -7.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -7.0
+            }
+          ]
         },
         {
           "fighter_1": "Phil Rowe",
@@ -3167,7 +7027,29 @@
           "actual_winner": "Seokhyeon Ko",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -26.8173
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -16.9458
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 6.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 6.0
+            }
+          ]
         },
         {
           "fighter_1": "Allan Nascimento",
@@ -3183,7 +7065,29 @@
           "actual_winner": "Allan Nascimento",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 62.9818
+            },
+            {
+              "feature": "diff_elo",
+              "value": 59.3637
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -9.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Alice Ardelean",
@@ -3199,7 +7103,29 @@
           "actual_winner": "Alice Ardelean",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -574.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 61.9963
+            },
+            {
+              "feature": "diff_elo",
+              "value": 45.1983
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 1.5057
+            }
+          ]
         }
       ]
     },
@@ -3231,7 +7157,29 @@
           "actual_winner": "Valter Walker",
           "actual_method": "SUB",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 260.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -59.7692
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -31.8499
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -4.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -4.0
+            }
+          ]
         },
         {
           "fighter_1": "Jaqueline Amorim",
@@ -3247,7 +7195,29 @@
           "actual_winner": "Mizuki",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -581.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -36.6352
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            }
+          ]
         },
         {
           "fighter_1": "Ciryl Gane",
@@ -3263,7 +7233,29 @@
           "actual_winner": "No Contest",
           "actual_method": "CNC",
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -133.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 18.9168
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -3.9338
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Jose Delgado",
@@ -3279,7 +7271,29 @@
           "actual_winner": "Nathaniel Wood",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -98.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -75.696
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -23.7801
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -10.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -4.0
+            }
+          ]
         },
         {
           "fighter_1": "Azat Maksum",
@@ -3295,7 +7309,29 @@
           "actual_winner": "Mitch Raposo",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -70.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -30.37
+            },
+            {
+              "feature": "diff_elo",
+              "value": -17.6186
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 1.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 1.0
+            }
+          ]
         },
         {
           "fighter_1": "Ludovit Klein",
@@ -3311,7 +7347,29 @@
           "actual_winner": "Ludovit Klein",
           "actual_method": "M-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 69.2928
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 63.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 27.7834
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 3.0
+            }
+          ]
         },
         {
           "fighter_1": "Mackenzie Dern",
@@ -3327,7 +7385,29 @@
           "actual_winner": "Mackenzie Dern",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 91.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 32.8899
+            },
+            {
+              "feature": "diff_elo",
+              "value": 13.3992
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 4.0
+            }
+          ]
         },
         {
           "fighter_1": "Mario Bautista",
@@ -3343,7 +7423,29 @@
           "actual_winner": "Umar Nurmagomedov",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 49.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -42.0038
+            },
+            {
+              "feature": "diff_elo",
+              "value": -15.8907
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 5.0
+            }
+          ]
         },
         {
           "fighter_1": "Ikram Aliskerov",
@@ -3359,7 +7461,29 @@
           "actual_winner": "Ikram Aliskerov",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 56.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 40.1162
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": -8.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": -8.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -7.2309
+            }
+          ]
         },
         {
           "fighter_1": "Alexander Volkov",
@@ -3375,7 +7499,29 @@
           "actual_winner": "Alexander Volkov",
           "actual_method": "S-DEC",
           "actual_round": null,
-          "correct": false
+          "correct": false,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 42.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 33.9236
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 10.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 8.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -2.0
+            }
+          ]
         },
         {
           "fighter_1": "Aleksandar Rakic",
@@ -3391,7 +7537,29 @@
           "actual_winner": "Azamat Murzakanov",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 224.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -68.4538
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -52.9283
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": -5.0
+            }
+          ]
         },
         {
           "fighter_1": "Nasrat Haqparast",
@@ -3407,7 +7575,29 @@
           "actual_winner": "Quillan Salkilld",
           "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 140.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -37.2321
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 11.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 11.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 7.5218
+            }
+          ]
         },
         {
           "fighter_1": "Chris Barnett",
@@ -3423,7 +7613,29 @@
           "actual_winner": "Hamdy Abdelwahab",
           "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": true
+          "correct": true,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 238.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -59.4054
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -27.6351
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": 2.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": 2.0
+            }
+          ]
         }
       ]
     }
