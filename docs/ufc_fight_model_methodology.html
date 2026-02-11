@@ -894,7 +894,7 @@
     <div class="meta">
         <div class="meta-item">
             <span class="meta-label">Version</span>
-            <span class="meta-value">1.5 (Phase 8 Complete)</span>
+            <span class="meta-value">1.6 (Phase 8 Diagnostic)</span>
         </div>
         <div class="meta-item">
             <span class="meta-label">Date</span>
@@ -924,7 +924,8 @@
         <li><a href="#evaluation"><span class="toc-num">06</span> Evaluation & Calibration</a></li>
         <li><a href="#serving"><span class="toc-num">07</span> Prediction Serving</a></li>
         <li><a href="#limitations"><span class="toc-num">08</span> Known Limitations</a></li>
-        <li><a href="#roadmap"><span class="toc-num">09</span> Roadmap</a></li>
+        <li><a href="#diagnostic"><span class="toc-num">09</span> Model Diagnostic: Strengths & Weaknesses</a></li>
+        <li><a href="#roadmap"><span class="toc-num">10</span> Roadmap</a></li>
     </ol>
 </nav>
 
@@ -1682,8 +1683,409 @@ python src/predict/serve.py --format json</div>
 </section>
 
 <!-- Section 09 -->
-<section id="roadmap">
+<section id="diagnostic">
     <span class="section-num">09</span>
+    <h2>Model Diagnostic: Strengths & Weaknesses</h2>
+
+    <p>Where does Phase 8 perform best, and where does it break down? Slicing the test set (1,063 fights, 2024-2026) by fight characteristics reveals the model's strongest and weakest operating conditions.</p>
+
+    <h3>Confidence Calibration</h3>
+    <p>Higher confidence predictions are more accurate. This is the most important validation: the model's probabilities are meaningful, not arbitrary.</p>
+
+    <div class="importance-chart">
+        <div class="importance-row">
+            <div class="importance-rank">75%+</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Heavy Favorite</span>
+                    <span class="importance-score">100% (n=4)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 100%;"></div>
+                </div>
+                <div class="importance-desc">Small sample but perfect — the model's strongest picks win.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">70-75%</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Strong Pick</span>
+                    <span class="importance-score">87.0% (n=23)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 87%;"></div>
+                </div>
+                <div class="importance-desc">High-confidence picks deliver on their promise.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">65-70%</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Confident</span>
+                    <span class="importance-score">75.0% (n=112)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 75%;"></div>
+                </div>
+                <div class="importance-desc">Strong signal — 14.5pp above overall accuracy.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">60-65%</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Moderate</span>
+                    <span class="importance-score">69.6% (n=227)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 69.6%;"></div>
+                </div>
+                <div class="importance-desc">Good signal, actionable for value betting.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">55-60%</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Slight Lean</span>
+                    <span class="importance-score">59.1% (n=303)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 59.1%;"></div>
+                </div>
+                <div class="importance-desc">Marginal edge — close to overall average.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">50-55%</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Coin Flip</span>
+                    <span class="importance-score">50.3% (n=394)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 50.3%;"></div>
+                </div>
+                <div class="importance-desc">No edge — model correctly signals uncertainty.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="callout">
+        <h4>Key Insight: Probabilities Are Calibrated</h4>
+        <p>When the model says 70%+, the fighter wins 87% of the time. When it says 50-55%, the win rate is 50.3%. This monotonic relationship proves the model outputs meaningful probabilities, not just arbitrary numbers. The 37% of fights in the 50-55% bucket represent genuinely unpredictable matchups.</p>
+    </div>
+
+    <h3>Model Strengths</h3>
+    <p>Segments where the model significantly outperforms its 60.5% overall accuracy.</p>
+
+    <div class="importance-chart">
+        <div class="importance-row">
+            <div class="importance-rank">01</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">65-70% Confidence</span>
+                    <span class="importance-score">75.0% (+14.5pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 100%;"></div>
+                </div>
+                <div class="importance-desc">High-confidence picks deliver. 112 fights with clear signal.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">02</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Large Elo Gap (75-150)</span>
+                    <span class="importance-score">74.6% (+14.1pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 97%;"></div>
+                </div>
+                <div class="importance-desc">When Elo sees a clear mismatch, it's usually right.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">03</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Long Streak vs Non-Streak</span>
+                    <span class="importance-score">72.1% (+11.6pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 80%;"></div>
+                </div>
+                <div class="importance-desc">5+ win streak vs fighter with <2 streak. Clear momentum signal.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">04</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">One Fighter Streaking</span>
+                    <span class="importance-score">65.6% (+5.1pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 35%;"></div>
+                </div>
+                <div class="importance-desc">When only one fighter is on a streak, model captures asymmetry.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">05</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Large Experience Gap (>8 fights)</span>
+                    <span class="importance-score">64.3% (+3.8pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 26%;"></div>
+                </div>
+                <div class="importance-desc">Veterans beating newcomers is a reliable pattern.</div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Model Weaknesses</h3>
+    <p>Segments where the model performs at or below coin flip (50%).</p>
+
+    <div class="importance-chart">
+        <div class="importance-row">
+            <div class="importance-rank">01</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Grappler vs Grappler</span>
+                    <span class="importance-score">32.1% (-28.4pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 32.1%; background: var(--text-muted);"></div>
+                </div>
+                <div class="importance-desc">Small sample (28 fights) but concerning — model may incorrectly favor grapplers.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">02</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">50-55% Confidence</span>
+                    <span class="importance-score">50.3% (-10.2pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 50.3%; background: var(--text-muted);"></div>
+                </div>
+                <div class="importance-desc">Expected behavior — these ARE coin flips. 394 fights with no edge.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">03</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Both Inexperienced (<5 fights)</span>
+                    <span class="importance-score">50.5% (-10.0pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 50.5%; background: var(--text-muted);"></div>
+                </div>
+                <div class="importance-desc">No historical data to differentiate. 289 unpredictable fights.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">04</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Debut Fighters</span>
+                    <span class="importance-score">50.8% (-9.7pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 50.8%; background: var(--text-muted);"></div>
+                </div>
+                <div class="importance-desc">177 fights with UFC debutants — pure guesswork.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">05</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Split Decisions</span>
+                    <span class="importance-score">52.4% (-8.1pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 52.4%; background: var(--text-muted);"></div>
+                </div>
+                <div class="importance-desc">Fights close enough for split judging are inherently 50/50.</div>
+            </div>
+        </div>
+        <div class="importance-row">
+            <div class="importance-rank">06</div>
+            <div class="importance-content">
+                <div class="importance-header">
+                    <span class="importance-label">Balanced vs Grappler</span>
+                    <span class="importance-score">54.4% (-6.1pp)</span>
+                </div>
+                <div class="importance-bar-track">
+                    <div class="importance-bar-fill" style="width: 54.4%; background: var(--text-muted);"></div>
+                </div>
+                <div class="importance-desc">Style mismatch fights are harder to predict — who dictates the fight?</div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Style Matchup Matrix</h3>
+    <p>Accuracy breakdown by fighter style combination. Styles classified by striking volume vs takedown/submission rates.</p>
+
+    <table class="feature-table">
+        <thead>
+            <tr>
+                <th>Matchup</th>
+                <th>Test Accuracy</th>
+                <th>Train Accuracy</th>
+                <th>Fights (Test)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="category">Balanced vs Balanced</td>
+                <td class="count">62.4%</td>
+                <td>66.2%</td>
+                <td>886</td>
+            </tr>
+            <tr>
+                <td class="category">Balanced vs Grappler</td>
+                <td class="count">54.4%</td>
+                <td>64.9%</td>
+                <td>149</td>
+            </tr>
+            <tr>
+                <td class="category">Grappler vs Grappler</td>
+                <td class="count">32.1%</td>
+                <td>54.5%</td>
+                <td>28</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <h4>Style Matchup Insight</h4>
+        <p>The model's style classification shows most fighters are "Balanced" — modern UFC fighters are well-rounded. The 32.1% accuracy on Grappler vs Grappler (28 fights) suggests the model may systematically favor one grappler incorrectly when both fighters are takedown-heavy. However, the small sample size limits conclusions.</p>
+    </div>
+
+    <h3>Weight Class Performance</h3>
+    <p>Accuracy varies by division, likely due to sample size differences and fight variance characteristics.</p>
+
+    <table class="feature-table">
+        <thead>
+            <tr>
+                <th>Division</th>
+                <th>Test Accuracy</th>
+                <th>Fights</th>
+                <th>vs Overall</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="category">Middleweight</td>
+                <td class="count">64.2%</td>
+                <td>137</td>
+                <td>+3.7pp</td>
+            </tr>
+            <tr>
+                <td class="category">Welterweight</td>
+                <td class="count">63.4%</td>
+                <td>123</td>
+                <td>+2.9pp</td>
+            </tr>
+            <tr>
+                <td class="category">Women's Bantamweight</td>
+                <td class="count">63.4%</td>
+                <td>41</td>
+                <td>+2.9pp</td>
+            </tr>
+            <tr>
+                <td class="category">Women's Flyweight</td>
+                <td class="count">63.0%</td>
+                <td>54</td>
+                <td>+2.5pp</td>
+            </tr>
+            <tr>
+                <td class="category">Featherweight</td>
+                <td class="count">62.2%</td>
+                <td>127</td>
+                <td>+1.7pp</td>
+            </tr>
+            <tr>
+                <td class="category">Lightweight</td>
+                <td class="count">61.0%</td>
+                <td>141</td>
+                <td>+0.5pp</td>
+            </tr>
+            <tr>
+                <td class="category">Bantamweight</td>
+                <td class="count">58.8%</td>
+                <td>165</td>
+                <td>-1.7pp</td>
+            </tr>
+            <tr>
+                <td class="category">Light Heavyweight</td>
+                <td class="count">58.7%</td>
+                <td>75</td>
+                <td>-1.8pp</td>
+            </tr>
+            <tr>
+                <td class="category">Heavyweight</td>
+                <td class="count">58.5%</td>
+                <td>147</td>
+                <td>-2.0pp</td>
+            </tr>
+            <tr>
+                <td class="category">Flyweight</td>
+                <td class="count">58.3%</td>
+                <td>139</td>
+                <td>-2.2pp</td>
+            </tr>
+            <tr>
+                <td class="category">Women's Strawweight</td>
+                <td class="count">54.2%</td>
+                <td>72</td>
+                <td>-6.3pp</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Implications for Phase 9</h3>
+    <p>The diagnostic findings suggest concrete model improvement candidates:</p>
+
+    <div class="two-col">
+        <div class="col is">
+            <h4>High-Priority Candidates</h4>
+            <ul>
+                <li><strong>Debut-Aware Model:</strong> Separate prediction pathway for fighters with <3 UFC fights. Use pre-UFC record data (Sherdog, Tapology) or regional Elo to fill the information gap. Current: 50.8% on 177 debut fights.</li>
+                <li><strong>Style Interaction Features:</strong> Explicit striker×grappler interaction terms. The model treats striking and grappling stats independently; cross-terms would capture "this striker's specific vulnerability to takedowns."</li>
+                <li><strong>Close-Fight Specialist:</strong> Secondary model trained only on fights with Elo gap <25. Different features may matter when fighters are evenly matched (56.8% currently).</li>
+            </ul>
+        </div>
+        <div class="col is-not">
+            <h4>Lower Priority / Ceiling Issues</h4>
+            <ul>
+                <li><strong>Split Decision Problem:</strong> 52.4% accuracy on split decisions is likely a ceiling, not a model failure. These fights are genuinely 50/50 — no model improvement will fix this.</li>
+                <li><strong>Coin Flip Bucket:</strong> 50.3% on 50-55% confidence fights is expected behavior. The model correctly signals uncertainty; don't try to "improve" this.</li>
+                <li><strong>Heavyweight Variance:</strong> 58.5% accuracy may be data-limited. KO variance in heavyweight adds irreducible randomness.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="callout">
+        <h4>Bottom Line</h4>
+        <p>The Phase 8 model is well-calibrated and strongest on high-confidence picks (75%+), large Elo gaps, and streak asymmetries. It struggles with debut fighters, inexperienced matchups, and style-mismatch fights. The ~10% of fights at 65%+ confidence achieve 75%+ accuracy — these are the model's bread and butter. The ~37% at 50-55% confidence are correctly identified as unpredictable.</p>
+        <p>Removing debut fighters from the test set would raise overall accuracy from 60.5% to 62.4% (+1.9pp). This suggests Phase 9 priority should be debut prediction improvement or debut fight filtering.</p>
+    </div>
+</section>
+
+<!-- Section 10 -->
+<section id="roadmap">
+    <span class="section-num">10</span>
     <h2>Roadmap</h2>
 
     <div class="roadmap">
@@ -1832,7 +2234,7 @@ python src/predict/serve.py --format json</div>
 </main>
 
 <footer>
-    <p>UFC Fight Win Probability Model — Methodology v1.5 (Phase 8)</p>
+    <p>UFC Fight Win Probability Model — Methodology v1.6 (Phase 8 Diagnostic)</p>
     <p>February 2026</p>
 </footer>
 
