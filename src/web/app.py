@@ -94,7 +94,7 @@ def get_pipeline() -> PredictionPipeline:
     global _pipeline
     if _pipeline is None:
         logger.info("Loading prediction pipeline...")
-        # Use defaults from serve.py which auto-detects Phase 8 vs v1 model
+        # Use defaults from serve.py which auto-detects Phase 9/8/v1 model
         _pipeline = PredictionPipeline()
         from src.predict.serve import MODEL_VERSION
         logger.info(f"Pipeline loaded successfully (model: {MODEL_VERSION})")
@@ -1218,8 +1218,15 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 def inject_model_info():
     """Inject model version info into all templates."""
     from src.predict.serve import MODEL_VERSION
-    model_version = 'Phase 8' if MODEL_VERSION == 'phase8' else 'v1'
-    model_accuracy = '60.5%' if MODEL_VERSION == 'phase8' else '58.9%'
+    if MODEL_VERSION == 'phase9':
+        model_version = 'Phase 9'
+        model_accuracy = '60.2%'
+    elif MODEL_VERSION == 'phase8':
+        model_version = 'Phase 8'
+        model_accuracy = '60.5%'
+    else:
+        model_version = 'v1'
+        model_accuracy = '58.9%'
     return {
         'model_version': model_version,
         'model_accuracy': model_accuracy,

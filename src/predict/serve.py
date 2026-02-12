@@ -50,18 +50,24 @@ warnings.filterwarnings('ignore')
 # Configuration
 # =============================================================================
 
-# Paths - Phase 8 model with Elo (falls back to v1 if not found)
+# Paths - Phase 9 model with isotonic calibration (falls back to Phase 8, then v1)
+MODEL_PATH_PHASE9 = 'data/models/ufc_model_phase9.pkl'
 MODEL_PATH_PHASE8 = 'data/models/ufc_model_phase8.pkl'
 MODEL_PATH_V1 = 'data/models/ufc_model_v1.pkl'
+FEATURE_NAMES_PATH_PHASE9 = 'data/models/phase9_feature_list.json'
 FEATURE_NAMES_PATH_PHASE8 = 'data/models/phase8_feature_list.json'
 FEATURE_NAMES_PATH_V1 = 'data/models/feature_names_v1.json'
 PROCESSED_DATA_PATH = 'data/processed/ufc_fights_features_v1.csv'
 RAW_DATA_PATH = 'data/raw/ufc_fights_v1.csv'
 PREDICTIONS_DIR = 'data/predictions'
 
-# Check which model to use
+# Check which model to use (Phase 9 > Phase 8 > v1)
 from pathlib import Path as _Path
-if _Path(MODEL_PATH_PHASE8).exists():
+if _Path(MODEL_PATH_PHASE9).exists():
+    MODEL_PATH = MODEL_PATH_PHASE9
+    FEATURE_NAMES_PATH = FEATURE_NAMES_PATH_PHASE9
+    MODEL_VERSION = 'phase9'
+elif _Path(MODEL_PATH_PHASE8).exists():
     MODEL_PATH = MODEL_PATH_PHASE8
     FEATURE_NAMES_PATH = FEATURE_NAMES_PATH_PHASE8
     MODEL_VERSION = 'phase8'
@@ -183,10 +189,10 @@ class FighterFeatures:
         # Build fighter index: fighter_name -> most recent features
         self._build_fighter_index()
 
-        # Compute Elo ratings if using Phase 8 model
+        # Compute Elo ratings if using Phase 8 or Phase 9 model
         self.elo_ratings = {}
         self.elo_peak = {}
-        if MODEL_VERSION == 'phase8':
+        if MODEL_VERSION in ('phase8', 'phase9'):
             self._compute_elo_ratings()
 
         logger.info(f"Loaded {len(self.fighter_index)} fighters with historical data")
@@ -400,7 +406,7 @@ class FighterFeatures:
             # (it correctly represents days since the PREVIOUS fight)
 
             # Add Elo features if using Phase 8 model
-            if MODEL_VERSION == 'phase8':
+            if MODEL_VERSION in ('phase8', 'phase9'):
                 features.update(self.get_elo_features(fighter_name))
 
             return features, True, fighter_name
@@ -419,7 +425,7 @@ class FighterFeatures:
                 features['days_since_last_fight'] = float(days_since)
 
             # Add Elo features if using Phase 8 model
-            if MODEL_VERSION == 'phase8':
+            if MODEL_VERSION in ('phase8', 'phase9'):
                 features.update(self.get_elo_features(matched_name))
 
             return features, False, matched_name
@@ -469,7 +475,7 @@ class FighterFeatures:
         features['is_new_to_weight_class'] = 1
 
         # Elo defaults for debut fighters (Phase 8)
-        if MODEL_VERSION == 'phase8':
+        if MODEL_VERSION in ('phase8', 'phase9'):
             features['pre_fight_elo'] = 1500.0
             features['elo_momentum'] = 0.0
             features['elo_vs_peak'] = 1.0
@@ -1049,8 +1055,10 @@ def main():
     print("UFC FIGHT PREDICTION PIPELINE")
     print("=" * 70)
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    if MODEL_VERSION == 'phase8':
-        print(f"Model: Stacking Ensemble (Phase 8 - Elo + Calibrated)")
+    if MODEL_VERSION == 'phase9':
+        print(f"Model: Stacking Ensemble (Phase 9 - Elo + Isotonic Calibration)")
+    elif MODEL_VERSION == 'phase8':
+        print(f"Model: Stacking Ensemble (Phase 8 - Elo + Platt Calibration)")
     else:
         print(f"Model: HistGradientBoostingClassifier (v1)")
     print()
