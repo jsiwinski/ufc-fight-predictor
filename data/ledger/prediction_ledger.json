@@ -2969,8 +2969,8 @@
       "locked": false,
       "locked_at": null,
       "prediction_type": "live",
-      "model_version": "phase8_ensemble_v1",
-      "model_description": "Stacking Ensemble (HGB + XGB + LR), 51 features, Elo + Platt calibration (live prediction)",
+      "model_version": "phase9_2_production",
+      "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
       "overall_correct": null,
       "overall_total": null,
       "overall_accuracy": null,
@@ -2980,8 +2980,8 @@
           "fighter_2": "Anthony Hernandez",
           "weight_class": "Middleweight",
           "is_main_event": true,
-          "f1_win_prob": 0.321,
-          "f2_win_prob": 0.679,
+          "f1_win_prob": 0.317,
+          "f2_win_prob": 0.683,
           "predicted_winner": "Anthony Hernandez",
           "confidence": "HIGH",
           "f1_elo": 1618,
@@ -3008,8 +3008,8 @@
               "value": -6.0
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": 2.0
+              "feature": "diff_age",
+              "value": 2.6393
             }
           ]
         },
@@ -3018,8 +3018,8 @@
           "fighter_2": "Melquizael Costa",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.304,
-          "f2_win_prob": 0.696,
+          "f1_win_prob": 0.294,
+          "f2_win_prob": 0.706,
           "predicted_winner": "Melquizael Costa",
           "confidence": "HIGH",
           "f1_elo": 1532,
@@ -3056,10 +3056,10 @@
           "fighter_2": "Ante Delija",
           "weight_class": "Heavyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.51,
-          "f2_win_prob": 0.49,
+          "f1_win_prob": 0.617,
+          "f2_win_prob": 0.383,
           "predicted_winner": "Serghei Spivac",
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "f1_elo": 1542,
           "f2_elo": 1507,
           "actual_winner": null,
@@ -3094,9 +3094,9 @@
           "fighter_2": "Seokhyeon Ko",
           "weight_class": "Welterweight",
           "is_main_event": false,
-          "f1_win_prob": 0.483,
-          "f2_win_prob": 0.517,
-          "predicted_winner": "Seokhyeon Ko",
+          "f1_win_prob": 0.548,
+          "f2_win_prob": 0.452,
+          "predicted_winner": "Jacobe Smith",
           "confidence": "LOW",
           "f1_elo": 1532,
           "f2_elo": 1534,
@@ -3110,6 +3110,10 @@
               "value": 126.0
             },
             {
+              "feature": "diff_age",
+              "value": -2.3135
+            },
+            {
               "feature": "diff_elo",
               "value": -2.1523
             },
@@ -3118,12 +3122,8 @@
               "value": 1.0
             },
             {
-              "feature": "diff_fights_per_year",
-              "value": -0.5721
-            },
-            {
-              "feature": "diff_elo_momentum",
-              "value": 0.408
+              "feature": "diff_reach",
+              "value": 1.0
             }
           ]
         },
@@ -3170,8 +3170,8 @@
           "fighter_2": "Carlos Leal",
           "weight_class": "Welterweight",
           "is_main_event": false,
-          "f1_win_prob": 0.519,
-          "f2_win_prob": 0.481,
+          "f1_win_prob": 0.509,
+          "f2_win_prob": 0.491,
           "predicted_winner": "Chidi Njokuani",
           "confidence": "LOW",
           "f1_elo": 1519,
@@ -3194,12 +3194,12 @@
               "value": 6.0
             },
             {
-              "feature": "diff_win_streak",
-              "value": 2.0
+              "feature": "diff_reach",
+              "value": 6.0
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": 1.0
+              "feature": "diff_age",
+              "value": 5.3388
             }
           ]
         },
@@ -3208,8 +3208,8 @@
           "fighter_2": "Alibi Idiris",
           "weight_class": "Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.52,
-          "f2_win_prob": 0.48,
+          "f1_win_prob": 0.502,
+          "f2_win_prob": 0.498,
           "predicted_winner": "Ode Osbourne",
           "confidence": "LOW",
           "f1_elo": 1470,
@@ -3232,12 +3232,12 @@
               "value": 7.0
             },
             {
-              "feature": "diff_elo_momentum",
-              "value": 2.4506
+              "feature": "diff_reach",
+              "value": 5.0
             },
             {
-              "feature": "diff_fights_per_year",
-              "value": 1.9792
+              "feature": "diff_age",
+              "value": 2.7844
             }
           ]
         },
@@ -3246,8 +3246,8 @@
           "fighter_2": "Luis Gurule",
           "weight_class": "Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.563,
-          "f2_win_prob": 0.437,
+          "f1_win_prob": 0.623,
+          "f2_win_prob": 0.377,
           "predicted_winner": "Alden Coria",
           "confidence": "MEDIUM",
           "f1_elo": 1516,
@@ -3266,16 +3266,16 @@
               "value": 14.5319
             },
             {
-              "feature": "diff_fights_per_year",
-              "value": -2.2686
+              "feature": "diff_age",
+              "value": -4.4353
             },
             {
-              "feature": "diff_career_fights",
-              "value": -1.0
+              "feature": "diff_height",
+              "value": 3.0
             },
             {
-              "feature": "diff_loss_streak",
-              "value": -1.0
+              "feature": "diff_reach",
+              "value": 3.0
             }
           ]
         },
@@ -3284,10 +3284,10 @@
           "fighter_2": "Joselyne Edwards",
           "weight_class": "Women's Bantamweight",
           "is_main_event": false,
-          "f1_win_prob": 0.501,
-          "f2_win_prob": 0.499,
-          "predicted_winner": "Nora Cornolle",
-          "confidence": "LOW",
+          "f1_win_prob": 0.431,
+          "f2_win_prob": 0.569,
+          "predicted_winner": "Joselyne Edwards",
+          "confidence": "MEDIUM",
           "f1_elo": 1516,
           "f2_elo": 1541,
           "actual_winner": null,
@@ -3312,8 +3312,8 @@
               "value": -6.0
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": -5.0
+              "feature": "diff_age",
+              "value": 5.8125
             }
           ]
         },
@@ -3322,8 +3322,8 @@
           "fighter_2": "Jean-Paul Lebosnoyani",
           "weight_class": "Welterweight",
           "is_main_event": false,
-          "f1_win_prob": 0.561,
-          "f2_win_prob": 0.439,
+          "f1_win_prob": 0.64,
+          "f2_win_prob": 0.36,
           "predicted_winner": "Austin Vanderford",
           "confidence": "MEDIUM",
           "f1_elo": 1499,
@@ -3342,16 +3342,16 @@
               "value": -15.9717
             },
             {
+              "feature": "diff_age",
+              "value": -4.0767
+            },
+            {
               "feature": "diff_career_fights",
               "value": 1.0
             },
             {
               "feature": "diff_win_streak",
               "value": 1.0
-            },
-            {
-              "feature": "diff_elo",
-              "value": -0.6743
             }
           ]
         },
@@ -3360,9 +3360,9 @@
           "fighter_2": "Yadier del Valle",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.47,
-          "f2_win_prob": 0.53,
-          "predicted_winner": "Yadier del Valle",
+          "f1_win_prob": 0.514,
+          "f2_win_prob": 0.486,
+          "predicted_winner": "Jordan Leavitt",
           "confidence": "LOW",
           "f1_elo": 1527,
           "f2_elo": 1531,
@@ -3398,10 +3398,10 @@
           "fighter_2": "Carli Judice",
           "weight_class": "Women's Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.436,
-          "f2_win_prob": 0.564,
+          "f1_win_prob": 0.453,
+          "f2_win_prob": 0.547,
           "predicted_winner": "Carli Judice",
-          "confidence": "MEDIUM",
+          "confidence": "LOW",
           "f1_elo": 1498,
           "f2_elo": 1515,
           "actual_winner": null,
@@ -3422,16 +3422,17 @@
               "value": -17.0714
             },
             {
-              "feature": "diff_loss_streak",
-              "value": 2.0
+              "feature": "diff_age",
+              "value": 2.8172
             },
             {
-              "feature": "diff_career_fights",
-              "value": 1.0
+              "feature": "diff_loss_streak",
+              "value": 2.0
             }
           ]
         }
-      ]
+      ],
+      "regenerated_at": "2026-02-12T07:56:33.958946"
     },
     {
       "event_id": "ufc-fight-night-moreno-vs-kavanagh",
@@ -3441,8 +3442,8 @@
       "locked": false,
       "locked_at": null,
       "prediction_type": "live",
-      "model_version": "phase8_ensemble_v1",
-      "model_description": "Stacking Ensemble (HGB + XGB + LR), 51 features, Elo + Platt calibration (live prediction)",
+      "model_version": "phase9_2_production",
+      "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
       "overall_correct": null,
       "overall_total": null,
       "overall_accuracy": null,
@@ -3452,8 +3453,8 @@
           "fighter_2": "Lone'er Kavanagh",
           "weight_class": "Flyweight",
           "is_main_event": true,
-          "f1_win_prob": 0.504,
-          "f2_win_prob": 0.496,
+          "f1_win_prob": 0.508,
+          "f2_win_prob": 0.492,
           "predicted_winner": "Brandon Moreno",
           "confidence": "LOW",
           "f1_elo": 1583,
@@ -3480,8 +3481,8 @@
               "value": 16.0
             },
             {
-              "feature": "diff_elo_momentum",
-              "value": -1.942
+              "feature": "diff_age",
+              "value": 5.5031
             }
           ]
         },
@@ -3490,10 +3491,10 @@
           "fighter_2": "David Martinez",
           "weight_class": "Bantamweight",
           "is_main_event": false,
-          "f1_win_prob": 0.368,
-          "f2_win_prob": 0.632,
-          "predicted_winner": "David Martinez",
-          "confidence": "MEDIUM",
+          "f1_win_prob": 0.505,
+          "f2_win_prob": 0.495,
+          "predicted_winner": "Marlon Vera",
+          "confidence": "LOW",
           "f1_elo": 1572,
           "f2_elo": 1534,
           "actual_winner": null,
@@ -3528,10 +3529,10 @@
           "fighter_2": "King Green",
           "weight_class": "Lightweight",
           "is_main_event": false,
-          "f1_win_prob": 0.58,
-          "f2_win_prob": 0.42,
+          "f1_win_prob": 0.693,
+          "f2_win_prob": 0.307,
           "predicted_winner": "Daniel Zellhuber",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1499,
           "f2_elo": 1540,
           "actual_winner": null,
@@ -3556,8 +3557,8 @@
               "value": -22.0
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": 4.0
+              "feature": "diff_age",
+              "value": -12.8241
             }
           ]
         },
@@ -3566,10 +3567,10 @@
           "fighter_2": "Felipe Bunes",
           "weight_class": "Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.551,
-          "f2_win_prob": 0.449,
+          "f1_win_prob": 0.676,
+          "f2_win_prob": 0.324,
           "predicted_winner": "Edgar Chairez",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1513,
           "f2_elo": 1487,
           "actual_winner": null,
@@ -3586,16 +3587,16 @@
               "value": 25.7786
             },
             {
+              "feature": "diff_age",
+              "value": -6.245
+            },
+            {
               "feature": "diff_career_fights",
               "value": 2.0
             },
             {
-              "feature": "diff_elo_momentum",
-              "value": -1.4878
-            },
-            {
-              "feature": "diff_fights_per_year",
-              "value": 1.0307
+              "feature": "diff_reach",
+              "value": 2.0
             }
           ]
         },
@@ -3604,8 +3605,8 @@
           "fighter_2": "Kevin Borjas",
           "weight_class": "Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.325,
-          "f2_win_prob": 0.675,
+          "f1_win_prob": 0.222,
+          "f2_win_prob": 0.778,
           "predicted_winner": "Kevin Borjas",
           "confidence": "HIGH",
           "f1_elo": 1484,
@@ -3620,20 +3621,20 @@
               "value": 4635.0
             },
             {
+              "feature": "diff_age",
+              "value": 12.616
+            },
+            {
               "feature": "diff_elo",
               "value": 12.1049
             },
             {
+              "feature": "diff_height",
+              "value": 4.0
+            },
+            {
               "feature": "diff_elo_momentum",
               "value": -3.1563
-            },
-            {
-              "feature": "diff_career_fights",
-              "value": -3.0
-            },
-            {
-              "feature": "diff_weight_class_fights",
-              "value": -3.0
             }
           ]
         },
@@ -3642,9 +3643,9 @@
           "fighter_2": "Jose Daniel Medina",
           "weight_class": "Middleweight",
           "is_main_event": false,
-          "f1_win_prob": 0.563,
-          "f2_win_prob": 0.437,
-          "predicted_winner": "Ryan Gandra",
+          "f1_win_prob": 0.434,
+          "f2_win_prob": 0.566,
+          "predicted_winner": "Jose Daniel Medina",
           "confidence": "MEDIUM",
           "f1_elo": 1500,
           "f2_elo": 1452,
@@ -3666,11 +3667,11 @@
               "value": 32.0347
             },
             {
-              "feature": "diff_career_fights",
-              "value": -2.0
+              "feature": "diff_age",
+              "value": 7.2129
             },
             {
-              "feature": "diff_loss_streak",
+              "feature": "diff_career_fights",
               "value": -2.0
             }
           ]
@@ -3680,8 +3681,8 @@
           "fighter_2": "Macy Chiasson",
           "weight_class": "Women's Bantamweight",
           "is_main_event": false,
-          "f1_win_prob": 0.627,
-          "f2_win_prob": 0.373,
+          "f1_win_prob": 0.643,
+          "f2_win_prob": 0.357,
           "predicted_winner": "Ailin Perez",
           "confidence": "MEDIUM",
           "f1_elo": 1561,
@@ -3708,8 +3709,8 @@
               "value": -7.0
             },
             {
-              "feature": "diff_win_streak",
-              "value": 4.0
+              "feature": "diff_height",
+              "value": -6.0
             }
           ]
         },
@@ -3718,8 +3719,8 @@
           "fighter_2": "Kris Moutinho",
           "weight_class": "Bantamweight",
           "is_main_event": false,
-          "f1_win_prob": 0.563,
-          "f2_win_prob": 0.437,
+          "f1_win_prob": 0.596,
+          "f2_win_prob": 0.404,
           "predicted_winner": "Cristian Quinonez",
           "confidence": "MEDIUM",
           "f1_elo": 1487,
@@ -3738,16 +3739,16 @@
               "value": 31.1653
             },
             {
+              "feature": "diff_age",
+              "value": -3.7125
+            },
+            {
               "feature": "diff_elo_momentum",
               "value": 2.51
             },
             {
-              "feature": "diff_loss_streak",
-              "value": -1.0
-            },
-            {
-              "feature": "diff_fights_per_year",
-              "value": 0.8462
+              "feature": "diff_reach",
+              "value": 2.0
             }
           ]
         },
@@ -3756,10 +3757,10 @@
           "fighter_2": "Javier Reyes",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.456,
-          "f2_win_prob": 0.544,
+          "f1_win_prob": 0.445,
+          "f2_win_prob": 0.555,
           "predicted_winner": "Javier Reyes",
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "f1_elo": 1519,
           "f2_elo": 1500,
           "actual_winner": null,
@@ -3784,8 +3785,8 @@
               "value": 8.0
             },
             {
-              "feature": "diff_elo_momentum",
-              "value": 1.811
+              "feature": "diff_age",
+              "value": 4.6872
             }
           ]
         },
@@ -3794,10 +3795,10 @@
           "fighter_2": "Ernesta Kareckaite",
           "weight_class": "Women's Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.522,
-          "f2_win_prob": 0.478,
-          "predicted_winner": "Sofia Montenegro",
-          "confidence": "LOW",
+          "f1_win_prob": 0.418,
+          "f2_win_prob": 0.582,
+          "predicted_winner": "Ernesta Kareckaite",
+          "confidence": "MEDIUM",
           "f1_elo": 1500,
           "f2_elo": 1501,
           "actual_winner": null,
@@ -3814,16 +3815,16 @@
               "value": -16.7363
             },
             {
-              "feature": "diff_career_fights",
-              "value": -1.0
+              "feature": "diff_age",
+              "value": 6.3477
             },
             {
-              "feature": "diff_loss_streak",
-              "value": -1.0
+              "feature": "diff_reach",
+              "value": -4.0
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": -1.0
+              "feature": "diff_height",
+              "value": -3.0
             }
           ]
         },
@@ -3832,10 +3833,10 @@
           "fighter_2": "Francis Marshall",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.38,
-          "f2_win_prob": 0.62,
+          "f1_win_prob": 0.238,
+          "f2_win_prob": 0.762,
           "predicted_winner": "Francis Marshall",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1470,
           "f2_elo": 1484,
           "actual_winner": null,
@@ -3856,12 +3857,12 @@
               "value": -14.0094
             },
             {
-              "feature": "diff_career_fights",
-              "value": -3.0
+              "feature": "diff_age",
+              "value": 11.9644
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": -2.0
+              "feature": "diff_career_fights",
+              "value": -3.0
             }
           ]
         },
@@ -3870,8 +3871,8 @@
           "fighter_2": "Wes Schultz",
           "weight_class": "Middleweight",
           "is_main_event": false,
-          "f1_win_prob": 0.461,
-          "f2_win_prob": 0.539,
+          "f1_win_prob": 0.459,
+          "f2_win_prob": 0.541,
           "predicted_winner": "Wes Schultz",
           "confidence": "LOW",
           "f1_elo": 1500,
@@ -3879,17 +3880,18 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": []
         },
         {
           "fighter_1": "Santiago Luna",
           "fighter_2": "Angel Pacheco",
           "weight_class": "Bantamweight",
           "is_main_event": false,
-          "f1_win_prob": 0.554,
-          "f2_win_prob": 0.446,
+          "f1_win_prob": 0.73,
+          "f2_win_prob": 0.27,
           "predicted_winner": "Santiago Luna",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1515,
           "f2_elo": 1483,
           "actual_winner": null,
@@ -3904,10 +3906,23 @@
             {
               "feature": "diff_elo",
               "value": 32.1516
+            },
+            {
+              "feature": "diff_age",
+              "value": -12.564
+            },
+            {
+              "feature": "diff_reach",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_height",
+              "value": 1.0
             }
           ]
         }
-      ]
+      ],
+      "regenerated_at": "2026-02-12T07:56:34.861539"
     },
     {
       "event_id": "ufc-326-holloway-vs-oliveira-2",
@@ -3917,8 +3932,8 @@
       "locked": false,
       "locked_at": null,
       "prediction_type": "live",
-      "model_version": "phase8_ensemble_v1",
-      "model_description": "Stacking Ensemble (HGB + XGB + LR), 51 features, Elo + Platt calibration (live prediction)",
+      "model_version": "phase9_2_production",
+      "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
       "overall_correct": null,
       "overall_total": null,
       "overall_accuracy": null,
@@ -3928,10 +3943,10 @@
           "fighter_2": "Charles Oliveira",
           "weight_class": "Lightweight",
           "is_main_event": true,
-          "f1_win_prob": 0.65,
-          "f2_win_prob": 0.35,
+          "f1_win_prob": 0.63,
+          "f2_win_prob": 0.37,
           "predicted_winner": "Max Holloway",
-          "confidence": "HIGH",
+          "confidence": "MEDIUM",
           "f1_elo": 1691,
           "f2_elo": 1673,
           "actual_winner": null,
@@ -3956,8 +3971,8 @@
               "value": -5.0
             },
             {
-              "feature": "diff_elo_momentum",
-              "value": 0.7256
+              "feature": "diff_reach",
+              "value": -5.0
             }
           ]
         },
@@ -3966,8 +3981,8 @@
           "fighter_2": "Brian Ortega",
           "weight_class": "Lightweight",
           "is_main_event": false,
-          "f1_win_prob": 0.557,
-          "f2_win_prob": 0.443,
+          "f1_win_prob": 0.568,
+          "f2_win_prob": 0.432,
           "predicted_winner": "Renato Moicano",
           "confidence": "MEDIUM",
           "f1_elo": 1583,
@@ -4004,9 +4019,9 @@
           "fighter_2": "Reinier de Ridder",
           "weight_class": "Middleweight",
           "is_main_event": false,
-          "f1_win_prob": 0.478,
-          "f2_win_prob": 0.522,
-          "predicted_winner": "Reinier de Ridder",
+          "f1_win_prob": 0.517,
+          "f2_win_prob": 0.483,
+          "predicted_winner": "Caio Borralho",
           "confidence": "LOW",
           "f1_elo": 1591,
           "f2_elo": 1559,
@@ -4042,8 +4057,8 @@
           "fighter_2": "Xiao Long",
           "weight_class": "Bantamweight",
           "is_main_event": false,
-          "f1_win_prob": 0.469,
-          "f2_win_prob": 0.531,
+          "f1_win_prob": 0.454,
+          "f2_win_prob": 0.546,
           "predicted_winner": "Xiao Long",
           "confidence": "LOW",
           "f1_elo": 1536,
@@ -4080,10 +4095,10 @@
           "fighter_2": "Jesus Aguilar",
           "weight_class": "Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.445,
-          "f2_win_prob": 0.555,
+          "f1_win_prob": 0.49,
+          "f2_win_prob": 0.51,
           "predicted_winner": "Jesus Aguilar",
-          "confidence": "MEDIUM",
+          "confidence": "LOW",
           "f1_elo": 1512,
           "f2_elo": 1529,
           "actual_winner": null,
@@ -4104,12 +4119,12 @@
               "value": -17.0735
             },
             {
-              "feature": "diff_career_fights",
-              "value": 3.0
+              "feature": "diff_reach",
+              "value": 10.0
             },
             {
-              "feature": "diff_win_streak",
-              "value": 1.0
+              "feature": "diff_height",
+              "value": 4.0
             }
           ]
         },
@@ -4118,10 +4133,10 @@
           "fighter_2": "Rodolfo Bellato",
           "weight_class": "Light Heavyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.437,
-          "f2_win_prob": 0.563,
+          "f1_win_prob": 0.253,
+          "f2_win_prob": 0.747,
           "predicted_winner": "Rodolfo Bellato",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1500,
           "f2_elo": 1515,
           "actual_winner": null,
@@ -4138,16 +4153,16 @@
               "value": -15.4662
             },
             {
+              "feature": "diff_age",
+              "value": 11.9165
+            },
+            {
               "feature": "diff_career_fights",
               "value": -3.0
             },
             {
               "feature": "diff_weight_class_fights",
               "value": -3.0
-            },
-            {
-              "feature": "diff_loss_streak",
-              "value": -2.0
             }
           ]
         },
@@ -4156,10 +4171,10 @@
           "fighter_2": "Brunno Ferreira",
           "weight_class": "Middleweight",
           "is_main_event": false,
-          "f1_win_prob": 0.515,
-          "f2_win_prob": 0.485,
+          "f1_win_prob": 0.555,
+          "f2_win_prob": 0.445,
           "predicted_winner": "Gregory Rodrigues",
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "f1_elo": 1590,
           "f2_elo": 1560,
           "actual_winner": null,
@@ -4176,16 +4191,16 @@
               "value": 21.0
             },
             {
+              "feature": "diff_height",
+              "value": 5.0
+            },
+            {
               "feature": "diff_career_fights",
               "value": 4.0
             },
             {
               "feature": "diff_weight_class_fights",
               "value": 4.0
-            },
-            {
-              "feature": "diff_win_streak",
-              "value": -1.0
             }
           ]
         },
@@ -4194,10 +4209,10 @@
           "fighter_2": "Raul Rosas Jr.",
           "weight_class": "Bantamweight",
           "is_main_event": false,
-          "f1_win_prob": 0.413,
-          "f2_win_prob": 0.587,
+          "f1_win_prob": 0.268,
+          "f2_win_prob": 0.732,
           "predicted_winner": "Raul Rosas Jr.",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1566,
           "f2_elo": 1556,
           "actual_winner": null,
@@ -4214,16 +4229,16 @@
               "value": -31.5641
             },
             {
+              "feature": "diff_age",
+              "value": 17.2895
+            },
+            {
               "feature": "diff_career_fights",
               "value": 14.0
             },
             {
               "feature": "diff_weight_class_fights",
               "value": 12.0
-            },
-            {
-              "feature": "diff_elo",
-              "value": 10.4532
             }
           ]
         },
@@ -4232,10 +4247,10 @@
           "fighter_2": "Nyamjargal Tumendemberel",
           "weight_class": "Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.558,
-          "f2_win_prob": 0.442,
+          "f1_win_prob": 0.507,
+          "f2_win_prob": 0.493,
           "predicted_winner": "Cody Durden",
-          "confidence": "MEDIUM",
+          "confidence": "LOW",
           "f1_elo": 1489,
           "f2_elo": 1500,
           "actual_winner": null,
@@ -4260,8 +4275,8 @@
               "value": -10.7381
             },
             {
-              "feature": "diff_fights_per_year",
-              "value": 1.1328
+              "feature": "diff_age",
+              "value": 6.9815
             }
           ]
         },
@@ -4270,10 +4285,10 @@
           "fighter_2": "Dusko Todorovic",
           "weight_class": "Middleweight",
           "is_main_event": false,
-          "f1_win_prob": 0.555,
-          "f2_win_prob": 0.445,
+          "f1_win_prob": 0.529,
+          "f2_win_prob": 0.471,
           "predicted_winner": "Donte Johnson",
-          "confidence": "MEDIUM",
+          "confidence": "LOW",
           "f1_elo": 1516,
           "f2_elo": 1469,
           "actual_winner": null,
@@ -4298,8 +4313,8 @@
               "value": -9.0
             },
             {
-              "feature": "diff_loss_streak",
-              "value": -3.0
+              "feature": "diff_height",
+              "value": -5.0
             }
           ]
         },
@@ -4308,8 +4323,8 @@
           "fighter_2": "Gaston Bolanos",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.564,
-          "f2_win_prob": 0.436,
+          "f1_win_prob": 0.555,
+          "f2_win_prob": 0.445,
           "predicted_winner": "JooSang Yoo",
           "confidence": "MEDIUM",
           "f1_elo": 1500,
@@ -4341,7 +4356,8 @@
             }
           ]
         }
-      ]
+      ],
+      "regenerated_at": "2026-02-12T07:56:35.505925"
     },
     {
       "event_id": "ufc-fight-night-emmett-vs-vallejos",
@@ -4351,8 +4367,8 @@
       "locked": false,
       "locked_at": null,
       "prediction_type": "live",
-      "model_version": "phase8_ensemble_v1",
-      "model_description": "Stacking Ensemble (HGB + XGB + LR), 51 features, Elo + Platt calibration (live prediction)",
+      "model_version": "phase9_2_production",
+      "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
       "overall_correct": null,
       "overall_total": null,
       "overall_accuracy": null,
@@ -4362,10 +4378,10 @@
           "fighter_2": "Kevin Vallejos",
           "weight_class": "Featherweight",
           "is_main_event": true,
-          "f1_win_prob": 0.39,
-          "f2_win_prob": 0.61,
+          "f1_win_prob": 0.294,
+          "f2_win_prob": 0.706,
           "predicted_winner": "Kevin Vallejos",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1564,
           "f2_elo": 1549,
           "actual_winner": null,
@@ -4382,16 +4398,16 @@
               "value": -66.7996
             },
             {
+              "feature": "diff_age",
+              "value": 16.7639
+            },
+            {
               "feature": "diff_elo",
               "value": 14.7693
             },
             {
               "feature": "diff_career_fights",
               "value": 13.0
-            },
-            {
-              "feature": "diff_weight_class_fights",
-              "value": 10.0
             }
           ]
         },
@@ -4400,10 +4416,10 @@
           "fighter_2": "Gillian Robertson",
           "weight_class": "Women's Strawweight",
           "is_main_event": false,
-          "f1_win_prob": 0.481,
-          "f2_win_prob": 0.519,
+          "f1_win_prob": 0.383,
+          "f2_win_prob": 0.617,
           "predicted_winner": "Gillian Robertson",
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "f1_elo": 1562,
           "f2_elo": 1587,
           "actual_winner": null,
@@ -4424,12 +4440,12 @@
               "value": -25.1625
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": 7.0
+              "feature": "diff_age",
+              "value": 7.9863
             },
             {
-              "feature": "diff_career_fights",
-              "value": -5.0
+              "feature": "diff_weight_class_fights",
+              "value": 7.0
             }
           ]
         },
@@ -4438,8 +4454,8 @@
           "fighter_2": "Oumar Sy",
           "weight_class": "Light Heavyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.344,
-          "f2_win_prob": 0.656,
+          "f1_win_prob": 0.289,
+          "f2_win_prob": 0.711,
           "predicted_winner": "Oumar Sy",
           "confidence": "HIGH",
           "f1_elo": 1500,
@@ -4466,8 +4482,8 @@
               "value": 15.0
             },
             {
-              "feature": "diff_elo_momentum",
-              "value": 2.335
+              "feature": "diff_reach",
+              "value": -8.0
             }
           ]
         },
@@ -4476,9 +4492,9 @@
           "fighter_2": "Harry Hardwick",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.522,
-          "f2_win_prob": 0.478,
-          "predicted_winner": "Marwan Rahiki",
+          "f1_win_prob": 0.468,
+          "f2_win_prob": 0.532,
+          "predicted_winner": "Harry Hardwick",
           "confidence": "LOW",
           "f1_elo": 1500,
           "f2_elo": 1485,
@@ -4496,16 +4512,16 @@
               "value": 15.2712
             },
             {
+              "feature": "diff_age",
+              "value": 4.5448
+            },
+            {
               "feature": "diff_fights_per_year",
               "value": 2.0
             },
             {
-              "feature": "diff_win_rate_last_3",
-              "value": 0.52
-            },
-            {
-              "feature": "diff_win_rate_last_10",
-              "value": 0.52
+              "feature": "diff_reach",
+              "value": -1.0
             }
           ]
         },
@@ -4514,10 +4530,10 @@
           "fighter_2": "Hecher Sosa",
           "weight_class": "Bantamweight",
           "is_main_event": false,
-          "f1_win_prob": 0.464,
-          "f2_win_prob": 0.536,
-          "predicted_winner": "Hecher Sosa",
-          "confidence": "LOW",
+          "f1_win_prob": 0.567,
+          "f2_win_prob": 0.433,
+          "predicted_winner": "Luan Lacerda",
+          "confidence": "MEDIUM",
           "f1_elo": 1484,
           "f2_elo": 1500,
           "actual_winner": null,
@@ -4534,15 +4550,15 @@
               "value": -16.4435
             },
             {
+              "feature": "diff_age",
+              "value": -2.82
+            },
+            {
+              "feature": "diff_reach",
+              "value": 2.5
+            },
+            {
               "feature": "diff_career_fights",
-              "value": 2.0
-            },
-            {
-              "feature": "diff_loss_streak",
-              "value": 2.0
-            },
-            {
-              "feature": "diff_weight_class_fights",
               "value": 2.0
             }
           ]
@@ -4552,8 +4568,8 @@
           "fighter_2": "Montse Rendon",
           "weight_class": "Women's Bantamweight",
           "is_main_event": false,
-          "f1_win_prob": 0.479,
-          "f2_win_prob": 0.521,
+          "f1_win_prob": 0.485,
+          "f2_win_prob": 0.515,
           "predicted_winner": "Montse Rendon",
           "confidence": "LOW",
           "f1_elo": 1515,
@@ -4568,20 +4584,20 @@
               "value": -28.0
             },
             {
+              "feature": "diff_height",
+              "value": -4.0
+            },
+            {
+              "feature": "diff_age",
+              "value": -2.0589
+            },
+            {
               "feature": "diff_career_fights",
               "value": -2.0
             },
             {
               "feature": "diff_weight_class_fights",
               "value": -2.0
-            },
-            {
-              "feature": "diff_fights_per_year",
-              "value": -1.0132
-            },
-            {
-              "feature": "diff_loss_streak",
-              "value": -1.0
             }
           ]
         },
@@ -4590,8 +4606,8 @@
           "fighter_2": "Sam Hughes",
           "weight_class": "Women's Strawweight",
           "is_main_event": false,
-          "f1_win_prob": 0.513,
-          "f2_win_prob": 0.487,
+          "f1_win_prob": 0.512,
+          "f2_win_prob": 0.488,
           "predicted_winner": "Piera Rodriguez",
           "confidence": "LOW",
           "f1_elo": 1530,
@@ -4614,12 +4630,12 @@
               "value": -5.0
             },
             {
-              "feature": "diff_elo",
-              "value": 1.0166
+              "feature": "diff_height",
+              "value": -2.0
             },
             {
-              "feature": "diff_win_streak",
-              "value": -1.0
+              "feature": "diff_elo",
+              "value": 1.0166
             }
           ]
         },
@@ -4628,10 +4644,10 @@
           "fighter_2": "Bruno Silva",
           "weight_class": "Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.612,
-          "f2_win_prob": 0.388,
+          "f1_win_prob": 0.537,
+          "f2_win_prob": 0.463,
           "predicted_winner": "Charles Johnson",
-          "confidence": "MEDIUM",
+          "confidence": "LOW",
           "f1_elo": 1519,
           "f2_elo": 1473,
           "actual_winner": null,
@@ -4661,7 +4677,8 @@
             }
           ]
         }
-      ]
+      ],
+      "regenerated_at": "2026-02-12T07:56:36.004274"
     },
     {
       "event_id": "ufc-fight-night-evloev-vs-murphy",
@@ -4671,8 +4688,8 @@
       "locked": false,
       "locked_at": null,
       "prediction_type": "live",
-      "model_version": "phase8_ensemble_v1",
-      "model_description": "Stacking Ensemble (HGB + XGB + LR), 51 features, Elo + Platt calibration (live prediction)",
+      "model_version": "phase9_2_production",
+      "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
       "overall_correct": null,
       "overall_total": null,
       "overall_accuracy": null,
@@ -4682,9 +4699,9 @@
           "fighter_2": "Lerone Murphy",
           "weight_class": "Featherweight",
           "is_main_event": true,
-          "f1_win_prob": 0.453,
-          "f2_win_prob": 0.547,
-          "predicted_winner": "Lerone Murphy",
+          "f1_win_prob": 0.506,
+          "f2_win_prob": 0.494,
+          "predicted_winner": "Movsar Evloev",
           "confidence": "LOW",
           "f1_elo": 1643,
           "f2_elo": 1625,
@@ -4706,12 +4723,12 @@
               "value": 8.3783
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": -2.0
+              "feature": "diff_age",
+              "value": -2.5599
             },
             {
-              "feature": "diff_career_fights",
-              "value": -1.0
+              "feature": "diff_weight_class_fights",
+              "value": -2.0
             }
           ]
         },
@@ -4720,8 +4737,8 @@
           "fighter_2": "Michael Aswell Jr.",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.491,
-          "f2_win_prob": 0.509,
+          "f1_win_prob": 0.49,
+          "f2_win_prob": 0.51,
           "predicted_winner": "Michael Aswell Jr.",
           "confidence": "LOW",
           "f1_elo": 1516,
@@ -4748,8 +4765,8 @@
               "value": -2.7462
             },
             {
-              "feature": "diff_career_fights",
-              "value": -1.0
+              "feature": "diff_age",
+              "value": 1.2457
             }
           ]
         },
@@ -4758,10 +4775,10 @@
           "fighter_2": "Sam Patterson",
           "weight_class": "Welterweight",
           "is_main_event": false,
-          "f1_win_prob": 0.501,
-          "f2_win_prob": 0.499,
-          "predicted_winner": "Michael Page",
-          "confidence": "LOW",
+          "f1_win_prob": 0.365,
+          "f2_win_prob": 0.635,
+          "predicted_winner": "Sam Patterson",
+          "confidence": "MEDIUM",
           "f1_elo": 1544,
           "f2_elo": 1548,
           "actual_winner": null,
@@ -4774,6 +4791,10 @@
               "value": 21.0
             },
             {
+              "feature": "diff_age",
+              "value": 9.065
+            },
+            {
               "feature": "diff_elo",
               "value": -4.2949
             },
@@ -4784,10 +4805,6 @@
             {
               "feature": "diff_win_streak",
               "value": -2.0
-            },
-            {
-              "feature": "diff_weight_class_fights",
-              "value": -2.0
             }
           ]
         },
@@ -4796,10 +4813,10 @@
           "fighter_2": "Austen Lane",
           "weight_class": "Light Heavyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.529,
-          "f2_win_prob": 0.471,
+          "f1_win_prob": 0.66,
+          "f2_win_prob": 0.34,
           "predicted_winner": "Iwo Baraniewski",
-          "confidence": "LOW",
+          "confidence": "HIGH",
           "f1_elo": 1516,
           "f2_elo": 1457,
           "actual_winner": null,
@@ -4820,12 +4837,12 @@
               "value": 28.8513
             },
             {
-              "feature": "diff_career_fights",
-              "value": -5.0
+              "feature": "diff_age",
+              "value": -11.0308
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": -5.0
+              "feature": "diff_reach",
+              "value": -7.0
             }
           ]
         },
@@ -4834,10 +4851,10 @@
           "fighter_2": "Christian Leroy Duncan",
           "weight_class": "Middleweight",
           "is_main_event": false,
-          "f1_win_prob": 0.469,
-          "f2_win_prob": 0.531,
+          "f1_win_prob": 0.394,
+          "f2_win_prob": 0.606,
           "predicted_winner": "Christian Leroy Duncan",
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "f1_elo": 1577,
           "f2_elo": 1561,
           "actual_winner": null,
@@ -4858,12 +4875,12 @@
               "value": 15.5002
             },
             {
-              "feature": "diff_career_fights",
-              "value": 5.0
+              "feature": "diff_age",
+              "value": 7.0226
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": 2.0
+              "feature": "diff_career_fights",
+              "value": 5.0
             }
           ]
         },
@@ -4872,10 +4889,10 @@
           "fighter_2": "Danny Silva",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.417,
-          "f2_win_prob": 0.583,
+          "f1_win_prob": 0.31,
+          "f2_win_prob": 0.69,
           "predicted_winner": "Danny Silva",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1500,
           "f2_elo": 1516,
           "actual_winner": null,
@@ -4892,15 +4909,15 @@
               "value": -15.9261
             },
             {
+              "feature": "diff_age",
+              "value": 6.8638
+            },
+            {
+              "feature": "diff_height",
+              "value": -3.0
+            },
+            {
               "feature": "diff_career_fights",
-              "value": -2.0
-            },
-            {
-              "feature": "diff_win_streak",
-              "value": -2.0
-            },
-            {
-              "feature": "diff_weight_class_fights",
               "value": -2.0
             }
           ]
@@ -4910,8 +4927,8 @@
           "fighter_2": "Axel Sola",
           "weight_class": "Lightweight",
           "is_main_event": false,
-          "f1_win_prob": 0.537,
-          "f2_win_prob": 0.463,
+          "f1_win_prob": 0.502,
+          "f2_win_prob": 0.498,
           "predicted_winner": "Mason Jones",
           "confidence": "LOW",
           "f1_elo": 1517,
@@ -4934,12 +4951,12 @@
               "value": 5.0
             },
             {
-              "feature": "diff_elo",
-              "value": 3.3173
+              "feature": "diff_height",
+              "value": -4.0
             },
             {
-              "feature": "diff_fights_per_year",
-              "value": 1.0806
+              "feature": "diff_elo",
+              "value": 3.3173
             }
           ]
         },
@@ -4948,10 +4965,10 @@
           "fighter_2": "Losene Keita",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.636,
-          "f2_win_prob": 0.364,
+          "f1_win_prob": 0.755,
+          "f2_win_prob": 0.245,
           "predicted_winner": "Nathaniel Wood",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1595,
           "f2_elo": 1500,
           "actual_winner": null,
@@ -4986,8 +5003,8 @@
           "fighter_2": "Brando Pericic",
           "weight_class": "Heavyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.398,
-          "f2_win_prob": 0.602,
+          "f1_win_prob": 0.395,
+          "f2_win_prob": 0.605,
           "predicted_winner": "Brando Pericic",
           "confidence": "MEDIUM",
           "f1_elo": 1485,
@@ -5004,6 +5021,18 @@
             {
               "feature": "diff_days_since_last_fight",
               "value": -28.0
+            },
+            {
+              "feature": "diff_reach",
+              "value": -3.0
+            },
+            {
+              "feature": "diff_height",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_age",
+              "value": 0.4819
             }
           ]
         },
@@ -5012,9 +5041,9 @@
           "fighter_2": "Antonio Trocoli",
           "weight_class": "Middleweight",
           "is_main_event": false,
-          "f1_win_prob": 0.596,
-          "f2_win_prob": 0.404,
-          "predicted_winner": "Mantas Kondratavicius",
+          "f1_win_prob": 0.401,
+          "f2_win_prob": 0.599,
+          "predicted_winner": "Antonio Trocoli",
           "confidence": "MEDIUM",
           "f1_elo": 1500,
           "f2_elo": 1456,
@@ -5036,12 +5065,12 @@
               "value": 28.474
             },
             {
-              "feature": "diff_career_fights",
-              "value": -2.0
+              "feature": "diff_age",
+              "value": 6.7118
             },
             {
-              "feature": "diff_loss_streak",
-              "value": -2.0
+              "feature": "diff_height",
+              "value": -5.0
             }
           ]
         },
@@ -5050,10 +5079,10 @@
           "fighter_2": "Mario Pinto",
           "weight_class": "Heavyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.576,
-          "f2_win_prob": 0.424,
+          "f1_win_prob": 0.514,
+          "f2_win_prob": 0.486,
           "predicted_winner": "Mick Parkin",
-          "confidence": "MEDIUM",
+          "confidence": "LOW",
           "f1_elo": 1546,
           "f2_elo": 1532,
           "actual_winner": null,
@@ -5088,9 +5117,9 @@
           "fighter_2": "Abdul-Kareem Al-Selwady",
           "weight_class": "Lightweight",
           "is_main_event": false,
-          "f1_win_prob": 0.513,
-          "f2_win_prob": 0.487,
-          "predicted_winner": "Shem Rock",
+          "f1_win_prob": 0.499,
+          "f2_win_prob": 0.501,
+          "predicted_winner": "Abdul-Kareem Al-Selwady",
           "confidence": "LOW",
           "f1_elo": 1485,
           "f2_elo": 1484,
@@ -5104,8 +5133,20 @@
               "value": -630.0
             },
             {
+              "feature": "diff_reach",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_height",
+              "value": 3.0
+            },
+            {
               "feature": "diff_elo",
               "value": 1.48
+            },
+            {
+              "feature": "diff_age",
+              "value": 1.4264
             }
           ]
         },
@@ -5114,10 +5155,10 @@
           "fighter_2": "Ravena Oliveira",
           "weight_class": "Women's Strawweight",
           "is_main_event": false,
-          "f1_win_prob": 0.578,
-          "f2_win_prob": 0.422,
-          "predicted_winner": "Shanelle Dyer",
-          "confidence": "MEDIUM",
+          "f1_win_prob": 0.493,
+          "f2_win_prob": 0.507,
+          "predicted_winner": "Ravena Oliveira",
+          "confidence": "LOW",
           "f1_elo": 1500,
           "f2_elo": 1469,
           "actual_winner": null,
@@ -5138,12 +5179,12 @@
               "value": 15.3058
             },
             {
-              "feature": "diff_fights_per_year",
-              "value": 1.5031
+              "feature": "diff_age",
+              "value": 3.9213
             },
             {
-              "feature": "diff_career_fights",
-              "value": -1.0
+              "feature": "diff_fights_per_year",
+              "value": 1.5031
             }
           ]
         },
@@ -5152,10 +5193,10 @@
           "fighter_2": "Luana Carolina",
           "weight_class": "Women's Bantamweight",
           "is_main_event": false,
-          "f1_win_prob": 0.476,
-          "f2_win_prob": 0.524,
+          "f1_win_prob": 0.44,
+          "f2_win_prob": 0.56,
           "predicted_winner": "Luana Carolina",
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "f1_elo": 1500,
           "f2_elo": 1520,
           "actual_winner": null,
@@ -5185,7 +5226,8 @@
             }
           ]
         }
-      ]
+      ],
+      "regenerated_at": "2026-02-12T07:56:36.900243"
     },
     {
       "event_id": "ufc-fight-night-adesanya-vs-pyfer",
@@ -5195,8 +5237,8 @@
       "locked": false,
       "locked_at": null,
       "prediction_type": "live",
-      "model_version": "phase8_ensemble_v1",
-      "model_description": "Stacking Ensemble (HGB + XGB + LR), 51 features, Elo + Platt calibration (live prediction)",
+      "model_version": "phase9_2_production",
+      "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
       "overall_correct": null,
       "overall_total": null,
       "overall_accuracy": null,
@@ -5206,8 +5248,8 @@
           "fighter_2": "Joe Pyfer",
           "weight_class": "Middleweight",
           "is_main_event": true,
-          "f1_win_prob": 0.443,
-          "f2_win_prob": 0.557,
+          "f1_win_prob": 0.444,
+          "f2_win_prob": 0.556,
           "predicted_winner": "Joe Pyfer",
           "confidence": "MEDIUM",
           "f1_elo": 1611,
@@ -5244,8 +5286,8 @@
           "fighter_2": "Maycee Barber",
           "weight_class": "Women's Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.328,
-          "f2_win_prob": 0.672,
+          "f1_win_prob": 0.273,
+          "f2_win_prob": 0.727,
           "predicted_winner": "Maycee Barber",
           "confidence": "HIGH",
           "f1_elo": 1544,
@@ -5272,8 +5314,8 @@
               "value": -6.0
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": -3.0
+              "feature": "diff_age",
+              "value": 4.7721
             }
           ]
         },
@@ -5282,10 +5324,10 @@
           "fighter_2": "Lance Gibson Jr.",
           "weight_class": "Lightweight",
           "is_main_event": false,
-          "f1_win_prob": 0.642,
-          "f2_win_prob": 0.358,
+          "f1_win_prob": 0.726,
+          "f2_win_prob": 0.274,
           "predicted_winner": "Chase Hooper",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1555,
           "f2_elo": 1485,
           "actual_winner": null,
@@ -5320,10 +5362,10 @@
           "fighter_2": "Bruno Lopes",
           "weight_class": "Light Heavyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.586,
-          "f2_win_prob": 0.414,
+          "f1_win_prob": 0.674,
+          "f2_win_prob": 0.326,
           "predicted_winner": "Navajo Stirling",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1546,
           "f2_elo": 1501,
           "actual_winner": null,
@@ -5344,12 +5386,12 @@
               "value": 44.9764
             },
             {
-              "feature": "diff_career_fights",
-              "value": 1.0
+              "feature": "diff_reach",
+              "value": 5.0
             },
             {
-              "feature": "diff_win_streak",
-              "value": 1.0
+              "feature": "diff_age",
+              "value": -4.5394
             }
           ]
         },
@@ -5358,10 +5400,10 @@
           "fighter_2": "Valter Walker",
           "weight_class": "Heavyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.395,
-          "f2_win_prob": 0.605,
+          "f1_win_prob": 0.298,
+          "f2_win_prob": 0.702,
           "predicted_winner": "Valter Walker",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1577,
           "f2_elo": 1545,
           "actual_winner": null,
@@ -5396,10 +5438,10 @@
           "fighter_2": "Carlston Harris",
           "weight_class": "Welterweight",
           "is_main_event": false,
-          "f1_win_prob": 0.532,
-          "f2_win_prob": 0.468,
+          "f1_win_prob": 0.555,
+          "f2_win_prob": 0.445,
           "predicted_winner": "Michael Chiesa",
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "f1_elo": 1606,
           "f2_elo": 1517,
           "actual_winner": null,
@@ -5434,10 +5476,10 @@
           "fighter_2": "Yousri Belgaroui",
           "weight_class": "Middleweight",
           "is_main_event": false,
-          "f1_win_prob": 0.644,
-          "f2_win_prob": 0.356,
+          "f1_win_prob": 0.687,
+          "f2_win_prob": 0.313,
           "predicted_winner": "Mansur Abdul-Malik",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "f1_elo": 1558,
           "f2_elo": 1518,
           "actual_winner": null,
@@ -5458,12 +5500,12 @@
               "value": 27.3598
             },
             {
-              "feature": "diff_career_fights",
-              "value": 3.0
+              "feature": "diff_age",
+              "value": -5.347
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": 3.0
+              "feature": "diff_height",
+              "value": -4.0
             }
           ]
         },
@@ -5472,10 +5514,10 @@
           "fighter_2": "Gabriella Fernandes",
           "weight_class": "Women's Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.518,
-          "f2_win_prob": 0.482,
+          "f1_win_prob": 0.601,
+          "f2_win_prob": 0.399,
           "predicted_winner": "Casey O'Neill",
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "f1_elo": 1539,
           "f2_elo": 1516,
           "actual_winner": null,
@@ -5496,12 +5538,12 @@
               "value": 22.7662
             },
             {
-              "feature": "diff_career_fights",
-              "value": 2.0
+              "feature": "diff_age",
+              "value": -4.1506
             },
             {
-              "feature": "diff_win_streak",
-              "value": -2.0
+              "feature": "diff_reach",
+              "value": 3.0
             }
           ]
         },
@@ -5510,10 +5552,10 @@
           "fighter_2": "Lerryan Douglas",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.505,
-          "f2_win_prob": 0.495,
+          "f1_win_prob": 0.571,
+          "f2_win_prob": 0.429,
           "predicted_winner": "Julian Erosa",
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "f1_elo": 1533,
           "f2_elo": 1500,
           "actual_winner": null,
@@ -5538,8 +5580,8 @@
               "value": 12.0
             },
             {
-              "feature": "diff_win_streak",
-              "value": 3.0
+              "feature": "diff_height",
+              "value": 5.0
             }
           ]
         },
@@ -5548,8 +5590,8 @@
           "fighter_2": "Marcio Barbosa",
           "weight_class": "Featherweight",
           "is_main_event": false,
-          "f1_win_prob": 0.47,
-          "f2_win_prob": 0.53,
+          "f1_win_prob": 0.496,
+          "f2_win_prob": 0.504,
           "predicted_winner": "Marcio Barbosa",
           "confidence": "LOW",
           "f1_elo": 1500,
@@ -5557,15 +5599,16 @@
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null
+          "correct": null,
+          "top_factors": []
         },
         {
           "fighter_1": "Carol Foro",
           "fighter_2": "Stephanie Luciano",
           "weight_class": "Women's Strawweight",
           "is_main_event": false,
-          "f1_win_prob": 0.431,
-          "f2_win_prob": 0.569,
+          "f1_win_prob": 0.361,
+          "f2_win_prob": 0.639,
           "predicted_winner": "Stephanie Luciano",
           "confidence": "MEDIUM",
           "f1_elo": 1500,
@@ -5584,20 +5627,21 @@
               "value": -15.1049
             },
             {
+              "feature": "diff_age",
+              "value": 6.7194
+            },
+            {
               "feature": "diff_career_fights",
               "value": -2.0
             },
             {
               "feature": "diff_weight_class_fights",
               "value": -2.0
-            },
-            {
-              "feature": "diff_elo_momentum",
-              "value": 1.6314
             }
           ]
         }
-      ]
+      ],
+      "regenerated_at": "2026-02-12T07:56:37.610853"
     },
     {
       "event_id": "ufc-322-della-maddalena-vs-makhachev",
