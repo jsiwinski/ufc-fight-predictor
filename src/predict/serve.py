@@ -59,6 +59,7 @@ FEATURE_NAMES_PATH_PHASE8 = 'data/models/phase8_feature_list.json'
 FEATURE_NAMES_PATH_V1 = 'data/models/feature_names_v1.json'
 PROCESSED_DATA_PATH = 'data/processed/ufc_fights_features_v1.csv'
 RAW_DATA_PATH = 'data/raw/ufc_fights_v1.csv'
+FIGHTER_DETAILS_PATH = 'data/raw/fighter_details.csv'
 PREDICTIONS_DIR = 'data/predictions'
 
 # Check which model to use (Phase 9 > Phase 8 > v1)
@@ -107,6 +108,16 @@ DEBUT_DEFAULTS = {
     'career_finish_rate': 0.40,
     'days_since_last_fight': 365.0,
     'fights_per_year': 2.0,
+}
+
+# Physical attribute defaults (weight-class specific medians computed at runtime)
+PHYSICAL_DEFAULTS = {
+    'height_inches': 70.0,  # ~5'10" - general median
+    'reach_inches': 72.0,   # general median
+    'age_at_fight': 30.0,   # general median
+    'is_orthodox': 1,       # most common stance
+    'is_southpaw': 0,
+    'is_switch': 0,
 }
 
 
@@ -177,7 +188,7 @@ def find_fighter_match(
 class FighterFeatures:
     """Manages fighter feature lookup and computation."""
 
-    def __init__(self, processed_data_path: str, raw_data_path: str):
+    def __init__(self, processed_data_path: str, raw_data_path: str, fighter_details_path: str = FIGHTER_DETAILS_PATH):
         """Load historical data for feature computation."""
         logger.info(f"Loading processed data from {processed_data_path}")
         self.processed_df = pd.read_csv(processed_data_path)
@@ -194,6 +205,11 @@ class FighterFeatures:
         self.elo_peak = {}
         if MODEL_VERSION in ('phase8', 'phase9'):
             self._compute_elo_ratings()
+
+        # Load fighter details for physical attributes (Phase 9.2)
+        self.fighter_details = {}
+        self.physical_medians = {}
+        self._load_fighter_details(fighter_details_path)
 
         logger.info(f"Loaded {len(self.fighter_index)} fighters with historical data")
 
@@ -321,6 +337,142 @@ class FighterFeatures:
         self.elo_history = elo_history
 
         logger.info(f"Computed Elo for {len(ratings)} fighters")
+
+    def _load_fighter_details(self, fighter_details_path: str):
+        """Load fighter physical details from CSV."""
+        try:
+            if not Path(fighter_details_path).exists():
+                logger.warning(f"Fighter details file not found: {fighter_details_path}")
+                return
+
+            details_df = pd.read_csv(fighter_details_path)
+            logger.info(f"Loaded {len(details_df)} fighters from fighter_details.csv")
+
+            # Build lookup dictionary
+            for _, row in details_df.iterrows():
+                name = row['fighter_name']
+                self.fighter_details[name] = {
+                    'height_inches': row.get('height_inches'),
+                    'reach_inches': row.get('reach_inches'),
+                    'stance': row.get('stance'),
+                    'dob': row.get('dob'),
+                    'age_years': row.get('age_years'),
+                }
+
+            # Compute weight-class medians for imputation
+            self._compute_physical_medians()
+
+        except Exception as e:
+            logger.warning(f"Error loading fighter details: {e}")
+
+    def _compute_physical_medians(self):
+        """Compute weight-class specific medians for imputation."""
+        # Group processed data by weight class
+        for wc in WEIGHT_CLASSES:
+            wc_fights = self.processed_df[
+                self.processed_df['weight_class'].str.lower().str.contains(wc.lower(), na=False)
+            ]
+
+            if len(wc_fights) == 0:
+                continue
+
+            # Collect physical stats for fighters in this weight class
+            heights = []
+            reaches = []
+            ages = []
+
+            fighters_in_wc = set(wc_fights['f1_name'].unique()) | set(wc_fights['f2_name'].unique())
+
+            for fighter in fighters_in_wc:
+                if fighter in self.fighter_details:
+                    details = self.fighter_details[fighter]
+                    if details.get('height_inches') is not None and not pd.isna(details['height_inches']):
+                        heights.append(details['height_inches'])
+                    if details.get('reach_inches') is not None and not pd.isna(details['reach_inches']):
+                        reaches.append(details['reach_inches'])
+                    if details.get('age_years') is not None and not pd.isna(details['age_years']):
+                        ages.append(details['age_years'])
+
+            self.physical_medians[wc] = {
+                'height_inches': np.median(heights) if heights else PHYSICAL_DEFAULTS['height_inches'],
+                'reach_inches': np.median(reaches) if reaches else PHYSICAL_DEFAULTS['reach_inches'],
+                'age_at_fight': np.median(ages) if ages else PHYSICAL_DEFAULTS['age_at_fight'],
+            }
+
+        logger.info(f"Computed physical medians for {len(self.physical_medians)} weight classes")
+
+    def get_physical_features(self, fighter_name: str, weight_class: str, fight_date: Optional[datetime] = None) -> Dict:
+        """
+        Get physical features for a fighter.
+
+        Args:
+            fighter_name: Fighter name
+            weight_class: Weight class for median imputation
+            fight_date: Date of fight (for age calculation)
+
+        Returns:
+            Dictionary of physical features
+        """
+        # Get medians for this weight class
+        medians = None
+        for wc in self.physical_medians:
+            if wc.lower() in weight_class.lower():
+                medians = self.physical_medians[wc]
+                break
+        if medians is None:
+            medians = {
+                'height_inches': PHYSICAL_DEFAULTS['height_inches'],
+                'reach_inches': PHYSICAL_DEFAULTS['reach_inches'],
+                'age_at_fight': PHYSICAL_DEFAULTS['age_at_fight'],
+            }
+
+        # Get fighter details
+        details = self.fighter_details.get(fighter_name, {})
+
+        # Height
+        height = details.get('height_inches')
+        if height is None or pd.isna(height):
+            height = medians['height_inches']
+
+        # Reach
+        reach = details.get('reach_inches')
+        if reach is None or pd.isna(reach):
+            reach = medians['reach_inches']
+
+        # Age at fight
+        age = None
+        dob_str = details.get('dob')
+        if dob_str and not pd.isna(dob_str) and fight_date:
+            try:
+                for fmt in ['%b %d, %Y', '%B %d, %Y']:
+                    try:
+                        dob = datetime.strptime(dob_str, fmt)
+                        age = (fight_date - dob).days / 365.25
+                        break
+                    except ValueError:
+                        continue
+            except:
+                pass
+        if age is None:
+            age = medians['age_at_fight']
+
+        # Stance encoding
+        stance = str(details.get('stance', '')).lower() if details.get('stance') else ''
+        is_orthodox = 1 if 'orthodox' in stance else 0
+        is_southpaw = 1 if 'southpaw' in stance else 0
+        is_switch = 1 if 'switch' in stance else 0
+        # If stance unknown, default to orthodox
+        if is_orthodox == 0 and is_southpaw == 0 and is_switch == 0:
+            is_orthodox = 1
+
+        return {
+            'height_inches': float(height),
+            'reach_inches': float(reach),
+            'age_at_fight': float(age),
+            'is_orthodox': is_orthodox,
+            'is_southpaw': is_southpaw,
+            'is_switch': is_switch,
+        }
 
     def get_elo_features(self, fighter_name: str) -> Dict:
         """Get Elo features for a fighter."""
@@ -480,6 +632,14 @@ class FighterFeatures:
             features['elo_momentum'] = 0.0
             features['elo_vs_peak'] = 1.0
 
+        # Physical defaults for debut fighters (Phase 9.2)
+        features['height_inches'] = PHYSICAL_DEFAULTS['height_inches']
+        features['reach_inches'] = PHYSICAL_DEFAULTS['reach_inches']
+        features['age_at_fight'] = PHYSICAL_DEFAULTS['age_at_fight']
+        features['is_orthodox'] = PHYSICAL_DEFAULTS['is_orthodox']
+        features['is_southpaw'] = PHYSICAL_DEFAULTS['is_southpaw']
+        features['is_switch'] = PHYSICAL_DEFAULTS['is_switch']
+
         return features
 
 
@@ -545,6 +705,23 @@ def build_matchup_features(
     # diff_elo uses pre_fight_elo values
     if 'pre_fight_elo' in f1_features and 'pre_fight_elo' in f2_features:
         matchup['diff_elo'] = f1_features['pre_fight_elo'] - f2_features['pre_fight_elo']
+
+    # Physical attribute features (Phase 9.2)
+    if 'height_inches' in f1_features and 'height_inches' in f2_features:
+        # Height and reach differentials
+        matchup['diff_height'] = f1_features['height_inches'] - f2_features['height_inches']
+        matchup['diff_reach'] = f1_features['reach_inches'] - f2_features['reach_inches']
+        matchup['diff_age'] = f1_features.get('age_at_fight', 30) - f2_features.get('age_at_fight', 30)
+
+        # Reach advantage: reach / height ratio comparison
+        f1_reach_ratio = f1_features['reach_inches'] / max(f1_features['height_inches'], 1)
+        f2_reach_ratio = f2_features['reach_inches'] / max(f2_features['height_inches'], 1)
+        matchup['reach_advantage'] = f1_reach_ratio - f2_reach_ratio
+
+        # Stance mismatch: orthodox vs southpaw
+        f1_southpaw = f1_features.get('is_southpaw', 0)
+        f2_southpaw = f2_features.get('is_southpaw', 0)
+        matchup['stance_mismatch'] = 1 if f1_southpaw != f2_southpaw else 0
 
     # Temporal features
     matchup['is_title_fight'] = 1 if 'title' in event_name.lower() else 0
@@ -730,6 +907,17 @@ class PredictionPipeline:
         f2_features, f2_exact, f2_matched = self.fighter_features.get_fighter_features(
             fighter2_name, fight_date
         )
+
+        # Add physical features (Phase 9.2)
+        if self.fighter_features.fighter_details:
+            f1_physical = self.fighter_features.get_physical_features(
+                f1_matched, weight_class, fight_date
+            )
+            f2_physical = self.fighter_features.get_physical_features(
+                f2_matched, weight_class, fight_date
+            )
+            f1_features.update(f1_physical)
+            f2_features.update(f2_physical)
 
         # Build feature vector
         feature_vector = build_matchup_features(
@@ -1056,7 +1244,11 @@ def main():
     print("=" * 70)
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     if MODEL_VERSION == 'phase9':
-        print(f"Model: Stacking Ensemble (Phase 9 - Elo + Isotonic Calibration)")
+        # Check if fighter_details.csv exists for Phase 9.2
+        if Path(FIGHTER_DETAILS_PATH).exists():
+            print(f"Model: Stacking Ensemble (Phase 9.2 - Physical Attributes + Elo + Isotonic)")
+        else:
+            print(f"Model: Stacking Ensemble (Phase 9 - Elo + Isotonic Calibration)")
     elif MODEL_VERSION == 'phase8':
         print(f"Model: Stacking Ensemble (Phase 8 - Elo + Platt Calibration)")
     else:

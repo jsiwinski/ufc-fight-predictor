@@ -894,7 +894,7 @@
     <div class="meta">
         <div class="meta-item">
             <span class="meta-label">Version</span>
-            <span class="meta-value">2.0 (Phase 9)</span>
+            <span class="meta-value">2.1 (Phase 9.2)</span>
         </div>
         <div class="meta-item">
             <span class="meta-label">Date</span>
@@ -1035,7 +1035,7 @@
 
     <div class="stats-row">
         <div class="stat">
-            <div class="stat-value">145</div>
+            <div class="stat-value">164</div>
             <div class="stat-label">Features</div>
         </div>
         <div class="stat">
@@ -1043,7 +1043,7 @@
             <div class="stat-label">Raw Columns</div>
         </div>
         <div class="stat">
-            <div class="stat-value">5</div>
+            <div class="stat-value">6</div>
             <div class="stat-label">Categories</div>
         </div>
         <div class="stat">
@@ -1098,6 +1098,12 @@
                 <td class="count">15</td>
                 <td>wc_Lightweight, wc_Heavyweight</td>
                 <td>One-hot encoded divisions</td>
+            </tr>
+            <tr>
+                <td class="category">Physical Attributes</td>
+                <td class="count">19</td>
+                <td>height_inches, reach_inches, age_at_fight, stance, diff_height, reach_advantage</td>
+                <td>Biometric advantages (Phase 9.2)</td>
             </tr>
             <tr>
                 <td class="category">Target</td>
@@ -1224,18 +1230,18 @@ l2_regularization: 0.1</div>
     <p><strong>Cross-validation:</strong> 5-fold stratified CV on training set.</p>
     <p><strong>Optimization target:</strong> Log loss (penalizes overconfident wrong predictions).</p>
 
-    <h3>Actual Performance (Phase 9 — Stacking Ensemble with Isotonic Calibration)</h3>
+    <h3>Actual Performance (Phase 9.2 — Stacking Ensemble with Physical Attributes)</h3>
     <div class="stats-row">
         <div class="stat">
-            <div class="stat-value">60.2%</div>
+            <div class="stat-value">62.9%</div>
             <div class="stat-label">Accuracy</div>
         </div>
         <div class="stat">
-            <div class="stat-value">0.661</div>
+            <div class="stat-value">0.676</div>
             <div class="stat-label">ROC-AUC</div>
         </div>
         <div class="stat">
-            <div class="stat-value">0.652</div>
+            <div class="stat-value">0.647</div>
             <div class="stat-label">Log Loss</div>
         </div>
         <div class="stat">
@@ -1246,15 +1252,15 @@ l2_regularization: 0.1</div>
 
     <div class="callout">
         <h4>Performance Analysis</h4>
-        <p>The Phase 9 model (Stacking Ensemble with Elo ratings and <strong>isotonic regression calibration</strong>) achieves 60.2% accuracy with significantly improved calibration (MCE: 7.4%, down from 9.1%). After aggressive feature pruning, only 51 features remain (down from 145), with Elo differential (diff_elo) emerging as the top predictor alongside career win rate.</p>
-        <p>The remaining ~5pp gap to Vegas (~65% implied) is the cost of using public data only. Sportsbooks incorporate injury reports, training camp intel, and line movement. However, 60.2% with well-calibrated probabilities (MCE: 7.4%) enables value betting when model and market diverge — the improved calibration means predicted probabilities more accurately reflect true win rates.</p>
+        <p>The Phase 9.2 model adds <strong>physical attributes</strong> (height, reach, age, stance) to the stacking ensemble. These features capture biometric advantages—reach differentials, age gaps, and stance mismatches (orthodox vs southpaw). Accuracy improved from 60.2% to <strong>62.9% (+2.7pp)</strong>, with ROC-AUC rising from 0.661 to 0.676.</p>
+        <p>The ~2pp gap to Vegas (~65% implied) is the cost of using public data only. However, 62.9% with well-calibrated probabilities (MCE: 7.4%) enables value betting when model and market diverge — the improved calibration means predicted probabilities more accurately reflect true win rates.</p>
     </div>
 
-    <h3>Top Features by Importance (Phase 8)</h3>
+    <h3>Top Features by Importance (Phase 9.2)</h3>
     <div class="code-block">1. diff_elo                 (Elo rating differential)
 2. diff_career_win_rate     (career win rate gap)
-3. f1_fights_per_year       (activity level)
-4. f2_fights_per_year       (opponent activity)
+3. diff_reach               (reach advantage in inches)
+4. diff_age                 (age differential)
 5. f1_elo_momentum          (Elo trend over last 3 fights)</div>
 </section>
 
@@ -1263,27 +1269,27 @@ l2_regularization: 0.1</div>
     <span class="section-num">06</span>
     <h2>Evaluation & Calibration</h2>
 
-    <h3>Current Performance (Phase 9 Ensemble — Test Set: 1,063 fights, 2024-2026)</h3>
+    <h3>Current Performance (Phase 9.2 Ensemble — Test Set: 1,063 fights, 2024-2026)</h3>
     <div class="metrics">
         <div class="metric-row">
             <span class="metric-label">Accuracy</span>
-            <div class="metric-bar"><div class="metric-fill" style="width: 60.2%;"></div></div>
-            <span class="metric-value">60.2%</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 62.9%;"></div></div>
+            <span class="metric-value">62.9%</span>
         </div>
         <div class="metric-row">
             <span class="metric-label">Log Loss</span>
-            <div class="metric-bar"><div class="metric-fill" style="width: 65.2%;"></div></div>
-            <span class="metric-value">0.652</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 64.7%;"></div></div>
+            <span class="metric-value">0.647</span>
         </div>
         <div class="metric-row">
             <span class="metric-label">ROC-AUC</span>
-            <div class="metric-bar"><div class="metric-fill" style="width: 66.1%;"></div></div>
-            <span class="metric-value">0.661</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 67.6%;"></div></div>
+            <span class="metric-value">0.676</span>
         </div>
         <div class="metric-row">
             <span class="metric-label">Brier Score</span>
-            <div class="metric-bar"><div class="metric-fill" style="width: 23.0%;"></div></div>
-            <span class="metric-value">0.230</span>
+            <div class="metric-bar"><div class="metric-fill" style="width: 22.8%;"></div></div>
+            <span class="metric-value">0.228</span>
         </div>
     </div>
 

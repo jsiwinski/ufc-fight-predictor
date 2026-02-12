@@ -429,6 +429,7 @@ class FeatureEngineer:
     - Early-career imputation
     - Matchup comparisons
     - Temporal/momentum features
+    - Physical attributes (Phase 9.2)
     """
 
     def __init__(self, config: Optional[Dict] = None):
@@ -467,6 +468,262 @@ class FeatureEngineer:
         # Opponent quality scoring (Phase 6)
         self.compute_opponent_quality = self.config.get('compute_opponent_quality', True)
         self.opponent_quality_stats = {}
+
+        # Physical attributes (Phase 9.2)
+        self.fighter_details = None
+        self.physical_medians = {}
+        fighter_details_path = self.config.get('fighter_details_path', 'data/raw/fighter_details.csv')
+        self._load_fighter_details(fighter_details_path)
+
+    def _load_fighter_details(self, path: str):
+        """
+        Load fighter physical details from CSV (Phase 9.2).
+
+        Args:
+            path: Path to fighter_details.csv
+        """
+        try:
+            details_path = Path(path)
+            if details_path.exists():
+                self.fighter_details = pd.read_csv(path)
+                logger.info(f"Loaded physical details for {len(self.fighter_details)} fighters")
+
+                # Parse DOB to datetime for age calculation
+                self.fighter_details['dob_parsed'] = pd.to_datetime(
+                    self.fighter_details['dob'], format='%b %d, %Y', errors='coerce'
+                )
+
+                # Create lookup dict for faster access
+                self.fighter_details_lookup = {}
+                for _, row in self.fighter_details.iterrows():
+                    self.fighter_details_lookup[row['fighter_name']] = {
+                        'height_inches': row['height_inches'] if pd.notna(row['height_inches']) else None,
+                        'reach_inches': row['reach_inches'] if pd.notna(row['reach_inches']) else None,
+                        'stance': row['stance'] if pd.notna(row['stance']) else None,
+                        'dob': row['dob_parsed'] if pd.notna(row['dob_parsed']) else None,
+                    }
+            else:
+                logger.warning(f"Fighter details file not found: {path}")
+                self.fighter_details = None
+                self.fighter_details_lookup = {}
+        except Exception as e:
+            logger.warning(f"Error loading fighter details: {e}")
+            self.fighter_details = None
+            self.fighter_details_lookup = {}
+
+    def _compute_physical_medians(self, df: pd.DataFrame):
+        """
+        Compute weight-class median values for physical attributes (Phase 9.2).
+
+        Used for imputing missing height, reach, and age values.
+        Should be called on TRAINING data only to avoid leakage.
+
+        Args:
+            df: DataFrame with weight_class, f1_name, f2_name columns
+        """
+        if self.fighter_details is None:
+            logger.warning("No fighter details loaded, skipping physical median computation")
+            return
+
+        logger.info("Computing weight-class medians for physical attributes...")
+
+        # Get all fighters by weight class
+        weight_class_fighters = {}
+
+        for _, row in df.iterrows():
+            wc = row['weight_class']
+            if wc not in weight_class_fighters:
+                weight_class_fighters[wc] = set()
+            weight_class_fighters[wc].add(row['f1_name'])
+            weight_class_fighters[wc].add(row['f2_name'])
+
+        # Compute medians per weight class
+        for wc, fighters in weight_class_fighters.items():
+            heights = []
+            reaches = []
+            ages = []
+
+            for fighter in fighters:
+                if fighter in self.fighter_details_lookup:
+                    details = self.fighter_details_lookup[fighter]
+                    if details['height_inches'] is not None:
+                        heights.append(details['height_inches'])
+                    if details['reach_inches'] is not None:
+                        reaches.append(details['reach_inches'])
+                    # For age, use typical prime age (30)
+                    ages.append(30.0)
+
+            self.physical_medians[wc] = {
+                'height_inches': float(np.median(heights)) if heights else 70.0,
+                'reach_inches': float(np.median(reaches)) if reaches else 70.0,
+                'age': 30.0,  # Default prime age
+            }
+
+        # Global fallback
+        all_heights = [d['height_inches'] for d in self.fighter_details_lookup.values()
+                       if d['height_inches'] is not None]
+        all_reaches = [d['reach_inches'] for d in self.fighter_details_lookup.values()
+                       if d['reach_inches'] is not None]
+
+        self.physical_medians['_global'] = {
+            'height_inches': float(np.median(all_heights)) if all_heights else 70.0,
+            'reach_inches': float(np.median(all_reaches)) if all_reaches else 70.0,
+            'age': 30.0,
+        }
+
+        logger.info(f"Computed physical medians for {len(self.physical_medians)-1} weight classes")
+
+    def _get_physical_features(self, fighter_name: str, fight_date: pd.Timestamp,
+                               weight_class: str) -> Dict:
+        """
+        Get physical attributes for a fighter at fight time.
+
+        Args:
+            fighter_name: Fighter name
+            fight_date: Date of the fight (for age calculation)
+            weight_class: Weight class (for median imputation)
+
+        Returns:
+            Dictionary with height_inches, reach_inches, age_at_fight, stance features
+        """
+        # Get medians for this weight class (fallback to global)
+        medians = self.physical_medians.get(weight_class,
+                                            self.physical_medians.get('_global',
+                                                                      {'height_inches': 70.0, 'reach_inches': 70.0, 'age': 30.0}))
+
+        if fighter_name not in self.fighter_details_lookup:
+            # Fighter not in details - use weight class medians
+            return {
+                'height_inches': medians['height_inches'],
+                'reach_inches': medians['reach_inches'],
+                'age_at_fight': medians['age'],
+                'stance_orthodox': 1,  # Default to orthodox
+                'stance_southpaw': 0,
+                'stance_switch': 0,
+            }
+
+        details = self.fighter_details_lookup[fighter_name]
+
+        # Height - use median if missing
+        height = details['height_inches'] if details['height_inches'] is not None else medians['height_inches']
+
+        # Reach - use median if missing
+        reach = details['reach_inches'] if details['reach_inches'] is not None else medians['reach_inches']
+
+        # Age at fight time
+        if details['dob'] is not None and pd.notna(fight_date):
+            age = (fight_date - details['dob']).days / 365.25
+            if age < 18 or age > 60:  # Sanity check
+                age = medians['age']
+        else:
+            age = medians['age']
+
+        # Stance one-hot encoding
+        stance = details['stance'] if details['stance'] is not None else 'Orthodox'
+        stance_orthodox = 1 if stance == 'Orthodox' else 0
+        stance_southpaw = 1 if stance == 'Southpaw' else 0
+        stance_switch = 1 if stance == 'Switch' else 0
+
+        return {
+            'height_inches': height,
+            'reach_inches': reach,
+            'age_at_fight': age,
+            'stance_orthodox': stance_orthodox,
+            'stance_southpaw': stance_southpaw,
+            'stance_switch': stance_switch,
+        }
+
+    def add_physical_features(self, matchup_df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Add physical attribute features to matchup DataFrame (Phase 9.2).
+
+        Adds height, reach, age, and stance features for both fighters,
+        plus differential features.
+
+        Args:
+            matchup_df: DataFrame with fight matchups
+
+        Returns:
+            DataFrame with added physical features
+        """
+        if self.fighter_details is None:
+            logger.warning("No fighter details loaded, skipping physical features")
+            return matchup_df
+
+        logger.info("Adding physical attribute features (Phase 9.2)...")
+
+        # Compute medians if not already done
+        if not self.physical_medians:
+            self._compute_physical_medians(matchup_df)
+
+        # Add features for each fight
+        f1_heights = []
+        f1_reaches = []
+        f1_ages = []
+        f1_stance_orthodox = []
+        f1_stance_southpaw = []
+        f1_stance_switch = []
+
+        f2_heights = []
+        f2_reaches = []
+        f2_ages = []
+        f2_stance_orthodox = []
+        f2_stance_southpaw = []
+        f2_stance_switch = []
+
+        for _, row in matchup_df.iterrows():
+            f1_phys = self._get_physical_features(row['f1_name'], row['fight_date'], row['weight_class'])
+            f2_phys = self._get_physical_features(row['f2_name'], row['fight_date'], row['weight_class'])
+
+            f1_heights.append(f1_phys['height_inches'])
+            f1_reaches.append(f1_phys['reach_inches'])
+            f1_ages.append(f1_phys['age_at_fight'])
+            f1_stance_orthodox.append(f1_phys['stance_orthodox'])
+            f1_stance_southpaw.append(f1_phys['stance_southpaw'])
+            f1_stance_switch.append(f1_phys['stance_switch'])
+
+            f2_heights.append(f2_phys['height_inches'])
+            f2_reaches.append(f2_phys['reach_inches'])
+            f2_ages.append(f2_phys['age_at_fight'])
+            f2_stance_orthodox.append(f2_phys['stance_orthodox'])
+            f2_stance_southpaw.append(f2_phys['stance_southpaw'])
+            f2_stance_switch.append(f2_phys['stance_switch'])
+
+        # Add columns
+        matchup_df = matchup_df.copy()
+        matchup_df['f1_height_inches'] = f1_heights
+        matchup_df['f1_reach_inches'] = f1_reaches
+        matchup_df['f1_age_at_fight'] = f1_ages
+        matchup_df['f1_stance_orthodox'] = f1_stance_orthodox
+        matchup_df['f1_stance_southpaw'] = f1_stance_southpaw
+        matchup_df['f1_stance_switch'] = f1_stance_switch
+
+        matchup_df['f2_height_inches'] = f2_heights
+        matchup_df['f2_reach_inches'] = f2_reaches
+        matchup_df['f2_age_at_fight'] = f2_ages
+        matchup_df['f2_stance_orthodox'] = f2_stance_orthodox
+        matchup_df['f2_stance_southpaw'] = f2_stance_southpaw
+        matchup_df['f2_stance_switch'] = f2_stance_switch
+
+        # Differential features
+        matchup_df['diff_height'] = matchup_df['f1_height_inches'] - matchup_df['f2_height_inches']
+        matchup_df['diff_reach'] = matchup_df['f1_reach_inches'] - matchup_df['f2_reach_inches']
+        matchup_df['diff_age'] = matchup_df['f1_age_at_fight'] - matchup_df['f2_age_at_fight']
+
+        # Reach advantage (reach relative to height)
+        matchup_df['f1_reach_advantage'] = matchup_df['f1_reach_inches'] - matchup_df['f1_height_inches']
+        matchup_df['f2_reach_advantage'] = matchup_df['f2_reach_inches'] - matchup_df['f2_height_inches']
+        matchup_df['diff_reach_advantage'] = matchup_df['f1_reach_advantage'] - matchup_df['f2_reach_advantage']
+
+        # Stance mismatch (orthodox vs southpaw is interesting stylistically)
+        matchup_df['stance_mismatch'] = (
+            ((matchup_df['f1_stance_orthodox'] == 1) & (matchup_df['f2_stance_southpaw'] == 1)) |
+            ((matchup_df['f1_stance_southpaw'] == 1) & (matchup_df['f2_stance_orthodox'] == 1))
+        ).astype(int)
+
+        logger.info(f"Added 19 physical attribute features")
+
+        return matchup_df
 
 
     def preprocess_raw_data(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -1238,6 +1495,10 @@ class FeatureEngineer:
 
         # Phase 4: Create matchup features
         matchup_df = self.create_matchup_features(fighter_df)
+
+        # Phase 4b: Add physical attribute features (Phase 9.2)
+        if self.fighter_details is not None:
+            matchup_df = self.add_physical_features(matchup_df)
 
         # Phase 5: Add temporal/contextual features
         matchup_df = self._add_temporal_features(matchup_df)

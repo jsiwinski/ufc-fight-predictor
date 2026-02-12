@@ -58,6 +58,12 @@ FEATURE_LABELS = {
     # Phase 8 Elo features
     'diff_elo': 'Elo Rating',
     'diff_elo_momentum': 'Elo Trend',
+    # Phase 9.2 physical features
+    'diff_height': 'Height',
+    'diff_reach': 'Reach',
+    'diff_age': 'Age',
+    'reach_advantage': 'Reach Adv',
+    'stance_mismatch': 'Stance',
 }
 
 # Add project root to path for imports
@@ -1217,10 +1223,16 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 @app.context_processor
 def inject_model_info():
     """Inject model version info into all templates."""
-    from src.predict.serve import MODEL_VERSION
+    from src.predict.serve import MODEL_VERSION, FIGHTER_DETAILS_PATH
+    from pathlib import Path
     if MODEL_VERSION == 'phase9':
-        model_version = 'Phase 9'
-        model_accuracy = '60.2%'
+        # Check if physical features are enabled (Phase 9.2)
+        if Path(FIGHTER_DETAILS_PATH).exists():
+            model_version = 'Phase 9.2'
+            model_accuracy = '62.9%'
+        else:
+            model_version = 'Phase 9'
+            model_accuracy = '60.2%'
     elif MODEL_VERSION == 'phase8':
         model_version = 'Phase 8'
         model_accuracy = '60.5%'
