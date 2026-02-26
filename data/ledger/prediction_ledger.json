@@ -2966,14 +2966,14 @@
       "event_name": "UFC Fight Night: Strickland vs. Hernandez",
       "event_date": "2026-02-21",
       "location": "Houston, Texas, USA",
-      "locked": false,
-      "locked_at": null,
+      "locked": true,
+      "locked_at": "2026-02-26T17:54:07.428621Z",
       "prediction_type": "live",
       "model_version": "phase9_2_production",
       "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
-      "overall_correct": null,
-      "overall_total": null,
-      "overall_accuracy": null,
+      "overall_correct": 7,
+      "overall_total": 10,
+      "overall_accuracy": 0.7,
       "fights": [
         {
           "fighter_1": "Sean Strickland",
@@ -2986,10 +2986,10 @@
           "confidence": "HIGH",
           "f1_elo": 1618,
           "f2_elo": 1616,
-          "actual_winner": null,
-          "actual_method": null,
+          "actual_winner": "Sean Strickland",
+          "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": null,
+          "correct": false,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -3024,10 +3024,10 @@
           "confidence": "HIGH",
           "f1_elo": 1532,
           "f2_elo": 1569,
-          "actual_winner": null,
-          "actual_method": null,
+          "actual_winner": "Melquizael Costa",
+          "actual_method": "KO/TKO",
           "actual_round": null,
-          "correct": null,
+          "correct": true,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -3062,10 +3062,10 @@
           "confidence": "MEDIUM",
           "f1_elo": 1542,
           "f2_elo": 1507,
-          "actual_winner": null,
-          "actual_method": null,
+          "actual_winner": "Serghei Spivac",
+          "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": null,
+          "correct": true,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -3138,10 +3138,10 @@
           "confidence": "LOW",
           "f1_elo": 1528,
           "f2_elo": 1554,
-          "actual_winner": null,
-          "actual_method": null,
+          "actual_winner": "Michel Pereira",
+          "actual_method": "S-DEC",
           "actual_round": null,
-          "correct": null,
+          "correct": true,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -3176,10 +3176,10 @@
           "confidence": "LOW",
           "f1_elo": 1519,
           "f2_elo": 1493,
-          "actual_winner": null,
-          "actual_method": null,
+          "actual_winner": "Carlos Leal",
+          "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": null,
+          "correct": false,
           "top_factors": [
             {
               "feature": "diff_elo",
@@ -3214,10 +3214,10 @@
           "confidence": "LOW",
           "f1_elo": 1470,
           "f2_elo": 1483,
-          "actual_winner": null,
-          "actual_method": null,
+          "actual_winner": "Alibi Idiris",
+          "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": null,
+          "correct": false,
           "top_factors": [
             {
               "feature": "diff_elo",
@@ -3252,10 +3252,10 @@
           "confidence": "MEDIUM",
           "f1_elo": 1516,
           "f2_elo": 1468,
-          "actual_winner": null,
-          "actual_method": null,
+          "actual_winner": "Alden Coria",
+          "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": null,
+          "correct": true,
           "top_factors": [
             {
               "feature": "diff_elo",
@@ -3290,10 +3290,10 @@
           "confidence": "MEDIUM",
           "f1_elo": 1516,
           "f2_elo": 1541,
-          "actual_winner": null,
-          "actual_method": null,
+          "actual_winner": "Joselyne Edwards",
+          "actual_method": "SUB",
           "actual_round": null,
-          "correct": null,
+          "correct": true,
           "top_factors": [
             {
               "feature": "diff_elo_momentum",
@@ -3366,10 +3366,10 @@
           "confidence": "LOW",
           "f1_elo": 1527,
           "f2_elo": 1531,
-          "actual_winner": null,
-          "actual_method": null,
+          "actual_winner": "Jordan Leavitt",
+          "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": null,
+          "correct": true,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -3404,10 +3404,10 @@
           "confidence": "LOW",
           "f1_elo": 1498,
           "f2_elo": 1515,
-          "actual_winner": null,
-          "actual_method": null,
+          "actual_winner": "Carli Judice",
+          "actual_method": "U-DEC",
           "actual_round": null,
-          "correct": null,
+          "correct": true,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
