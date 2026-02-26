@@ -22,9 +22,9 @@ Mexico City card with 13 fights and 11 value edges. The model disagrees with Veg
 
 The model sees a coin flip at 50.8% Moreno. Vegas has him at 65.5%. Moreno is the former champ with 69 Elo points on Kavanagh (1583 vs 1514) and 16 more UFC fights. But Kavanagh is 5.5 years younger, and Moreno hasn't fought in 105 days while Kavanagh has been more active. The model is weighting activity and age heavily here, but 50/50 on a fight Vegas prices at 65/35 feels like the model is undervaluing championship experience.
 
-**Biggest Edge: Borjas (+56.2pp vs Vegas)**
+**Biggest Edge: Borjas (+47.5pp vs Vegas)**
 
-Vegas has Rodriguez as a massive -455 favorite. The model flips it completely — 77.8% Borjas. The driver: Rodriguez hasn't fought in over 12 years (diff_days_since_last_fight: 4,635 days). He's also 12.6 years older. The model treats a 12-year layoff as near-fatal. Vegas presumably knows something about Rodriguez's actual fighting ability that raw stats can't capture. This is the kind of fight where the model's limitations are on full display — treat this edge with extreme skepticism.
+Vegas has Rodriguez as a massive -455 favorite. The model flips it — 69.1% Borjas. The driver: Rodriguez is 12.6 years older (diff_age: 12.616), and the model's fuzzy name matching flagged him as a near-unknown fighter. Borjas beat Rodriguez by decision in their first meeting (March 2025), so Vegas pricing Rodriguez at 78% feels aggressive for a rematch loser. Still, the model barely knows either fighter — both have near-default Elos (1484 vs 1472). A 47-point disagreement on two low-data flyweights means neither side has great information here.
 
 **Second Biggest Edge: Medina (+39.9pp vs Vegas)**
 

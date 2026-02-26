@@ -3605,8 +3605,8 @@
           "fighter_2": "Kevin Borjas",
           "weight_class": "Flyweight",
           "is_main_event": false,
-          "f1_win_prob": 0.222,
-          "f2_win_prob": 0.778,
+          "f1_win_prob": 0.309,
+          "f2_win_prob": 0.691,
           "predicted_winner": "Kevin Borjas",
           "confidence": "HIGH",
           "f1_elo": 1484,
@@ -3618,7 +3618,7 @@
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
-              "value": 4635.0
+              "value": -69.0
             },
             {
               "feature": "diff_age",
