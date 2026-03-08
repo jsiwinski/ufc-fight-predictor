@@ -3932,8 +3932,8 @@
       "locked": false,
       "locked_at": null,
       "prediction_type": "live",
-      "model_version": "phase9_2_production",
-      "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
+      "model_version": "phase9_v1",
+      "model_description": "HistGradientBoosting, 145 features (live prediction)",
       "overall_correct": null,
       "overall_total": null,
       "overall_accuracy": null,
@@ -3949,10 +3949,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1691,
           "f2_elo": 1673,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -3960,59 +3956,25 @@
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": -21.0
+              "value": "-21"
             },
             {
               "feature": "diff_elo",
-              "value": 18.2346
+              "value": 18.234604167507086
             },
             {
               "feature": "diff_career_fights",
-              "value": -5.0
+              "value": "-5"
             },
             {
               "feature": "diff_reach",
               "value": -5.0
             }
-          ]
-        },
-        {
-          "fighter_1": "Renato Moicano",
-          "fighter_2": "Brian Ortega",
-          "weight_class": "Lightweight",
-          "is_main_event": false,
-          "f1_win_prob": 0.568,
-          "f2_win_prob": 0.432,
-          "predicted_winner": "Renato Moicano",
-          "confidence": "MEDIUM",
-          "f1_elo": 1583,
-          "f2_elo": 1555,
+          ],
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null,
-          "top_factors": [
-            {
-              "feature": "diff_days_since_last_fight",
-              "value": 56.0
-            },
-            {
-              "feature": "diff_elo",
-              "value": 27.3212
-            },
-            {
-              "feature": "diff_weight_class_fights",
-              "value": 9.0
-            },
-            {
-              "feature": "diff_career_fights",
-              "value": 5.0
-            },
-            {
-              "feature": "diff_elo_momentum",
-              "value": 3.2599
-            }
-          ]
+          "correct": null
         },
         {
           "fighter_1": "Caio Borralho",
@@ -4025,10 +3987,6 @@
           "confidence": "LOW",
           "f1_elo": 1591,
           "f2_elo": 1559,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4036,173 +3994,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": 32.6583
+              "value": 32.65829067890286
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -7.2292
+              "value": -7.229230276285989
             },
             {
               "feature": "diff_career_fights",
-              "value": 3.0
+              "value": "3"
             },
             {
               "feature": "diff_win_streak",
-              "value": 3.0
+              "value": "3"
             }
-          ]
-        },
-        {
-          "fighter_1": "Cody Garbrandt",
-          "fighter_2": "Xiao Long",
-          "weight_class": "Bantamweight",
-          "is_main_event": false,
-          "f1_win_prob": 0.454,
-          "f2_win_prob": 0.546,
-          "predicted_winner": "Xiao Long",
-          "confidence": "LOW",
-          "f1_elo": 1536,
-          "f2_elo": 1486,
+          ],
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null,
-          "top_factors": [
-            {
-              "feature": "diff_days_since_last_fight",
-              "value": 70.0
-            },
-            {
-              "feature": "diff_elo",
-              "value": 50.5728
-            },
-            {
-              "feature": "diff_elo_momentum",
-              "value": -30.4807
-            },
-            {
-              "feature": "diff_career_fights",
-              "value": 13.0
-            },
-            {
-              "feature": "diff_weight_class_fights",
-              "value": 11.0
-            }
-          ]
-        },
-        {
-          "fighter_1": "Sumudaerji",
-          "fighter_2": "Jesus Aguilar",
-          "weight_class": "Flyweight",
-          "is_main_event": false,
-          "f1_win_prob": 0.49,
-          "f2_win_prob": 0.51,
-          "predicted_winner": "Jesus Aguilar",
-          "confidence": "LOW",
-          "f1_elo": 1512,
-          "f2_elo": 1529,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
-          "top_factors": [
-            {
-              "feature": "diff_elo_momentum",
-              "value": 34.0053
-            },
-            {
-              "feature": "diff_days_since_last_fight",
-              "value": 21.0
-            },
-            {
-              "feature": "diff_elo",
-              "value": -17.0735
-            },
-            {
-              "feature": "diff_reach",
-              "value": 10.0
-            },
-            {
-              "feature": "diff_height",
-              "value": 4.0
-            }
-          ]
-        },
-        {
-          "fighter_1": "Luke Fernandez",
-          "fighter_2": "Rodolfo Bellato",
-          "weight_class": "Light Heavyweight",
-          "is_main_event": false,
-          "f1_win_prob": 0.253,
-          "f2_win_prob": 0.747,
-          "predicted_winner": "Rodolfo Bellato",
-          "confidence": "HIGH",
-          "f1_elo": 1500,
-          "f2_elo": 1515,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
-          "top_factors": [
-            {
-              "feature": "diff_days_since_last_fight",
-              "value": 204.0
-            },
-            {
-              "feature": "diff_elo",
-              "value": -15.4662
-            },
-            {
-              "feature": "diff_age",
-              "value": 11.9165
-            },
-            {
-              "feature": "diff_career_fights",
-              "value": -3.0
-            },
-            {
-              "feature": "diff_weight_class_fights",
-              "value": -3.0
-            }
-          ]
-        },
-        {
-          "fighter_1": "Gregory Rodrigues",
-          "fighter_2": "Brunno Ferreira",
-          "weight_class": "Middleweight",
-          "is_main_event": false,
-          "f1_win_prob": 0.555,
-          "f2_win_prob": 0.445,
-          "predicted_winner": "Gregory Rodrigues",
-          "confidence": "MEDIUM",
-          "f1_elo": 1590,
-          "f2_elo": 1560,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
-          "top_factors": [
-            {
-              "feature": "diff_elo",
-              "value": 29.6509
-            },
-            {
-              "feature": "diff_days_since_last_fight",
-              "value": 21.0
-            },
-            {
-              "feature": "diff_height",
-              "value": 5.0
-            },
-            {
-              "feature": "diff_career_fights",
-              "value": 4.0
-            },
-            {
-              "feature": "diff_weight_class_fights",
-              "value": 4.0
-            }
-          ]
+          "correct": null
         },
         {
           "fighter_1": "Rob Font",
@@ -4215,10 +4025,6 @@
           "confidence": "HIGH",
           "f1_elo": 1566,
           "f2_elo": 1556,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4226,21 +4032,215 @@
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -31.5641
+              "value": -31.564055665169462
             },
             {
               "feature": "diff_age",
-              "value": 17.2895
+              "value": 17.28952772073922
             },
             {
               "feature": "diff_career_fights",
-              "value": 14.0
+              "value": "14"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": 12.0
+              "value": "12"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Drew Dober",
+          "fighter_2": "Michael Johnson",
+          "weight_class": "Lightweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.607,
+          "f2_win_prob": 0.393,
+          "predicted_winner": "Drew Dober",
+          "confidence": "MEDIUM",
+          "f1_elo": 1533,
+          "f2_elo": 1536,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -91.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -34.71163149032304
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-5"
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": "3"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "-3"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Gregory Rodrigues",
+          "fighter_2": "Brunno Ferreira",
+          "weight_class": "Middleweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.555,
+          "f2_win_prob": 0.445,
+          "predicted_winner": "Gregory Rodrigues",
+          "confidence": "MEDIUM",
+          "f1_elo": 1590,
+          "f2_elo": 1560,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 29.65086032851673
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 21.0
+            },
+            {
+              "feature": "diff_height",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "4"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "4"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Cody Garbrandt",
+          "fighter_2": "Xiao Long",
+          "weight_class": "Bantamweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.454,
+          "f2_win_prob": 0.546,
+          "predicted_winner": "Xiao Long",
+          "confidence": "LOW",
+          "f1_elo": 1536,
+          "f2_elo": 1486,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 70.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 50.57278559290239
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -30.480718624047086
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "13"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "11"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Donte Johnson",
+          "fighter_2": "Cody Brundage",
+          "weight_class": "Middleweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.525,
+          "f2_win_prob": 0.475,
+          "predicted_winner": "Donte Johnson",
+          "confidence": "LOW",
+          "f1_elo": 1516,
+          "f2_elo": 1460,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 91.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 55.97327286968971
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 30.176786889581308
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-13"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "-12"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Ricky Turcios",
+          "fighter_2": "Alberto Montes",
+          "weight_class": "Featherweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.479,
+          "f2_win_prob": 0.521,
+          "predicted_winner": "Alberto Montes",
+          "confidence": "LOW",
+          "f1_elo": 1481,
+          "f2_elo": 1500,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 48.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -32.660298953635674
+            },
+            {
+              "feature": "diff_elo",
+              "value": -18.792483417391622
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "4"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "4"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Cody Durden",
@@ -4253,10 +4253,6 @@
           "confidence": "LOW",
           "f1_elo": 1489,
           "f2_elo": 1500,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4264,100 +4260,179 @@
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -49.1125
+              "value": -49.112516996547356
             },
             {
               "feature": "diff_career_fights",
-              "value": 12.0
+              "value": "12"
             },
             {
               "feature": "diff_elo",
-              "value": -10.7381
+              "value": -10.738092676026326
             },
             {
               "feature": "diff_age",
-              "value": 6.9815
+              "value": 6.9815195071868565
             }
-          ]
-        },
-        {
-          "fighter_1": "Donte Johnson",
-          "fighter_2": "Dusko Todorovic",
-          "weight_class": "Middleweight",
-          "is_main_event": false,
-          "f1_win_prob": 0.529,
-          "f2_win_prob": 0.471,
-          "predicted_winner": "Donte Johnson",
-          "confidence": "LOW",
-          "f1_elo": 1516,
-          "f2_elo": 1469,
+          ],
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Sumudaerji",
+          "fighter_2": "Jesus Aguilar",
+          "weight_class": "Flyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.49,
+          "f2_win_prob": 0.51,
+          "predicted_winner": "Jesus Aguilar",
+          "confidence": "LOW",
+          "f1_elo": 1512,
+          "f2_elo": 1529,
           "top_factors": [
             {
+              "feature": "diff_elo_momentum",
+              "value": 34.005277095347765
+            },
+            {
               "feature": "diff_days_since_last_fight",
-              "value": -49.0
+              "value": 21.0
             },
             {
               "feature": "diff_elo",
-              "value": 47.0967
+              "value": -17.073520631156725
             },
             {
-              "feature": "diff_career_fights",
-              "value": -9.0
-            },
-            {
-              "feature": "diff_weight_class_fights",
-              "value": -9.0
+              "feature": "diff_reach",
+              "value": 10.0
             },
             {
               "feature": "diff_height",
-              "value": -5.0
+              "value": 4.0
             }
-          ]
-        },
-        {
-          "fighter_1": "JooSang Yoo",
-          "fighter_2": "Gaston Bolanos",
-          "weight_class": "Featherweight",
-          "is_main_event": false,
-          "f1_win_prob": 0.555,
-          "f2_win_prob": 0.445,
-          "predicted_winner": "JooSang Yoo",
-          "confidence": "MEDIUM",
-          "f1_elo": 1500,
-          "f2_elo": 1497,
+          ],
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Rafael Tobias",
+          "fighter_2": "Diyar Nurgozhay",
+          "weight_class": "Light Heavyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.581,
+          "f2_win_prob": 0.419,
+          "predicted_winner": "Rafael Tobias",
+          "confidence": "MEDIUM",
+          "f1_elo": 1500,
+          "f2_elo": 1467,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
-              "value": -154.0
-            },
-            {
-              "feature": "diff_elo_momentum",
-              "value": -13.1905
+              "value": 169.0
             },
             {
               "feature": "diff_elo",
-              "value": 3.4949
+              "value": 32.55638238517986
             },
             {
-              "feature": "diff_weight_class_fights",
-              "value": -3.0
+              "feature": "diff_elo_momentum",
+              "value": 15.853310651427591
+            },
+            {
+              "feature": "diff_age",
+              "value": -5.908281998631075
             },
             {
               "feature": "diff_career_fights",
-              "value": -2.0
+              "value": "-1"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "JeongYeong Lee",
+          "fighter_2": "Gaston Bolanos",
+          "weight_class": "Featherweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.559,
+          "f2_win_prob": 0.441,
+          "predicted_winner": "JeongYeong Lee",
+          "confidence": "MEDIUM",
+          "f1_elo": 1499,
+          "f2_elo": 1497,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -30.67269203328169
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -7.0
+            },
+            {
+              "feature": "diff_reach",
+              "value": 4.0
+            },
+            {
+              "feature": "diff_age",
+              "value": -3.162217659137575
+            },
+            {
+              "feature": "diff_height",
+              "value": 3.0
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Luke Fernandez",
+          "fighter_2": "Rodolfo Bellato",
+          "weight_class": "Light Heavyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.387,
+          "f2_win_prob": 0.613,
+          "predicted_winner": "Rodolfo Bellato",
+          "confidence": "MEDIUM",
+          "f1_elo": 1500,
+          "f2_elo": 1515,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 204.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -15.46615362312673
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-3"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "-3"
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": "-2"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         }
-      ],
-      "regenerated_at": "2026-02-12T07:56:35.505925"
+      ]
     },
     {
       "event_id": "ufc-fight-night-emmett-vs-vallejos",
@@ -4367,8 +4442,8 @@
       "locked": false,
       "locked_at": null,
       "prediction_type": "live",
-      "model_version": "phase9_2_production",
-      "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
+      "model_version": "phase9_v1",
+      "model_description": "HistGradientBoosting, 145 features (live prediction)",
       "overall_correct": null,
       "overall_total": null,
       "overall_accuracy": null,
@@ -4384,10 +4459,6 @@
           "confidence": "HIGH",
           "f1_elo": 1564,
           "f2_elo": 1549,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4395,21 +4466,25 @@
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -66.7996
+              "value": -66.7996156552997
             },
             {
               "feature": "diff_age",
-              "value": 16.7639
+              "value": 16.763860369609855
             },
             {
               "feature": "diff_elo",
-              "value": 14.7693
+              "value": 14.76931365728251
             },
             {
               "feature": "diff_career_fights",
-              "value": 13.0
+              "value": "13"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Amanda Lemos",
@@ -4422,10 +4497,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1562,
           "f2_elo": 1587,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4433,21 +4504,25 @@
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -27.7678
+              "value": -27.767757490297527
             },
             {
               "feature": "diff_elo",
-              "value": -25.1625
+              "value": -25.162461370534857
             },
             {
               "feature": "diff_age",
-              "value": 7.9863
+              "value": 7.9863107460643405
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": 7.0
+              "value": "7"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Ion Cutelaba",
@@ -4460,10 +4535,6 @@
           "confidence": "HIGH",
           "f1_elo": 1500,
           "f2_elo": 1530,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4471,21 +4542,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": -30.3051
+              "value": -30.305081306183638
             },
             {
               "feature": "diff_career_fights",
-              "value": 15.0
+              "value": "15"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": 15.0
+              "value": "15"
             },
             {
               "feature": "diff_reach",
               "value": -8.0
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Marwan Rahiki",
@@ -4498,10 +4573,6 @@
           "confidence": "LOW",
           "f1_elo": 1500,
           "f2_elo": 1485,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4509,11 +4580,11 @@
             },
             {
               "feature": "diff_elo",
-              "value": 15.2712
+              "value": 15.271242343712402
             },
             {
               "feature": "diff_age",
-              "value": 4.5448
+              "value": 4.5448323066392895
             },
             {
               "feature": "diff_fights_per_year",
@@ -4523,7 +4594,11 @@
               "feature": "diff_reach",
               "value": -1.0
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Luan Lacerda",
@@ -4536,10 +4611,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1484,
           "f2_elo": 1500,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4547,11 +4618,11 @@
             },
             {
               "feature": "diff_elo",
-              "value": -16.4435
+              "value": -16.44351629077596
             },
             {
               "feature": "diff_age",
-              "value": -2.82
+              "value": -2.819986310746067
             },
             {
               "feature": "diff_reach",
@@ -4559,9 +4630,13 @@
             },
             {
               "feature": "diff_career_fights",
-              "value": 2.0
+              "value": "2"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Bia Mesquita",
@@ -4574,10 +4649,6 @@
           "confidence": "LOW",
           "f1_elo": 1515,
           "f2_elo": 1516,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4589,17 +4660,21 @@
             },
             {
               "feature": "diff_age",
-              "value": -2.0589
+              "value": -2.0588637919233435
             },
             {
               "feature": "diff_career_fights",
-              "value": -2.0
+              "value": "-2"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": -2.0
+              "value": "-2"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Piera Rodriguez",
@@ -4612,10 +4687,6 @@
           "confidence": "LOW",
           "f1_elo": 1530,
           "f2_elo": 1529,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4623,11 +4694,11 @@
             },
             {
               "feature": "diff_career_fights",
-              "value": -5.0
+              "value": "-5"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": -5.0
+              "value": "-5"
             },
             {
               "feature": "diff_height",
@@ -4635,9 +4706,13 @@
             },
             {
               "feature": "diff_elo",
-              "value": 1.0166
+              "value": 1.0165688505148864
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Charles Johnson",
@@ -4650,10 +4725,6 @@
           "confidence": "LOW",
           "f1_elo": 1519,
           "f2_elo": 1473,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4661,24 +4732,179 @@
             },
             {
               "feature": "diff_elo",
-              "value": 46.1574
+              "value": 46.15742871374459
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -8.3864
+              "value": -8.386432964562573
             },
             {
               "feature": "diff_career_fights",
-              "value": -8.0
+              "value": "-8"
             },
             {
               "feature": "diff_loss_streak",
-              "value": -4.0
+              "value": "-4"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Elijah Smith",
+          "fighter_2": "SuYoung You",
+          "weight_class": "Bantamweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.548,
+          "f2_win_prob": 0.452,
+          "predicted_winner": "Elijah Smith",
+          "confidence": "LOW",
+          "f1_elo": 1529,
+          "f2_elo": 1545,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -16.28130013998907
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -14.590839618298105
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 14.0
+            },
+            {
+              "feature": "diff_age",
+              "value": -6.735112936344969
+            },
+            {
+              "feature": "diff_reach",
+              "value": 6.0
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Bolaji Oki",
+          "fighter_2": "Manoel Sousa",
+          "weight_class": "Lightweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.734,
+          "f2_win_prob": 0.266,
+          "predicted_winner": "Bolaji Oki",
+          "confidence": "HIGH",
+          "f1_elo": 1499,
+          "f2_elo": 1500,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -176.0
+            },
+            {
+              "feature": "diff_age",
+              "value": -8.672826830937716
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "3"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "3"
+            },
+            {
+              "feature": "diff_reach",
+              "value": 2.0
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Vitor Petrino",
+          "fighter_2": "Steven Asplund",
+          "weight_class": "Heavyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.65,
+          "f2_win_prob": 0.35,
+          "predicted_winner": "Vitor Petrino",
+          "confidence": "MEDIUM",
+          "f1_elo": 1554,
+          "f2_elo": 1515,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 63.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 38.51026626953467
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 27.75156315752338
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "7"
+            },
+            {
+              "feature": "diff_height",
+              "value": -3.0
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Andre Fili",
+          "fighter_2": "Jose Delgado",
+          "weight_class": "Featherweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.335,
+          "f2_win_prob": 0.665,
+          "predicted_winner": "Jose Delgado",
+          "confidence": "HIGH",
+          "f1_elo": 1534,
+          "f2_elo": 1519,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 77.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "22"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "22"
+            },
+            {
+              "feature": "diff_elo",
+              "value": 15.179973319157625
+            },
+            {
+              "feature": "diff_age",
+              "value": 7.822039698836413
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         }
-      ],
-      "regenerated_at": "2026-02-12T07:56:36.004274"
+      ]
     },
     {
       "event_id": "ufc-fight-night-evloev-vs-murphy",
@@ -4688,8 +4914,8 @@
       "locked": false,
       "locked_at": null,
       "prediction_type": "live",
-      "model_version": "phase9_2_production",
-      "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
+      "model_version": "phase9_v1",
+      "model_description": "HistGradientBoosting, 145 features (live prediction)",
       "overall_correct": null,
       "overall_total": null,
       "overall_accuracy": null,
@@ -4705,10 +4931,6 @@
           "confidence": "LOW",
           "f1_elo": 1643,
           "f2_elo": 1625,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4716,21 +4938,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": 17.5726
+              "value": 17.572636306632603
             },
             {
               "feature": "diff_elo_momentum",
-              "value": 8.3783
+              "value": 8.378315438938671
             },
             {
               "feature": "diff_age",
-              "value": -2.5599
+              "value": -2.5598904859685163
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": -2.0
+              "value": "-2"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Luke Riley",
@@ -4743,10 +4969,6 @@
           "confidence": "LOW",
           "f1_elo": 1516,
           "f2_elo": 1500,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4754,21 +4976,25 @@
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -16.1449
+              "value": -16.144938873504316
             },
             {
               "feature": "diff_elo",
-              "value": 15.8827
+              "value": 15.88274670935698
             },
             {
               "feature": "diff_fights_per_year",
-              "value": -2.7462
+              "value": -2.7462406015037595
             },
             {
               "feature": "diff_age",
-              "value": 1.2457
+              "value": 1.245722108145106
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Michael Page",
@@ -4781,10 +5007,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1544,
           "f2_elo": 1548,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4792,21 +5014,25 @@
             },
             {
               "feature": "diff_age",
-              "value": 9.065
+              "value": 9.065023956194384
             },
             {
               "feature": "diff_elo",
-              "value": -4.2949
+              "value": -4.294929540010116
             },
             {
               "feature": "diff_elo_momentum",
-              "value": 4.1333
+              "value": 4.133266797392025
             },
             {
               "feature": "diff_win_streak",
-              "value": -2.0
+              "value": "-2"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Iwo Baraniewski",
@@ -4819,10 +5045,6 @@
           "confidence": "HIGH",
           "f1_elo": 1516,
           "f2_elo": 1457,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4830,21 +5052,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": 58.3603
+              "value": 58.36033659266377
             },
             {
               "feature": "diff_elo_momentum",
-              "value": 28.8513
+              "value": 28.851300631337836
             },
             {
               "feature": "diff_age",
-              "value": -11.0308
+              "value": -11.030800821355232
             },
             {
               "feature": "diff_reach",
               "value": -7.0
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Roman Dolidze",
@@ -4857,10 +5083,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1577,
           "f2_elo": 1561,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4868,21 +5090,25 @@
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -31.2405
+              "value": -31.240491234355886
             },
             {
               "feature": "diff_elo",
-              "value": 15.5002
+              "value": 15.50019283184929
             },
             {
               "feature": "diff_age",
-              "value": 7.0226
+              "value": 7.022587268993842
             },
             {
               "feature": "diff_career_fights",
-              "value": 5.0
+              "value": "5"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Kurtis Campbell",
@@ -4895,10 +5121,6 @@
           "confidence": "HIGH",
           "f1_elo": 1500,
           "f2_elo": 1516,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4906,11 +5128,11 @@
             },
             {
               "feature": "diff_elo",
-              "value": -15.9261
+              "value": -15.926144823522463
             },
             {
               "feature": "diff_age",
-              "value": 6.8638
+              "value": 6.863791923340177
             },
             {
               "feature": "diff_height",
@@ -4918,9 +5140,13 @@
             },
             {
               "feature": "diff_career_fights",
-              "value": -2.0
+              "value": "-2"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Mason Jones",
@@ -4933,22 +5159,18 @@
           "confidence": "LOW",
           "f1_elo": 1517,
           "f2_elo": 1514,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_elo_momentum",
-              "value": 32.6083
+              "value": 32.60826315612144
             },
             {
               "feature": "diff_career_fights",
-              "value": 5.0
+              "value": "5"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": 5.0
+              "value": "5"
             },
             {
               "feature": "diff_height",
@@ -4956,9 +5178,13 @@
             },
             {
               "feature": "diff_elo",
-              "value": 3.3173
+              "value": 3.317311514430685
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Nathaniel Wood",
@@ -4971,10 +5197,6 @@
           "confidence": "HIGH",
           "f1_elo": 1595,
           "f2_elo": 1500,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -4982,21 +5204,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": 94.6113
+              "value": 94.61130862698496
             },
             {
               "feature": "diff_elo_momentum",
-              "value": 27.495
+              "value": 27.49499598909074
             },
             {
               "feature": "diff_career_fights",
-              "value": 12.0
+              "value": "12"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": 6.0
+              "value": "6"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Louie Sutherland",
@@ -5009,14 +5235,10 @@
           "confidence": "MEDIUM",
           "f1_elo": 1485,
           "f2_elo": 1516,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_elo",
-              "value": -30.5954
+              "value": -30.5954416766931
             },
             {
               "feature": "diff_days_since_last_fight",
@@ -5032,9 +5254,13 @@
             },
             {
               "feature": "diff_age",
-              "value": 0.4819
+              "value": 0.48186173853525105
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Mantas Kondratavicius",
@@ -5047,10 +5273,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1500,
           "f2_elo": 1456,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5058,59 +5280,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": 43.6824
+              "value": 43.68243202096619
             },
             {
               "feature": "diff_elo_momentum",
-              "value": 28.474
+              "value": 28.474008784028456
             },
             {
               "feature": "diff_age",
-              "value": 6.7118
+              "value": 6.711841204654348
             },
             {
               "feature": "diff_height",
               "value": -5.0
             }
-          ]
-        },
-        {
-          "fighter_1": "Mick Parkin",
-          "fighter_2": "Mario Pinto",
-          "weight_class": "Heavyweight",
-          "is_main_event": false,
-          "f1_win_prob": 0.514,
-          "f2_win_prob": 0.486,
-          "predicted_winner": "Mick Parkin",
-          "confidence": "LOW",
-          "f1_elo": 1546,
-          "f2_elo": 1532,
+          ],
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null,
-          "top_factors": [
-            {
-              "feature": "diff_days_since_last_fight",
-              "value": 203.0
-            },
-            {
-              "feature": "diff_elo_momentum",
-              "value": -19.2517
-            },
-            {
-              "feature": "diff_elo",
-              "value": 13.8908
-            },
-            {
-              "feature": "diff_career_fights",
-              "value": 3.0
-            },
-            {
-              "feature": "diff_win_streak",
-              "value": 3.0
-            }
-          ]
+          "correct": null
         },
         {
           "fighter_1": "Shem Rock",
@@ -5123,10 +5311,6 @@
           "confidence": "LOW",
           "f1_elo": 1485,
           "f2_elo": 1484,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5142,13 +5326,17 @@
             },
             {
               "feature": "diff_elo",
-              "value": 1.48
+              "value": 1.4800133863673182
             },
             {
               "feature": "diff_age",
-              "value": 1.4264
+              "value": 1.4264202600958278
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Shanelle Dyer",
@@ -5161,10 +5349,6 @@
           "confidence": "LOW",
           "f1_elo": 1500,
           "f2_elo": 1469,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5172,21 +5356,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": 30.5912
+              "value": 30.591155630894946
             },
             {
               "feature": "diff_elo_momentum",
-              "value": 15.3058
+              "value": 15.305767926114413
             },
             {
               "feature": "diff_age",
-              "value": 3.9213
+              "value": 3.921286789869953
             },
             {
               "feature": "diff_fights_per_year",
-              "value": 1.5031
+              "value": 1.5030612244897958
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Melissa Mullins",
@@ -5199,10 +5387,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1500,
           "f2_elo": 1520,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5210,24 +5394,65 @@
             },
             {
               "feature": "diff_elo",
-              "value": -19.8759
+              "value": -19.875944812958778
             },
             {
               "feature": "diff_career_fights",
-              "value": -6.0
+              "value": "-6"
             },
             {
               "feature": "diff_elo_momentum",
-              "value": 4.7636
+              "value": 4.763599223123947
             },
             {
               "feature": "diff_weight_class_fights",
+              "value": "3"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Mario Pinto",
+          "fighter_2": "Felipe Franco",
+          "weight_class": "Heavyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.802,
+          "f2_win_prob": 0.198,
+          "predicted_winner": "Mario Pinto",
+          "confidence": "HIGH",
+          "f1_elo": 1532,
+          "f2_elo": 1500,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -204.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 32.19348165453698
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 16.82654283809302
+            },
+            {
+              "feature": "diff_age",
+              "value": -13.980835044490075
+            },
+            {
+              "feature": "diff_height",
               "value": 3.0
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         }
-      ],
-      "regenerated_at": "2026-02-12T07:56:36.900243"
+      ]
     },
     {
       "event_id": "ufc-fight-night-adesanya-vs-pyfer",
@@ -5237,8 +5462,8 @@
       "locked": false,
       "locked_at": null,
       "prediction_type": "live",
-      "model_version": "phase9_2_production",
-      "model_description": "Stacking Ensemble (HGB + XGB + LR), 71 features, Phase 9.2 - Physical Attributes + Elo + Isotonic",
+      "model_version": "phase9_v1",
+      "model_description": "HistGradientBoosting, 145 features (live prediction)",
       "overall_correct": null,
       "overall_total": null,
       "overall_accuracy": null,
@@ -5254,10 +5479,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1611,
           "f2_elo": 1577,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5265,21 +5486,25 @@
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -66.4515
+              "value": -66.45150989379817
             },
             {
               "feature": "diff_elo",
-              "value": 34.8236
+              "value": 34.82361471162517
             },
             {
               "feature": "diff_career_fights",
-              "value": 11.0
+              "value": "11"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": 10.0
+              "value": "10"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Alexa Grasso",
@@ -5292,10 +5517,6 @@
           "confidence": "HIGH",
           "f1_elo": 1544,
           "f2_elo": 1618,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5303,21 +5524,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": -74.2378
+              "value": -74.23780408536254
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -56.8963
+              "value": -56.89625574863476
             },
             {
               "feature": "diff_win_streak",
-              "value": -6.0
+              "value": "-6"
             },
             {
               "feature": "diff_age",
-              "value": 4.7721
+              "value": 4.7720739219712485
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Chase Hooper",
@@ -5330,10 +5555,6 @@
           "confidence": "HIGH",
           "f1_elo": 1555,
           "f2_elo": 1485,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5341,21 +5562,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": 70.1951
+              "value": 70.1950948644353
             },
             {
               "feature": "diff_career_fights",
-              "value": 11.0
+              "value": "11"
             },
             {
               "feature": "diff_win_streak",
-              "value": 5.0
+              "value": "5"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": 5.0
+              "value": "5"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Navajo Stirling",
@@ -5368,10 +5593,6 @@
           "confidence": "HIGH",
           "f1_elo": 1546,
           "f2_elo": 1501,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5379,11 +5600,11 @@
             },
             {
               "feature": "diff_elo_momentum",
-              "value": 46.4152
+              "value": 46.415177852121815
             },
             {
               "feature": "diff_elo",
-              "value": 44.9764
+              "value": 44.976403886075104
             },
             {
               "feature": "diff_reach",
@@ -5391,9 +5612,13 @@
             },
             {
               "feature": "diff_age",
-              "value": -4.5394
+              "value": -4.539356605065024
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Marcin Tybura",
@@ -5406,10 +5631,6 @@
           "confidence": "HIGH",
           "f1_elo": 1577,
           "f2_elo": 1545,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5417,21 +5638,25 @@
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -37.2061
+              "value": -37.20609831904062
             },
             {
               "feature": "diff_elo",
-              "value": 31.9188
+              "value": 31.91881839165876
             },
             {
               "feature": "diff_career_fights",
-              "value": 18.0
+              "value": "18"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": 18.0
+              "value": "18"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Michael Chiesa",
@@ -5444,10 +5669,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1606,
           "f2_elo": 1517,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5455,21 +5676,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": 88.5923
+              "value": 88.59231017108141
             },
             {
               "feature": "diff_elo_momentum",
-              "value": 55.741
+              "value": 55.740961941471824
             },
             {
               "feature": "diff_career_fights",
-              "value": 14.0
+              "value": "14"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": 3.0
+              "value": "3"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Mansur Abdul-Malik",
@@ -5482,10 +5707,6 @@
           "confidence": "HIGH",
           "f1_elo": 1558,
           "f2_elo": 1518,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5493,21 +5714,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": 40.3155
+              "value": 40.31547988010243
             },
             {
               "feature": "diff_elo_momentum",
-              "value": 27.3598
+              "value": 27.359760318334338
             },
             {
               "feature": "diff_age",
-              "value": -5.347
+              "value": -5.347022587268992
             },
             {
               "feature": "diff_height",
               "value": -4.0
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Casey O'Neill",
@@ -5520,10 +5745,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1539,
           "f2_elo": 1516,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5531,21 +5752,25 @@
             },
             {
               "feature": "diff_elo_momentum",
-              "value": -31.2566
+              "value": -31.256633293769028
             },
             {
               "feature": "diff_elo",
-              "value": 22.7662
+              "value": 22.766245386017545
             },
             {
               "feature": "diff_age",
-              "value": -4.1506
+              "value": -4.150581793292265
             },
             {
               "feature": "diff_reach",
               "value": 3.0
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Julian Erosa",
@@ -5558,10 +5783,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1533,
           "f2_elo": 1500,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5569,21 +5790,25 @@
             },
             {
               "feature": "diff_elo",
-              "value": 32.6901
+              "value": 32.69005145504798
             },
             {
               "feature": "diff_career_fights",
-              "value": 16.0
+              "value": "16"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": 12.0
+              "value": "12"
             },
             {
               "feature": "diff_height",
               "value": 5.0
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         },
         {
           "fighter_1": "Zhu Kangjie",
@@ -5596,11 +5821,11 @@
           "confidence": "LOW",
           "f1_elo": 1500,
           "f2_elo": 1500,
+          "top_factors": [],
           "actual_winner": null,
           "actual_method": null,
           "actual_round": null,
-          "correct": null,
-          "top_factors": []
+          "correct": null
         },
         {
           "fighter_1": "Carol Foro",
@@ -5613,10 +5838,6 @@
           "confidence": "MEDIUM",
           "f1_elo": 1500,
           "f2_elo": 1515,
-          "actual_winner": null,
-          "actual_method": null,
-          "actual_round": null,
-          "correct": null,
           "top_factors": [
             {
               "feature": "diff_days_since_last_fight",
@@ -5624,24 +5845,65 @@
             },
             {
               "feature": "diff_elo",
-              "value": -15.1049
+              "value": -15.10490921261544
             },
             {
               "feature": "diff_age",
-              "value": 6.7194
+              "value": 6.71937029431896
             },
             {
               "feature": "diff_career_fights",
-              "value": -2.0
+              "value": "-2"
             },
             {
               "feature": "diff_weight_class_fights",
-              "value": -2.0
+              "value": "-2"
             }
-          ]
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Terrance McKinney",
+          "fighter_2": "Kyle Nelson",
+          "weight_class": "Lightweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.595,
+          "f2_win_prob": 0.405,
+          "predicted_winner": "Terrance McKinney",
+          "confidence": "MEDIUM",
+          "f1_elo": 1526,
+          "f2_elo": 1529,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -49.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "9"
+            },
+            {
+              "feature": "diff_elo",
+              "value": -3.463604376169087
+            },
+            {
+              "feature": "diff_age",
+              "value": -3.405886379192335
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": "2"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         }
-      ],
-      "regenerated_at": "2026-02-12T07:56:37.610853"
+      ]
     },
     {
       "event_id": "ufc-322-della-maddalena-vs-makhachev",
@@ -7680,6 +7942,1378 @@
               "value": 2.0
             }
           ]
+        }
+      ]
+    },
+    {
+      "event_id": "ufc-fight-night-moicano-vs-duncan",
+      "event_name": "UFC Fight Night: Moicano vs. Duncan",
+      "event_date": "2026-04-04",
+      "location": "Las Vegas, Nevada, USA",
+      "locked": false,
+      "locked_at": null,
+      "prediction_type": "live",
+      "model_version": "phase9_v1",
+      "model_description": "HistGradientBoosting, 145 features (live prediction)",
+      "overall_correct": null,
+      "overall_total": null,
+      "overall_accuracy": null,
+      "fights": [
+        {
+          "fighter_1": "Renato Moicano",
+          "fighter_2": "Chris Duncan",
+          "weight_class": "Lightweight",
+          "is_main_event": true,
+          "f1_win_prob": 0.416,
+          "f2_win_prob": 0.584,
+          "predicted_winner": "Chris Duncan",
+          "confidence": "MEDIUM",
+          "f1_elo": 1583,
+          "f2_elo": 1577,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 161.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -57.00259880422004
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "12"
+            },
+            {
+              "feature": "diff_elo",
+              "value": 5.767284004488147
+            },
+            {
+              "feature": "diff_age",
+              "value": 3.9698836413415464
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Jose Delano",
+          "fighter_2": "Robert Ruchala",
+          "weight_class": "Featherweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.687,
+          "f2_win_prob": 0.313,
+          "predicted_winner": "Jose Delano",
+          "confidence": "HIGH",
+          "f1_elo": 1519,
+          "f2_elo": 1486,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -49.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 32.81258176710935
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 3.7148845962344694
+            },
+            {
+              "feature": "diff_height",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 2.8988095238095237
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Tofiq Musayev",
+          "fighter_2": "Samuel Sanches",
+          "weight_class": "Lightweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.529,
+          "f2_win_prob": 0.471,
+          "predicted_winner": "Tofiq Musayev",
+          "confidence": "LOW",
+          "f1_elo": 1485,
+          "f2_elo": 1500,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -78.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -15.134651889255792
+            },
+            {
+              "feature": "diff_age",
+              "value": -2.6988364134154708
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -2.0
+            },
+            {
+              "feature": "diff_reach",
+              "value": -2.0
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Edmen Shahbazyan",
+          "fighter_2": "JunYong Park",
+          "weight_class": "Middleweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.602,
+          "f2_win_prob": 0.398,
+          "predicted_winner": "Edmen Shahbazyan",
+          "confidence": "MEDIUM",
+          "f1_elo": 1561,
+          "f2_elo": 1566,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 38.772709037924415
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 21.0
+            },
+            {
+              "feature": "diff_age",
+              "value": -6.729637234770706
+            },
+            {
+              "feature": "diff_elo",
+              "value": -4.7958101528563475
+            },
+            {
+              "feature": "diff_height",
+              "value": 4.0
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Alessandro Costa",
+          "fighter_2": "Stewart Nicoll",
+          "weight_class": "Flyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.582,
+          "f2_win_prob": 0.418,
+          "predicted_winner": "Alessandro Costa",
+          "confidence": "MEDIUM",
+          "f1_elo": 1487,
+          "f2_elo": 1469,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 28.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 18.36114353461153
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 15.724978227137626
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "3"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "3"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Virna Jandiroba",
+          "fighter_2": "Tabatha Ricci",
+          "weight_class": "Women's Strawweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.42,
+          "f2_win_prob": 0.58,
+          "predicted_winner": "Tabatha Ricci",
+          "confidence": "MEDIUM",
+          "f1_elo": 1572,
+          "f2_elo": 1563,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -91.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 8.732917675167982
+            },
+            {
+              "feature": "diff_age",
+              "value": 6.729637234770703
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": "5"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "3"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Ethyn Ewing",
+          "fighter_2": "Rafael Estevam",
+          "weight_class": "Bantamweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.416,
+          "f2_win_prob": 0.584,
+          "predicted_winner": "Rafael Estevam",
+          "confidence": "MEDIUM",
+          "f1_elo": 1517,
+          "f2_elo": 1547,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -105.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -31.321692272659448
+            },
+            {
+              "feature": "diff_elo",
+              "value": -29.221219868162507
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-2"
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": "-2"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Guilherme Pat",
+          "fighter_2": "Thomas Petersen",
+          "weight_class": "Light Heavyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.505,
+          "f2_win_prob": 0.495,
+          "predicted_winner": "Guilherme Pat",
+          "confidence": "LOW",
+          "f1_elo": 1516,
+          "f2_elo": 1487,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -63.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 28.595789226278157
+            },
+            {
+              "feature": "diff_reach",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_height",
+              "value": 5.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-4"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Alice Pereira",
+          "fighter_2": "Hailey Cowan",
+          "weight_class": "Women's Bantamweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.701,
+          "f2_win_prob": 0.299,
+          "predicted_winner": "Alice Pereira",
+          "confidence": "HIGH",
+          "f1_elo": 1484,
+          "f2_elo": 1470,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -154.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 14.476856757830319
+            },
+            {
+              "feature": "diff_elo",
+              "value": 14.472403443493704
+            },
+            {
+              "feature": "diff_age",
+              "value": -13.85352498288843
+            },
+            {
+              "feature": "diff_reach",
+              "value": 4.0
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Dione Barbosa",
+          "fighter_2": "Melissa Gatto",
+          "weight_class": "Women's Flyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.502,
+          "f2_win_prob": 0.498,
+          "predicted_winner": "Dione Barbosa",
+          "confidence": "LOW",
+          "f1_elo": 1501,
+          "f2_elo": 1515,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -455.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -14.238449670517184
+            },
+            {
+              "feature": "diff_age",
+              "value": 3.983572895277206
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "3"
+            },
+            {
+              "feature": "diff_reach",
+              "value": -3.0
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "event_id": "ufc-327-prochazka-vs-ulberg",
+      "event_name": "UFC 327: Prochazka vs. Ulberg",
+      "event_date": "2026-04-11",
+      "location": "Miami, Florida, USA",
+      "locked": false,
+      "locked_at": null,
+      "prediction_type": "live",
+      "model_version": "phase9_v1",
+      "model_description": "HistGradientBoosting, 145 features (live prediction)",
+      "overall_correct": null,
+      "overall_total": null,
+      "overall_accuracy": null,
+      "fights": [
+        {
+          "fighter_1": "Jiri Prochazka",
+          "fighter_2": "Carlos Ulberg",
+          "weight_class": "Light Heavyweight",
+          "is_main_event": true,
+          "f1_win_prob": 0.363,
+          "f2_win_prob": 0.637,
+          "predicted_winner": "Carlos Ulberg",
+          "confidence": "MEDIUM",
+          "f1_elo": 1579,
+          "f2_elo": 1623,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -44.00239179099185
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": "-7"
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -7.0
+            },
+            {
+              "feature": "diff_reach",
+              "value": 3.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-2"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Joshua Van",
+          "fighter_2": "Tatsuro Taira",
+          "weight_class": "Flyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.631,
+          "f2_win_prob": 0.369,
+          "predicted_winner": "Joshua Van",
+          "confidence": "MEDIUM",
+          "f1_elo": 1616,
+          "f2_elo": 1603,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 13.773951358315571
+            },
+            {
+              "feature": "diff_reach",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": "4"
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 2.75071322397298
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "2"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Curtis Blaydes",
+          "fighter_2": "Josh Hokit",
+          "weight_class": "Heavyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.579,
+          "f2_win_prob": 0.421,
+          "predicted_winner": "Curtis Blaydes",
+          "confidence": "MEDIUM",
+          "f1_elo": 1639,
+          "f2_elo": 1532,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 217.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 107.15878948074055
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -23.808749871968303
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "18"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "18"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Beneil Dariush",
+          "fighter_2": "Manuel Torres",
+          "weight_class": "Lightweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.446,
+          "f2_win_prob": 0.554,
+          "predicted_winner": "Manuel Torres",
+          "confidence": "MEDIUM",
+          "f1_elo": 1622,
+          "f2_elo": 1565,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 56.34001142039665
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -40.61252486448143
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 21.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "19"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "19"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Dominick Reyes",
+          "fighter_2": "Johnny Walker",
+          "weight_class": "Light Heavyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.502,
+          "f2_win_prob": 0.498,
+          "predicted_winner": "Dominick Reyes",
+          "confidence": "LOW",
+          "f1_elo": 1568,
+          "f2_elo": 1546,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -35.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 22.114656568141754
+            },
+            {
+              "feature": "diff_reach",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": "3"
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": "-3"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Kyle Daukaus",
+          "fighter_2": "Vicente Luque",
+          "weight_class": "Middleweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.422,
+          "f2_win_prob": 0.578,
+          "predicted_winner": "Vicente Luque",
+          "confidence": "MEDIUM",
+          "f1_elo": 1525,
+          "f2_elo": 1590,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": 72.17707446204827
+            },
+            {
+              "feature": "diff_elo",
+              "value": -64.628678413829
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -35.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "-16"
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-15"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Azamat Murzakanov",
+          "fighter_2": "Paulo Costa",
+          "weight_class": "Light Heavyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.547,
+          "f2_win_prob": 0.453,
+          "predicted_winner": "Azamat Murzakanov",
+          "confidence": "LOW",
+          "f1_elo": 1592,
+          "f2_elo": 1557,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -98.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 34.320212761668245
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 23.817651333620915
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-5"
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": "5"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Patricio Freire",
+          "fighter_2": "Aaron Pico",
+          "weight_class": "Featherweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.451,
+          "f2_win_prob": 0.549,
+          "predicted_winner": "Aaron Pico",
+          "confidence": "LOW",
+          "f1_elo": 1507,
+          "f2_elo": 1489,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 28.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 18.87453275782991
+            },
+            {
+              "feature": "diff_elo",
+              "value": 17.837024379169407
+            },
+            {
+              "feature": "diff_age",
+              "value": 9.215605749486649
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 3.7270408163265305
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Mateusz Gamrot",
+          "fighter_2": "Esteban Ribovics",
+          "weight_class": "Lightweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.496,
+          "f2_win_prob": 0.504,
+          "predicted_winner": "Esteban Ribovics",
+          "confidence": "LOW",
+          "f1_elo": 1581,
+          "f2_elo": 1536,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -70.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 44.576226676453416
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "6"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "6"
+            },
+            {
+              "feature": "diff_age",
+              "value": 5.377138945927445
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Cub Swanson",
+          "fighter_2": "Nate Landwehr",
+          "weight_class": "Featherweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.458,
+          "f2_win_prob": 0.542,
+          "predicted_winner": "Nate Landwehr",
+          "confidence": "LOW",
+          "f1_elo": 1566,
+          "f2_elo": 1501,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 210.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 64.85845752036266
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 30.757823243959365
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "15"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "14"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Kevin Holland",
+          "fighter_2": "Randy Brown",
+          "weight_class": "Welterweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.465,
+          "f2_win_prob": 0.535,
+          "predicted_winner": "Randy Brown",
+          "confidence": "LOW",
+          "f1_elo": 1532,
+          "f2_elo": 1600,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -68.16978671726338
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -26.969312014771276
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 21.0
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "-10"
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "7"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Tatiana Suarez",
+          "fighter_2": "Loopy Godinez",
+          "weight_class": "Women's Strawweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.555,
+          "f2_win_prob": 0.445,
+          "predicted_winner": "Tatiana Suarez",
+          "confidence": "MEDIUM",
+          "f1_elo": 1607,
+          "f2_elo": 1560,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": 47.011288067309124
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -31.830555922099165
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -28.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-5"
+            },
+            {
+              "feature": "diff_reach",
+              "value": 5.0
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Christopher Alvidrez",
+          "fighter_2": "Francisco Prado",
+          "weight_class": "Welterweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.318,
+          "f2_win_prob": 0.682,
+          "predicted_winner": "Francisco Prado",
+          "confidence": "HIGH",
+          "f1_elo": 1500,
+          "f2_elo": 1458,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 99.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 41.92932909982392
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 28.28944803881859
+            },
+            {
+              "feature": "diff_age",
+              "value": 16.18069815195072
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-4"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "event_id": "ufc-fight-night-burns-vs-malott",
+      "event_name": "UFC Fight Night: Burns vs. Malott",
+      "event_date": "2026-04-18",
+      "location": "Winnipeg, Manitoba, Canada",
+      "locked": false,
+      "locked_at": null,
+      "prediction_type": "live",
+      "model_version": "phase9_v1",
+      "model_description": "HistGradientBoosting, 145 features (live prediction)",
+      "overall_correct": null,
+      "overall_total": null,
+      "overall_accuracy": null,
+      "fights": [
+        {
+          "fighter_1": "Gilbert Burns",
+          "fighter_2": "Mike Malott",
+          "weight_class": "Welterweight",
+          "is_main_event": true,
+          "f1_win_prob": 0.365,
+          "f2_win_prob": 0.635,
+          "predicted_winner": "Mike Malott",
+          "confidence": "MEDIUM",
+          "f1_elo": 1580,
+          "f2_elo": 1579,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 154.0
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -64.13152136833037
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "17"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "7"
+            },
+            {
+              "feature": "diff_age",
+              "value": 5.300479123887747
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Jasmine Jasudavicius",
+          "fighter_2": "Karine Silva",
+          "weight_class": "Women's Flyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.512,
+          "f2_win_prob": 0.488,
+          "predicted_winner": "Jasmine Jasudavicius",
+          "confidence": "LOW",
+          "f1_elo": 1576,
+          "f2_elo": 1545,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 49.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 30.745873515957555
+            },
+            {
+              "feature": "diff_age",
+              "value": 4.755646817248461
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "4"
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": "4"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Melissa Croden",
+          "fighter_2": "Daria Zhelezniakova",
+          "weight_class": "Women's Bantamweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.441,
+          "f2_win_prob": 0.559,
+          "predicted_winner": "Daria Zhelezniakova",
+          "confidence": "MEDIUM",
+          "f1_elo": 1502,
+          "f2_elo": 1518,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -175.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -16.118494459255544
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -16.0270410985097
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": 4.916826923076924
+            },
+            {
+              "feature": "diff_age",
+              "value": 4.78302532511978
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Julien Leblanc",
+          "fighter_2": "Robert Valentin",
+          "weight_class": "Middleweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.343,
+          "f2_win_prob": 0.657,
+          "predicted_winner": "Robert Valentin",
+          "confidence": "HIGH",
+          "f1_elo": 1500,
+          "f2_elo": 1455,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 92.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 45.13375383073276
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": 29.133753830732758
+            },
+            {
+              "feature": "diff_age",
+              "value": 10.950034223134839
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-2"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Tanner Boser",
+          "fighter_2": "Gokhan Saricam",
+          "weight_class": "Heavyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.605,
+          "f2_win_prob": 0.395,
+          "predicted_winner": "Tanner Boser",
+          "confidence": "MEDIUM",
+          "f1_elo": 1499,
+          "f2_elo": 1500,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 622.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "9"
+            },
+            {
+              "feature": "diff_age",
+              "value": -7.289527720739223
+            },
+            {
+              "feature": "diff_loss_streak",
+              "value": "2"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "1"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "DongHun Choi",
+          "fighter_2": "Andre Lima",
+          "weight_class": "Flyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.294,
+          "f2_win_prob": 0.706,
+          "predicted_winner": "Andre Lima",
+          "confidence": "HIGH",
+          "f1_elo": 1516,
+          "f2_elo": 1560,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 112.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": -43.76698367203085
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -28.503290465552936
+            },
+            {
+              "feature": "diff_fights_per_year",
+              "value": -3.0693277310924367
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-3"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Mitch Raposo",
+          "fighter_2": "Allan Nascimento",
+          "weight_class": "Flyweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.499,
+          "f2_win_prob": 0.501,
+          "predicted_winner": "Allan Nascimento",
+          "confidence": "LOW",
+          "f1_elo": 1485,
+          "f2_elo": 1549,
+          "top_factors": [
+            {
+              "feature": "diff_elo",
+              "value": -63.43438298669571
+            },
+            {
+              "feature": "diff_elo_momentum",
+              "value": -30.12174579230941
+            },
+            {
+              "feature": "diff_age",
+              "value": -7.096509240246405
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": 7.0
+            },
+            {
+              "feature": "diff_reach",
+              "value": -5.0
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "John Castaneda",
+          "fighter_2": "Mark Vologdin",
+          "weight_class": "Bantamweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.559,
+          "f2_win_prob": 0.441,
+          "predicted_winner": "John Castaneda",
+          "confidence": "MEDIUM",
+          "f1_elo": 1507,
+          "f2_elo": 1500,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -29.72242937701344
+            },
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -8.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "7"
+            },
+            {
+              "feature": "diff_elo",
+              "value": 6.769849378154277
+            },
+            {
+              "feature": "diff_reach",
+              "value": 2.5
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "event_id": "ufc-fight-night-brady-vs-buckley",
+      "event_name": "UFC Fight Night: Brady vs. Buckley",
+      "event_date": "2026-04-25",
+      "location": "Las Vegas, Nevada, USA",
+      "locked": false,
+      "locked_at": null,
+      "prediction_type": "live",
+      "model_version": "phase9_v1",
+      "model_description": "HistGradientBoosting, 145 features (live prediction)",
+      "overall_correct": null,
+      "overall_total": null,
+      "overall_accuracy": null,
+      "fights": [
+        {
+          "fighter_1": "Sean Brady",
+          "fighter_2": "Joaquin Buckley",
+          "weight_class": "Welterweight",
+          "is_main_event": true,
+          "f1_win_prob": 0.379,
+          "f2_win_prob": 0.621,
+          "predicted_winner": "Joaquin Buckley",
+          "confidence": "MEDIUM",
+          "f1_elo": 1605,
+          "f2_elo": 1601,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -154.0
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "-6"
+            },
+            {
+              "feature": "diff_reach",
+              "value": -4.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 3.5225504217157777
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": "-3"
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        },
+        {
+          "fighter_1": "Davey Grant",
+          "fighter_2": "Juan Adrian Martinetti",
+          "weight_class": "Bantamweight",
+          "is_main_event": false,
+          "f1_win_prob": 0.546,
+          "f2_win_prob": 0.454,
+          "predicted_winner": "Davey Grant",
+          "confidence": "LOW",
+          "f1_elo": 1525,
+          "f2_elo": 1500,
+          "top_factors": [
+            {
+              "feature": "diff_days_since_last_fight",
+              "value": -176.0
+            },
+            {
+              "feature": "diff_elo",
+              "value": 24.598078849583317
+            },
+            {
+              "feature": "diff_career_fights",
+              "value": "14"
+            },
+            {
+              "feature": "diff_weight_class_fights",
+              "value": "14"
+            },
+            {
+              "feature": "diff_age",
+              "value": 4.350444900752912
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "event_id": "ufc-fight-night-della-maddalena-vs-prates",
+      "event_name": "UFC Fight Night: Della Maddalena vs. Prates",
+      "event_date": "2026-05-02",
+      "location": "Perth, Western Australia, Australia",
+      "locked": false,
+      "locked_at": null,
+      "prediction_type": "live",
+      "model_version": "phase9_v1",
+      "model_description": "HistGradientBoosting, 145 features (live prediction)",
+      "overall_correct": null,
+      "overall_total": null,
+      "overall_accuracy": null,
+      "fights": [
+        {
+          "fighter_1": "Jack Della Maddalena",
+          "fighter_2": "Carlos Prates",
+          "weight_class": "Welterweight",
+          "is_main_event": true,
+          "f1_win_prob": 0.56,
+          "f2_win_prob": 0.44,
+          "predicted_winner": "Jack Della Maddalena",
+          "confidence": "MEDIUM",
+          "f1_elo": 1621,
+          "f2_elo": 1593,
+          "top_factors": [
+            {
+              "feature": "diff_elo_momentum",
+              "value": -29.00568945653231
+            },
+            {
+              "feature": "diff_elo",
+              "value": 28.843134671551297
+            },
+            {
+              "feature": "diff_win_streak",
+              "value": "7"
+            },
+            {
+              "feature": "diff_reach",
+              "value": -5.0
+            },
+            {
+              "feature": "diff_age",
+              "value": -3.0663928815879515
+            }
+          ],
+          "actual_winner": null,
+          "actual_method": null,
+          "actual_round": null,
+          "correct": null
         }
       ]
     }
